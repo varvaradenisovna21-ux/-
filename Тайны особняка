@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Убийство в особняке Роузвуд</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+<style>
+body {
+    margin:0;
+    font-family: 'Cinzel', serif;
+    background: #1c1c1c;
+    color: #f5f5f5;
+}
+header {
+    background: #2b2b2b;
+    padding: 20px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+.container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+.button {
+    background: #b08a5c;
+    color: #0b0b0b;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-block;
+}
+.button:hover { background: #7a4e2f; color: #fff; }
+.clue {
+    background: #2b2b2b;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    display: none;
+}
+#map {
+    width: 100%;
+    margin: 20px 0;
+}
+#audioToggle {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #b08a5c;
+    padding: 12px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 3000;
+    color: #0b0b0b;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<header>Убийство в особняке Роузвуд</header>
+
+<div class="container">
+    <h2>Локации</h2>
+    <div class="button" onclick="enterRoom('library')">📘 Библиотека</div>
+    <div class="button" onclick="enterRoom('music')">🎹 Музыкальная комната</div>
+    <div class="button" onclick="enterRoom('office')">🔐 Кабинет</div>
+    <div class="button" onclick="enterRoom('garden')">🥀 Сад</div>
+    <div class="button" onclick="enterRoom('basement')">⚙️ Подвал</div>
+
+    <div id="roomDesc" style="margin-top:20px;"></div>
+
+    <h2>Улики</h2>
+    <div class="button" onclick="openClue(1)">Улика 1 — Тайная записка</div>
+    <div class="button" onclick="openClue(2)">Улика 2 — След обуви</div>
+    <div class="button" onclick="openClue(3)">Улика 3 — Символ на стене</div>
+    <div class="button" onclick="openClue(4)">Улика 4 — Разорванный лист</div>
+    <div class="button" onclick="openClue(5)">Улика 5 — Карта тайных ходов</div>
+
+    <div class="clue" id="clue1">Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»</div>
+    <div class="clue" id="clue2">След обуви в саду ведет к чёрному входу.</div>
+    <div class="clue" id="clue3">Странный символ на стене, похожий на шифр профессора.</div>
+    <div class="clue" id="clue4">Разорванный лист из дневника Эдриана. Похоже, он шантажировал кого-то.</div>
+    <div class="clue" id="clue5">Старая карта подвала, показывает скрытый проход между библиотекой и кабинетом.</div>
+
+    <h2>Финальная проверка</h2>
+    <div class="button" onclick="checkKiller()">Узнать убийцу</div>
+
+    <h2>Карта особняка</h2>
+    <img src="https://i.ibb.co/ZV0Y0WZ/rosewood-map.png" alt="Карта особняка" id="map">
+
+</div>
+
+<div id="audioToggle">🎵 Включить звук</div>
+
+<!-- Аудио файлы -->
+<audio id="bgAudio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2023/05/20/audio_896d2a4d3b.mp3" type="audio/mpeg">
+</audio>
+<audio id="whisperAudio" preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/03/01/audio_aa8a798ed0.mp3" type="audio/mpeg">
+</audio>
+<audio id="doorAudio" preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/01/18/audio_7e6a1c37f0.mp3" type="audio/mpeg">
+</audio>
+<audio id="mechanismAudio" preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/03/09/audio_5a231740fd.mp3" type="audio/mpeg">
+</audio>
+<audio id="heartbeatAudio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2023/09/03/audio_4483b4566c.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// ----------------- ИГРОВАЯ ЛОГИКА -----------------
+
+function enterRoom(room){
+    let desc = "";
+    switch(room){
+        case 'library':
+            desc = "Вы вошли в библиотеку. Пыльные стеллажи и старые книги. Один стеллаж можно сдвинуть.";
+            playDoor();
+            break;
+        case 'music':
+            desc = "Музыкальная комната. На полу странные следы, будто кто-то волок тяжёлый предмет.";
+            playDoor();
+            break;
+        case 'office':
+            desc = "Кабинет убитого. Дверь заперта изнутри, окно приоткрыто высоко.";
+            playDoor();
+            break;
+        case 'garden':
+            desc = "Сад за особняком. Следы обуви, обломанная ветка, след от кольца в земле.";
+            break;
+        case 'basement':
+            desc = "Подвал ведёт к старой комнате слуг. На полу лежит старая карта.";
+            playMechanism();
+            break;
+    }
+    document.getElementById("roomDesc").innerHTML = desc;
+}
+
+// ----------------- Улики -----------------
+function openClue(n){
+    document.getElementById("clue"+n).style.display="block";
+    playWhisper();
+    if(n===1 || n===2 || n===3) playDoor();
+    if(n===5) playMechanism();
+}
+
+// ----------------- Финал -----------------
+function checkKiller(){
+    alert("Истинная убийца — Леди Вивьен Роузвуд. Она знала о тайном ходе и подстроила улики так, чтобы обвинить других. Причина: Эдриан собирался лишить её наследства.");
+    startHeartbeat();
+}
+
+// ----------------- ЗВУКОВАЯ СИСТЕМА -----------------
+let bgAudio = document.getElementById("bgAudio");
+let whisperAudio = document.getElementById("whisperAudio");
+let doorAudio = document.getElementById("doorAudio");
+let mechanismAudio = document.getElementById("mechanismAudio");
+let heartbeatAudio = document.getElementById("heartbeatAudio");
+
+let toggle = document.getElementById("audioToggle");
+let audioEnabled = false;
+
+toggle.addEventListener("click", ()=>{
+    if(!audioEnabled){
+        bgAudio.volume = 0.35; bgAudio.play();
+        audioEnabled = true;
+        toggle.innerHTML = "🔇 Выключить звук";
+        toggle.style.background = "#7a4e2f";
+    } else {
+        bgAudio.pause(); heartbeatAudio.pause();
+        audioEnabled = false;
+        toggle.innerHTML = "🎵 Включить звук";
+        toggle.style.background = "#b08a5c";
+    }
+});
+
+function playWhisper(){ whisperAudio.volume=0.4; whisperAudio.currentTime=0; whisperAudio.play(); }
+function playDoor(){ doorAudio.volume=0.6; doorAudio.currentTime=0; doorAudio.play(); }
+function playMechanism(){ mechanismAudio.volume=0.6; mechanismAudio.currentTime=0; mechanismAudio.play(); }
+function startHeartbeat(){ if(audioEnabled){ heartbeatAudio.volume=0.5; heartbeatAudio.play(); } }
+
+</script>
+</body>
+</html>
