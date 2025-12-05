@@ -3,964 +3,698 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Убийство в особняке Роузвуд — Тайна</title>
+<title>Убийство в особняке Роузвуд — Мобильная и ПК версии</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
-/* --- Общая тема: загадочно, винтаж, свечи, туман --- */
 :root{
-  --bg-1:#070608;
-  --bg-2:#121113;
-  --panel:#191818;
+  --bg-1:#060607;
+  --bg-2:#141214;
+  --panel:#1c1818;
   --accent:#b08a5c;
   --accent-2:#7a4e2f;
   --muted:#cfcfcf;
   --glass: rgba(255,255,255,0.03);
+  --radius:12px;
+  --gap:14px;
 }
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{height:100%; margin:0; font-family:"Raleway",system-ui,Arial; -webkit-font-smoothing:antialiased;}
 body{
-  margin:0;
-  font-family: "Raleway", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color:#efeae4;
   background:
-   radial-gradient(1200px 600px at 10% 10%, rgba(176,138,92,0.03), transparent),
-   linear-gradient(180deg,var(--bg-1), var(--bg-2));
+    radial-gradient(800px 400px at 8% 8%, rgba(176,138,92,0.03), transparent),
+    linear-gradient(180deg,var(--bg-1), var(--bg-2));
   -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  overflow-y:scroll;
+  padding-bottom:80px;
 }
 
 /* Header */
-.header {
+.header{
   display:flex;
+  gap:12px;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  padding:18px 22px;
+  padding:18px 16px;
   border-bottom:1px solid rgba(255,255,255,0.03);
 }
-.title {
-  display:flex;
-  flex-direction:column;
-}
-.title h1 {
-  margin:0;
-  font-family:'Cinzel', serif;
-  letter-spacing:1px;
-  font-size:1.3rem;
-  color: #f7efe7;
-}
-.title p { margin:2px 0 0 0; font-size:0.86rem; color:var(--muted); }
+.title h1{ margin:0; font-family:'Cinzel', serif; font-size:1.2rem; letter-spacing:1px;}
+.title p{ margin:2px 0 0 0; color:var(--muted); font-size:0.88rem;}
 
 /* Layout */
-.container {
+.container{
   max-width:1200px;
-  margin:20px auto;
+  margin:18px auto;
   display:grid;
-  grid-template-columns: 320px 1fr 320px;
-  gap:18px;
-  padding:0 16px 60px 16px;
+  grid-template-columns:320px 1fr 320px;
+  gap:var(--gap);
+  padding:0 16px;
 }
-@media (max-width:1050px){ .container{grid-template-columns:1fr; padding-bottom:120px;} }
-
-/* Left panel: case & suspects */
-.panel {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border-radius:12px;
-  padding:14px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-  border:1px solid rgba(255,255,255,0.02);
-}
-.case-name { font-family:'Cinzel', serif; font-size:1.05rem; margin:0 0 6px 0; color:#efe6dc; }
-.small { font-size:0.88rem; color:var(--muted); }
-
-.suspect {
-  display:flex;
-  gap:10px;
-  padding:10px;
-  margin-top:10px;
-  border-radius:8px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.01), transparent);
-  align-items:center;
-  border:1px solid rgba(255,255,255,0.02);
-}
-.suspect img { width:56px; height:56px; object-fit:cover; border-radius:8px; border:2px solid rgba(255,255,255,0.03); }
-.suspect .meta { flex:1; }
-.suspect .name { font-weight:700; }
-.suspect .role { font-size:0.85rem; color:var(--muted); }
-.suspect .dropzone {
-  margin-left:8px;
-  min-width:40px;
-  min-height:40px;
-  border-radius:8px;
-  background:var(--glass);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:0.9rem;
-  color:var(--muted);
+@media (max-width:1000px){
+  .container{ grid-template-columns:1fr; }
 }
 
-/* Center: map, clues */
-.center {
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-.map {
-  position:relative;
-  border-radius:12px;
-  overflow:hidden;
-  padding:10px;
-  background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.35));
-  border:1px solid rgba(255,255,255,0.02);
-  min-height:260px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}
-#mapImg { width:100%; display:block; border-radius:8px; opacity:0.98; filter:contrast(0.9) saturate(0.8); }
-
-.hotspot {
-  position:absolute;
-  transform:translate(-50%,-50%);
-  background:linear-gradient(180deg, rgba(176,138,92,0.14), rgba(176,138,92,0.08));
-  padding:8px 10px;
-  border-radius:999px;
-  font-weight:700;
-  color:#110b06;
-  cursor:pointer;
-  border:1px solid rgba(176,138,92,0.12);
-  box-shadow:0 8px 22px rgba(0,0,0,0.6);
-  transition:transform .12s ease, box-shadow .12s ease;
-  user-select:none;
-}
-.hotspot:hover { transform:translate(-50%,-50%) scale(1.04); box-shadow:0 12px 26px rgba(0,0,0,0.7); }
-
-/* clues grid */
-.clues {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:10px;
-}
-.clue {
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+/* Panels */
+.panel{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   padding:12px;
-  border-radius:10px;
+  border-radius:var(--radius);
   border:1px solid rgba(255,255,255,0.02);
-  cursor:pointer;
-  user-select:none;
-  transition:transform .12s ease, box-shadow .12s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
 }
-.clue:hover { transform:translateY(-4px); box-shadow:0 14px 40px rgba(0,0,0,0.6); }
-.clue.locked { opacity:0.75; filter:grayscale(0.15) blur(0.1px); }
-.clue h4 { margin:0 0 6px 0; font-size:0.95rem; font-weight:700; color:#efe6dc; }
-.clue p { margin:0; font-size:0.85rem; color:var(--muted); }
 
-/* Right panel: tools */
-.tools { display:flex; flex-direction:column; gap:10px; position:sticky; top:18px; }
-.tool { background:var(--glass); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.02); }
-.tool h3 { margin:0 0 8px 0; font-size:0.98rem; }
-.btn { background:var(--accent); color:#0a0604; padding:8px 10px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
-.btn.secondary { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.03); }
-.small-muted { font-size:0.85rem; color:var(--muted) }
+/* Suspects */
+.suspect{ display:flex; gap:10px; align-items:center; padding:8px; border-radius:10px; margin-top:10px; background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent); }
+.avatar{ width:56px; height:56px; border-radius:8px; overflow:hidden; flex:0 0 56px; display:grid; place-items:center; background:linear-gradient(180deg,#2b2420,#211817); border:2px solid rgba(255,255,255,0.03); }
+.suspect .meta{ flex:1; }
+.suspect .name{ font-weight:700; }
+.dropzone{ min-width:44px; min-height:44px; border-radius:8px; background:var(--glass); display:grid; place-items:center; color:var(--muted); font-weight:700; }
 
-/* modal */
-.modal {
-  position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:9999;
-  background:linear-gradient(180deg, rgba(3,3,3,0.6), rgba(8,8,8,0.85));
+/* Map & hotspots */
+.map{ position:relative; border-radius:var(--radius); overflow:hidden; padding:10px; min-height:260px; }
+#mapSvg{ width:100%; height:auto; display:block; border-radius:8px; filter:contrast(0.9) saturate(0.9); }
+.hotspot{ position:absolute; transform:translate(-50%,-50%); background:linear-gradient(180deg, rgba(176,138,92,0.14), rgba(176,138,92,0.08)); padding:8px 10px; border-radius:999px; font-weight:700; color:#120b06; cursor:pointer; border:1px solid rgba(176,138,92,0.12); box-shadow:0 8px 22px rgba(0,0,0,0.6); user-select:none; }
+.hotspot:active{ transform:translate(-50%,-50%) scale(0.98); }
+
+/* Clues */
+.clues{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin-top:10px; }
+.clue{ background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); cursor:pointer; user-select:none; display:flex; gap:10px; align-items:flex-start; }
+.thumb{ width:56px; height:56px; border-radius:8px; flex:0 0 56px; display:grid; place-items:center; background:linear-gradient(180deg,#211815,#1a1412); }
+.clue h4{ margin:0; font-size:0.95rem; }
+.clue p{ margin:6px 0 0 0; color:var(--muted); font-size:0.86rem; }
+.clue.locked{ opacity:0.8; filter:grayscale(0.1); }
+
+/* Tools right */
+.tools .row{ display:flex; gap:8px; margin-top:8px; }
+.input{ width:100%; padding:8px; border-radius:8px; background:#0e0e0e; color:#efeae4; border:1px solid rgba(255,255,255,0.03); }
+
+/* Modals */
+.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:9999; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85)); }
+.card{ width:520px; max-width:94%; background:linear-gradient(180deg,#151414,#0f0f0f); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); }
+
+/* mobile footer toolbar */
+.footerToolbar{ display:none; position:fixed; left:0; right:0; bottom:0; background:linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)); padding:8px 12px; gap:10px; justify-content:space-between; align-items:center; z-index:9999; }
+.footerToolbar .btn{ padding:8px 12px; border-radius:10px; }
+@media (max-width:1000px){
+  .footerToolbar{ display:flex; }
+  .header{ padding:12px; }
+  .title h1{ font-size:1.05rem; }
+  .map{ min-height:200px; }
 }
-.modal .card { width:520px; max-width:94%; background:linear-gradient(180deg,#151414,#0f0f0f); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); }
-.row { display:flex; gap:8px; align-items:center; }
-.input { width:100%; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.03); background:#0e0e0e; color:#efeae4; }
 
-/* footer / ambience */
-.ambience {
-  position:fixed; inset:0; pointer-events:none;
-  background: radial-gradient(600px 200px at 10% 10%, rgba(176,138,92,0.02), transparent);
-  mix-blend-mode:overlay;
-  z-index:0;
-}
-.vignette { position:fixed; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.7) 70%); z-index:10; }
+/* debug */
+#debug{ position:fixed; right:12px; bottom:86px; width:300px; max-height:260px; overflow:auto; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(8,8,8,0.85)); color:#fff; border-radius:8px; padding:10px; border:1px solid rgba(255,255,255,0.03); font-size:12px; z-index:99999; }
 
-.footer { text-align:center; color:var(--muted); font-size:0.85rem; margin:22px 0 80px 0; }
-
-/* debug panel */
-#debug {
-  position:fixed; right:16px; bottom:16px; width:320px; max-height:260px; overflow:auto;
-  background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(8,8,8,0.85)); color:#fff; border-radius:10px; padding:10px;
-  border:1px solid rgba(255,255,255,0.03); font-size:0.8rem; z-index:99999;
-}
-.debug-title { font-weight:700; margin-bottom:6px; }
-.log { font-family:monospace; font-size:12px; color:#cfcfcf; white-space:pre-wrap; }
-
-/* nice little animations */
-@keyframes pulse {
-  0%{ transform:scale(1); opacity:0.95 }
-  50%{ transform:scale(1.03); opacity:1 }
-  100%{ transform:scale(1); opacity:0.95 }
-}
-.hotspot.pulse { animation:pulse 2.1s infinite; }
+/* subtle vignette */
+.vignette{ position:fixed; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.7) 70%); z-index:0; }
 </style>
 </head>
 <body>
-  <div class="header">
+  <header class="header">
     <div class="title">
       <h1>Убийство в особняке Роузвуд</h1>
-      <p>Ночь. Тайны. Свечи. Расследуйте, связывайте улики, раскрывайте заговор.</p>
+      <p>Адаптировано для ПК и мобильных устройств — детали и мини‑игры</p>
     </div>
     <div style="display:flex; gap:10px; align-items:center;">
-      <div id="progress" class="small-muted">Прогресс: <strong id="progressPct">0%</strong></div>
-      <button id="audioToggle" class="btn secondary">Звук: выкл</button>
+      <div id="progressText" style="color:var(--muted)">Прогресс: <strong id="progressPct">0%</strong></div>
+      <button id="audioToggle" class="btn" style="background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted)">Звук: выкл</button>
     </div>
-  </div>
+  </header>
 
   <main class="container" role="main">
-    <!-- LEFT -->
-    <aside class="panel" aria-label="Подозреваемые и кейс">
-      <div class="case-name">Дело: Роузвуд — Ночь на 12 ноября</div>
-      <div class="small">Жертва: лорд Ричард. Осмотрите особняк, соберите улики и выстройте хронологию.</div>
+    <!-- LEFT: suspects -->
+    <aside class="panel" aria-label="Подозреваемые">
+      <div class="case-title" style="font-family:'Cinzel', serif; font-size:1.05rem;">Дело: Роузвуд</div>
+      <div style="color:var(--muted); margin-top:6px;">Перетащите улику на карточку подозреваемого или нажмите на улице для подробностей. На мобильных — удерживайте улику, затем выберите подозреваемого.</div>
 
-      <div id="suspectsArea" style="margin-top:12px;">
-        <!-- Suspects created by JS -->
-      </div>
+      <div id="suspectsArea" style="margin-top:12px"></div>
 
-      <div style="margin-top:14px;">
-        <div class="small-muted">Связанные улики</div>
-        <div id="linksSummary" class="small" style="margin-top:6px">Пока нет связей.</div>
+      <div style="margin-top:12px; color:var(--muted)">
+        <div>Связи: <span id="linksSummary">нет</span></div>
       </div>
     </aside>
 
-    <!-- CENTER -->
-    <section class="center">
-      <div class="map panel" aria-label="Карта особняка">
-        <img id="mapImg" src="https://i.ibb.co/ZV0Y0WZ/rosewood-map.png" alt="Карта особняка">
-        <!-- hotspots (positions in %): will be interactive -->
-        <div class="hotspot pulse" style="left:18%; top:22%;" data-room="library">Библиотека</div>
-        <div class="hotspot" style="left:48%; top:18%;" data-room="music">Музыка</div>
-        <div class="hotspot" style="left:62%; top:38%;" data-room="office">Кабинет</div>
-        <div class="hotspot" style="left:26%; top:60%;" data-room="garden">Сад</div>
-        <div class="hotspot" style="left:72%; top:66%;" data-room="basement">Подвал</div>
-        <div class="hotspot" style="left:40%; top:46%;" data-room="dining">Столовая</div>
-        <div class="hotspot" style="left:55%; top:62%;" data-room="attic">Чердак</div>
+    <!-- CENTER: map + clues -->
+    <section class="panel" aria-label="Карта и улики">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-family:'Cinzel', serif; font-size:1.02rem;">Карта особняка</div>
+        <div style="color:var(--muted); font-size:0.9rem">Нажмите на область, чтобы осмотреть</div>
       </div>
 
-      <div style="display:flex; gap:12px; align-items:flex-start;">
-        <div style="flex:1">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3 style="margin:0; font-family:'Cinzel', serif;">Улики</h3>
-            <div class="small-muted">Перетащите улику на подозреваемого для привязки</div>
-          </div>
+      <div class="map" style="margin-top:10px;">
+        <!-- simple generated SVG map -->
+        <svg id="mapSvg" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схематичная карта особняка">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#2b2320"/><stop offset="1" stop-color="#191414"/></linearGradient>
+            <filter id="grain"><feTurbulence baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#g1)"/>
+          <!-- rooms (simple boxes) -->
+          <rect x="40" y="40" width="300" height="200" rx="12" fill="#2b1f18" stroke="#3a2a22"/>
+          <text x="190" y="150" fill="#cfc0a8" font-size="22" font-family="Cinzel" text-anchor="middle">Библиотека</text>
 
-          <div id="cluesGrid" class="clues" style="margin-top:10px;">
-            <!-- clues populated by JS -->
-          </div>
-        </div>
+          <rect x="380" y="40" width="260" height="180" rx="10" fill="#2b1f18" stroke="#3a2a22"/>
+          <text x="510" y="120" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Музыкальная</text>
 
-        <div style="width:300px;">
-          <div class="tool panel">
-            <h3>Инструменты</h3>
-            <div class="small-muted">Блокнот, таймлайн и мини‑игры</div>
-            <div style="margin-top:10px; display:flex; gap:8px;">
-              <button id="openNotebook" class="btn">Блокнот</button>
-              <button id="openTimeline" class="btn secondary">Таймлайн</button>
-            </div>
-            <div style="margin-top:10px;">
-              <button id="openCipher" class="btn">Заметка (Цезарь)</button>
-              <button id="openMatch" class="btn secondary">Эмблемы (мини‑игра)</button>
-            </div>
-          </div>
+          <rect x="660" y="40" width="280" height="180" rx="10" fill="#2b1f18" stroke="#3a2a22"/>
+          <text x="800" y="120" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Кабинет</text>
 
-          <div class="tool" style="margin-top:10px;">
-            <h3>Обвинение</h3>
-            <div class="small-muted">Выберите подозреваемого и нажмите «Обвинить»</div>
-            <select id="accuseSelect" class="input" style="margin-top:8px;">
-              <option value="">— Выберите —</option>
-            </select>
-            <div style="display:flex; gap:8px; margin-top:8px;">
-              <button id="accuseBtn" class="btn">Обвинить</button>
-              <button id="reviewBtn" class="btn secondary">Проверить</button>
-            </div>
-            <div id="accuseResult" style="margin-top:8px; font-weight:700;"></div>
-          </div>
-        </div>
+          <rect x="40" y="270" width="380" height="300" rx="10" fill="#231a17" stroke="#33231f"/>
+          <text x="230" y="420" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Библиотека / Склад</text>
+
+          <rect x="440" y="270" width="500" height="300" rx="10" fill="#231a17" stroke="#33231f"/>
+          <text x="690" y="420" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Главный этаж / Подвал</text>
+        </svg>
+
+        <!-- hotspots (positioned in percents) -->
+        <div class="hotspot" data-room="library" style="left:18%; top:22%;">Библиотека</div>
+        <div class="hotspot" data-room="music" style="left:49%; top:16%;">Музыка</div>
+        <div class="hotspot" data-room="office" style="left:78%; top:20%;">Кабинет</div>
+        <div class="hotspot" data-room="garden" style="left:26%; top:62%;">Сад</div>
+        <div class="hotspot" data-room="basement" style="left:76%; top:76%;">Подвал</div>
+        <div class="hotspot" data-room="attic" style="left:56%; top:62%;">Чердак</div>
       </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+        <div style="font-weight:700">Улики</div>
+        <div style="color:var(--muted)">Держите и перетаскивайте на подозреваемого</div>
+      </div>
+
+      <div id="cluesGrid" class="clues" aria-live="polite"></div>
     </section>
 
-    <!-- RIGHT -->
-    <aside class="panel tools" aria-label="Инструменты и прогресс">
-      <div class="tool">
-        <h3>Прогресс расследования</h3>
-        <div id="progressNotes" class="small" style="margin-top:6px;">Откройте улики и связывайте их с подозреваемыми.</div>
-        <div style="margin-top:8px;">
-          <button id="saveBtn" class="btn secondary">Сохранить прогресс</button>
-          <button id="loadBtn" class="btn secondary">Загрузить прогресс</button>
+    <!-- RIGHT: tools -->
+    <aside class="panel tools" aria-label="Инструменты">
+      <div>
+        <h3 style="margin:0; font-family:'Cinzel', serif;">Инструменты</h3>
+        <div style="color:var(--muted); margin-top:6px;">Блокнот, таймлайн, шифры и мини‑игры</div>
+        <div class="row" style="margin-top:10px;">
+          <button id="openNotebook" class="btn">Блокнот</button>
+          <button id="openTimeline" class="btn secondary">Таймлайн</button>
+          <button id="openCipher" class="btn">Цезарь</button>
         </div>
       </div>
 
-      <div class="tool" style="margin-top:10px;">
-        <h3>Сохранённые события (таймлайн)</h3>
-        <div id="timelineList" class="small-muted" style="margin-top:8px;">Пока пусто</div>
-        <div style="margin-top:8px;">
-          <input id="timelineInput" class="input" placeholder="Добавить событие (например, 23:10 — шаги)" />
-          <div style="display:flex; gap:8px; margin-top:8px;">
-            <button id="addTimelineBtn" class="btn">Добавить</button>
-            <button id="clearTimelineBtn" class="btn secondary">Очистить</button>
-          </div>
+      <div style="margin-top:12px;">
+        <h3 style="margin:0; font-family:'Cinzel', serif;">Обвинение</h3>
+        <div style="color:var(--muted); margin-top:6px;">Выберите и предъявите доказательства</div>
+        <select id="accuseSelect" class="input" style="margin-top:8px;">
+          <option value="">— Выберите —</option>
+        </select>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button id="accuseBtn" class="btn">Обвинить</button>
+          <button id="reviewBtn" class="btn secondary">Проверить</button>
         </div>
+        <div id="accuseResult" style="margin-top:8px; font-weight:700;"></div>
       </div>
     </aside>
   </main>
 
-  <div class="footer">Игра создана как прототип — можно добавлять новые мини‑игры и уровни интриги.</div>
-
-  <!-- Modals -->
-  <div class="modal" id="modalCipher" aria-hidden="true">
-    <div class="card">
-      <h3>Зашифрованная записка (Цезарь)</h3>
-      <div class="small-muted">Попробуйте сдвиг от 1 до 25</div>
-      <div class="row" style="margin-top:8px;">
-        <input id="cipherShift" class="input" type="number" min="1" max="25" value="3" />
-        <button id="cipherTry" class="btn">Попробовать</button>
-      </div>
-      <textarea id="cipherOutput" rows="4" class="input" style="margin-top:8px" readonly></textarea>
-      <div style="margin-top:10px; display:flex; justify-content:flex-end; gap:8px;">
-        <button id="cipherClose" class="btn secondary">Закрыть</button>
-      </div>
+  <!-- mobile toolbar -->
+  <div class="footerToolbar" aria-hidden="false">
+    <div style="display:flex; gap:8px;">
+      <button id="quickNotebook" class="btn secondary">Блокнот</button>
+      <button id="quickTimeline" class="btn secondary">Таймлайн</button>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button id="quickCipher" class="btn">Заметка</button>
+      <button id="quickMatch" class="btn secondary">Эмблемы</button>
     </div>
   </div>
 
-  <div class="modal" id="modalMatch" aria-hidden="true">
+  <!-- modals -->
+  <div id="modalCipher" class="modal" aria-hidden="true">
     <div class="card">
-      <h3>Эмблемы — выберите правильную</h3>
-      <div class="small-muted" style="margin-top:6px">Найдите эмблему, совпадающую с символом на стене.</div>
-      <div id="matchArea" style="display:flex; gap:8px; margin-top:12px; justify-content:space-around;"></div>
-      <div style="margin-top:12px; display:flex; justify-content:flex-end;">
+      <h3>Расшифровать записку — Цезарь</h3>
+      <div style="margin-top:6px; color:var(--muted)">Вводите сдвиг 1–25</div>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <input id="cipherShift" type="number" min="1" max="25" value="3" class="input" />
+        <button id="cipherTry" class="btn">Попробовать</button>
+        <button id="cipherClose" class="btn secondary">Закрыть</button>
+      </div>
+      <textarea id="cipherOutput" rows="4" class="input" style="margin-top:10px" readonly></textarea>
+    </div>
+  </div>
+
+  <div id="modalMatch" class="modal" aria-hidden="true">
+    <div class="card">
+      <h3>Мини‑игра: Эмблемы</h3>
+      <div style="margin-top:8px; color:var(--muted)">Выберите эмблему, совпадающую с символом</div>
+      <div id="matchArea" style="display:flex; gap:10px; margin-top:12px; justify-content:space-around"></div>
+      <div style="display:flex; justify-content:flex-end; margin-top:12px;">
         <button id="matchClose" class="btn secondary">Закрыть</button>
       </div>
     </div>
   </div>
 
-  <div id="debug" aria-hidden="false">
-    <div class="debug-title">DEBUG</div>
-    <div id="debugLog" class="log">init...</div>
+  <div id="modalNotebook" class="modal" aria-hidden="true">
+    <div class="card">
+      <h3>Блокнот</h3>
+      <textarea id="notebookText" class="input" rows="8" placeholder="Ваши заметки..."></textarea>
+      <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
+        <button id="nbSave" class="btn">Сохранить</button>
+        <button id="nbClose" class="btn secondary">Закрыть</button>
+      </div>
+    </div>
   </div>
 
-  <div class="ambience"></div>
+  <div id="debug" aria-hidden="false"><strong>DEBUG</strong><div id="debugLog" style="white-space:pre-wrap; margin-top:8px; font-family:monospace; color:#cfcfcf">init...</div></div>
   <div class="vignette"></div>
 
 <script>
-/* =========================
-   Надёжная инициализация
-   ========================= */
+/*
+  Улучшенный, стабильный JS:
+  - адаптивный интерфейс (ПК + мобильные)
+  - drag & drop для ПК, touch support для мобильных (симулированная перетаскивание)
+  - встроенные SVG картинки (аватары, эмблемы, мини‑карта)
+  - дополнительные улики и мини‑игры
+  - debug панель для ошибок
+*/
+
 (function(){
-  // Централизованный лог для debug панели
-  function debug(...args){ try{ const el = document.getElementById('debugLog'); if(el) el.textContent = (el.textContent ? el.textContent + "\\n" : '') + args.join(' '); console.log(...args);}catch(e){} }
+  const debugEl = id('debugLog');
+  function debug(...a){ try{ if(debugEl) debugEl.textContent += '\\n' + a.join(' '); console.log(...a); }catch(e){} }
+
   window.onerror = function(msg, src, line, col, err){
-    debug('ERROR:', msg, '(', src, line+':'+col, ')', err && err.stack ? '\\n' + err.stack : '');
+    debug('ERROR:', msg, src + ':' + line + ':' + col, err && err.stack ? err.stack.split('\\n')[0] : '');
   };
 
-  document.addEventListener('DOMContentLoaded', function(){
-    try{
-      debug('DOM loaded — инициализация UI');
-      initApp();
-    }catch(e){
-      debug('Инициализация провалена:', e && e.stack ? e.stack : e);
-    }
-  });
+  document.addEventListener('DOMContentLoaded', init);
 
-  /* =========================
-     Данные (подозреваемые, улики)
-     ========================= */
+  // данные
   const suspects = [
-    { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', img:'https://i.ibb.co/3s3h4qj/person1.jpg', note:'Вёл переписку с отцом.' },
-    { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', img:'https://i.ibb.co/qdV4y6k/person2.jpg', note:'Была замечена возле сада.' },
-    { id:'prof', name:'Профессор Морден', role:'Архивариус', img:'https://i.ibb.co/8m9h3PZ/person3.jpg', note:'Знает старые символы.' },
-    { id:'victoria', name:'Виктория Роузвуд', role:'Жена', img:'https://i.ibb.co/Hd1qkXn/person4.jpg', note:'Тайные страхи и секреты.' },
+    { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', color:'#9b6b49' },
+    { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', color:'#6b7f49' },
+    { id:'prof', name:'Профессор Морден', role:'Архивариус', color:'#406b7f' },
+    { id:'victoria', name:'Виктория Роузвуд', role:'Жена', color:'#7f4b6b' }
   ];
 
   const clues = [
-    { id:'cl1', title:'Тайная записка (шИфр)', room:'office', text:'Vkr ghqv wrfkh', locked:true, type:'cipher', hint:'Цезарь' },
-    { id:'cl2', title:'След обуви', room:'garden', text:'Подошва с логотипом B7', locked:false },
-    { id:'cl3', title:'Разорванный лист', room:'library', text:'Вырвано имя, пометка: 12/11', locked:false },
-    { id:'cl4', title:'Символ на стене', room:'music', text:'Камень выцарапан символом — эмблема серии', locked:false, type:'symbol' },
-    { id:'cl5', title:'Чёрнильный след', room:'office', text:'След от перьевой ручки — фирма "Wyn"', locked:false },
-    { id:'cl6', title:'Карта подвала (сожжена)', room:'basement', text:'Фрагменты карты — нужно восстановить', locked:true, type:'photo' },
-    { id:'cl7', title:'Пепел на перилах', room:'dining', text:'Следы поджога — есть следы масла', locked:false },
-    { id:'cl8', title:'Флакон с запахом', room:'attic', text:'Остатки редкого эфирного масла', locked:false },
-    { id:'cl9', title:'Записка в книге', room:'library', text:'"Власть — через тайну" — подпись В.', locked:false },
-    { id:'cl10', title:'Запечатанный конверт', room:'office', text:'Конверт без адреса, печать: семейная', locked:true, type:'seal' }
+    { id:'cl1', title:'Тайная записка (зашифрована)', room:'office', text:'Vkr ghqv wrfkh', locked:true, type:'cipher' },
+    { id:'cl2', title:'След обуви', room:'garden', text:'Подошва с логотипом B7', locked:false, type:'foot' },
+    { id:'cl3', title:'Разорванный лист', room:'library', text:'Вырвано имя, пометка: 12/11', locked:false, type:'paper' },
+    { id:'cl4', title:'Символ на стене', room:'music', text:'Неизвестный символ', locked:false, type:'symbol' },
+    { id:'cl5', title:'Пепел на перилах', room:'dining', text:'Следы поджога и масла', locked:false, type:'ash' },
+    { id:'cl6', title:'Карта (фрагмент)', room:'basement', text:'Фрагмент карты с отметкой', locked:true, type:'photo' },
+    { id:'cl7', title:'Флакон с эфиром', room:'attic', text:'Реактив: запах редкого эфира', locked:false, type:'vial' },
+    { id:'cl8', title:'Записка в книге', room:'library', text:'"Власть — через тайну" — подпись В.', locked:false, type:'note' },
+    { id:'cl9', title:'Запечатанный конверт', room:'office', text:'Печать семьи', locked:true, type:'seal' },
+    { id:'cl10', title:'След перьевой ручки', room:'office', text:'Чернильные брызги: Wyn', locked:false, type:'ink' }
   ];
 
-  /* Состояние приложения (локально) */
-  let state = {
-    opened: {},        // какие улики открыты
-    links: {},         // { suspectId: [clueId,...] }
-    timeline: [],      // события
-    audioOn: false
-  };
+  // state
+  let state = { opened: {}, links: {}, timeline: [], audioOn:false };
+  suspects.forEach(s => state.links[s.id] = []);
 
-  function initApp(){
-    // назначение начального состояния
-    suspects.forEach(s => state.links[s.id] = []);
-    // отрисовка UI
-    renderSuspects();
-    renderClues();
-    renderAccuseSelect();
-    attachMapHandlers();
-    attachToolHandlers();
-    attachDragDrop();
-    loadStateFromStorage();
-    updateProgress();
-    debug('App initialized');
-  }
+  // helper
+  function id(i){ return document.getElementById(i); }
+  function el(q, ctx=document){ return ctx.querySelector(q); }
+  function els(q, ctx=document){ return Array.from(ctx.querySelectorAll(q)); }
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
 
-  /* -------------------------
-     Рендер подозреваемых
-     ------------------------- */
+  // render suspects (with generated SVG avatars)
   function renderSuspects(){
-    const area = document.getElementById('suspectsArea');
+    const area = id('suspectsArea');
     area.innerHTML = '';
     suspects.forEach(s => {
-      const el = document.createElement('div');
-      el.className = 'suspect';
-      el.dataset.id = s.id;
-      el.innerHTML = `
-        <img src="${s.img}" alt="${s.name}">
+      const d = document.createElement('div');
+      d.className = 'suspect';
+      d.dataset.id = s.id;
+      d.innerHTML = `
+        <div class="avatar" aria-hidden="true">${avatarSVG(s.name, s.color)}</div>
         <div class="meta">
           <div class="name">${s.name}</div>
           <div class="role">${s.role}</div>
-          <div class="small" style="margin-top:6px">${s.note}</div>
         </div>
         <div class="dropzone" data-suspect="${s.id}">0</div>
       `;
-      area.appendChild(el);
+      area.appendChild(d);
     });
+    attachDropzones();
+    renderLinksSummary();
+    populateAccuseSelect();
   }
 
-  /* -------------------------
-     Рендер улик
-     ------------------------- */
+  // generated SVG for avatar — returns HTML string
+  function avatarSVG(name, color){
+    const initials = name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+    const svg = `<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="${color}44"/><stop offset="1" stop-color="${color}22"/></linearGradient></defs><rect width="100%" height="100%" rx="8" fill="url(#g)"/><text x="50%" y="54%" font-family="Raleway" font-weight="700" font-size="18" text-anchor="middle" fill="#fff">${initials}</text></svg>`;
+    return svg;
+  }
+
+  // render clues grid — each clue has small generated thumbnail SVG
   function renderClues(){
-    const grid = document.getElementById('cluesGrid');
+    const grid = id('cluesGrid');
+    if(!grid) return;
     grid.innerHTML = '';
     clues.forEach(c => {
       const card = document.createElement('div');
       card.className = 'clue' + (c.locked ? ' locked' : '');
       card.id = c.id;
       card.draggable = true;
-      card.innerHTML = `<h4>${c.title}</h4><p>${c.locked ? 'Зашифрована / скрыта' : c.text}</p>`;
-      // data attributes
-      card.dataset.locked = c.locked ? '1' : '0';
-      card.dataset.type = c.type || '';
-      card.dataset.room = c.room || '';
-      // click opens (if unlocked shows details, if locked opens relevant tool)
-      card.addEventListener('click', () => {
-        onClueClick(c);
-      });
-      // dragstart
-      card.addEventListener('dragstart', (ev) => {
-        ev.dataTransfer.setData('text/plain', c.id);
-        ev.dataTransfer.effectAllowed = 'move';
-      });
+      card.innerHTML = `<div class="thumb" aria-hidden="true">${thumbSVG(c.type)}</div>
+                        <div style="flex:1"><h4>${c.title}</h4><p>${c.locked ? 'Зашифрована / скрыта' : c.text}</p></div>`;
+      // events
+      card.addEventListener('click', ()=>onClueClick(c));
+      card.addEventListener('dragstart', (ev)=>{ ev.dataTransfer.setData('text/plain', c.id); });
+      // touch support for mobile: long press to start drag-mode (simulate)
+      addTouchDragSupport(card, c.id);
       grid.appendChild(card);
     });
   }
 
-  /* -------------------------
-     Обработчик клика по улице
-     ------------------------- */
-  function onClueClick(clue){
-    const meta = clues.find(x => x.id === clue.id);
-    if(!meta) return;
-    if(meta.locked){
-      // выбираем подходящий инструмент в зависимости от типа
-      if(meta.type === 'cipher'){
-        openCipherModal();
-        setCipherSource(meta.text, meta.id);
-      } else if(meta.type === 'photo'){
-        // photo tool: показываем мини-игру "восстановление"
-        showToast('Для восстановления карты используйте мини‑игру эмблем (в Инструментах).');
-        openMatchModal(true); // demo link to match
-      } else if(meta.type === 'seal'){
-        showToast('Печать требует анализа — найдите ключ в других уликaх');
-        openMatchModal(true);
-      } else {
-        showToast('Эта улика закрыта. Попробуйте инструменты.');
-      }
-      return;
+  // small thumbnail SVG generator based on type
+  function thumbSVG(type){
+    switch(type){
+      case 'foot': return svgIcon('M20 40c0 0 6-12 14-12 8 0 14 12 14 12s-6 4-14 4c-8 0-14-4-14-4z','foot');
+      case 'paper': return svgIcon('<rect x="6" y="6" width="44" height="44" rx="6" fill="#2b2119"/>','paper');
+      case 'symbol': return svgIcon('<circle cx="28" cy="28" r="16" fill="#3a2a22"/><path d="M28 18 L28 38 M18 28 L38 28" stroke="#b08a5c" stroke-width="2"/>','symbol');
+      case 'photo': return svgIcon('<rect x="6" y="10" width="44" height="32" rx="4" fill="#2b2119"/><circle cx="20" cy="24" r="4" fill="#b08a5c"/>','photo');
+      case 'vial': return svgIcon('<rect x="22" y="10" width="12" height="24" rx="4" fill="#2b2119"/><rect x="24" y="6" width="8" height="6" fill="#3a2a22"/>','vial');
+      case 'ink': return svgIcon('<path d="M18 44 L44 44 L36 34 L28 34 L18 44z" fill="#2b2119"/>','ink');
+      case 'seal': return svgIcon('<circle cx="28" cy="28" r="16" fill="#3a2a22"/><text x="28" y="33" font-size="12" text-anchor="middle" fill="#b08a5c">S</text>','seal');
+      case 'note': return svgIcon('<rect x="6" y="8" width="44" height="40" rx="4" fill="#2b2119"/><path d="M12 18 H44" stroke="#b08a5c" stroke-width="1"/><path d="M12 26 H36" stroke="#b08a5c" stroke-width="1"/>','note');
+      case 'ash': return svgIcon('<ellipse cx="28" cy="34" rx="16" ry="6" fill="#2b2119"/>','ash');
+      default: return svgIcon('<rect x="6" y="6" width="44" height="44" rx="6" fill="#2b2119"/>','def');
+    }
+  }
+  function svgIcon(inner, cls){
+    if(inner.startsWith('<')) {
+      return `<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
     } else {
-      // раскрыть содержимое детально: открываем модальное с текстом и опциями
-      showClueDetails(meta);
+      return `<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" rx="8" fill="#221815"/></svg>`;
     }
   }
 
-  function showClueDetails(c){
-    // простой подробный просмотр
-    const existed = document.getElementById('clueDetailModal');
-    if(existed) existed.remove();
-    const md = document.createElement('div');
-    md.id = 'clueDetailModal';
-    md.className = 'modal';
-    md.innerHTML = `<div class="card">
-      <h3>${c.title}</h3>
-      <div class="small-muted" style="margin-top:6px">Найдено в: ${c.room || 'неизвестно'}</div>
-      <p style="margin-top:10px" class="small-muted">${c.text}</p>
-      <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end">
-        <button id="closeClue" class="btn secondary">Закрыть</button>
-      </div>
-    </div>`;
-    document.body.appendChild(md);
-    md.style.display = 'flex';
-    md.querySelector('#closeClue').addEventListener('click', ()=>{ md.style.display='none'; md.remove(); });
+  // clue click behavior
+  function onClueClick(c){
+    if(c.locked){
+      if(c.type === 'cipher'){ openCipherModal(); setCipherSource(c.text, c.id); }
+      else if(c.type === 'photo'){ openMatchModal(true); } // demo: open match to restore
+      else { toast('Эта улика требует инструментов. Откройте Инструменты.'); }
+      return;
+    }
+    // show details modal
+    showClueDetail(c);
   }
 
-  /* -------------------------
-     Drag & Drop: привязка улики к подозреваемому
-     ------------------------- */
-  function attachDragDrop(){
-    document.querySelectorAll('.dropzone').forEach(zone => {
-      zone.addEventListener('dragover', (ev) => {
+  function showClueDetail(c){
+    const modal = document.createElement('div');
+    modal.className = 'modal'; modal.style.display='flex';
+    modal.innerHTML = `<div class="card"><h3>${c.title}</h3><div style="color:var(--muted); margin-top:6px">Найдено в: ${c.room}</div><p style="margin-top:10px; color:var(--muted)">${c.text}</p><div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px"><button class="btn" id="closeClue">Закрыть</button></div></div>`;
+    document.body.appendChild(modal);
+    modal.querySelector('#closeClue').addEventListener('click', ()=> modal.remove());
+  }
+
+  // drag & drop support for PC, touch support for mobile
+  function attachDropzones(){
+    const zones = els('.dropzone');
+    zones.forEach(zone => {
+      zone.addEventListener('dragover', ev => { ev.preventDefault(); zone.style.outline='2px dashed rgba(176,138,92,0.6)'; });
+      zone.addEventListener('dragleave', ev => { zone.style.outline=''; });
+      zone.addEventListener('drop', ev => {
         ev.preventDefault();
-        zone.style.outline = '2px dashed rgba(176,138,92,0.6)';
-      });
-      zone.addEventListener('dragleave', (ev) => {
-        zone.style.outline = '';
-      });
-      zone.addEventListener('drop', (ev) => {
-        ev.preventDefault();
-        zone.style.outline = '';
+        zone.style.outline='';
         const clueId = ev.dataTransfer.getData('text/plain');
         const suspectId = zone.dataset.suspect;
-        if(clueId && suspectId){
-          linkEvidence(suspectId, clueId);
-        }
+        if(clueId && suspectId) linkEvidence(suspectId, clueId);
       });
     });
-    // Обновляем зоны при динамической смене suspects
-    // (при перерисовке вызвать again)
   }
 
+  // touch drag simulation: long press to pick clue and tap suspect to drop
+  let touchDrag = null;
+  function addTouchDragSupport(card, clueId){
+    let timer = null;
+    card.addEventListener('touchstart', (ev)=>{
+      timer = setTimeout(()=>{
+        touchDrag = { clueId, card };
+        card.style.opacity = '0.6';
+        toast('Перетащите пальцем и коснитесь подозреваемого, чтобы привязать улику');
+      }, 350);
+    }, {passive:true});
+    card.addEventListener('touchend', ()=>{ clearTimeout(timer); });
+    card.addEventListener('touchmove', ()=>{ clearTimeout(timer); });
+  }
+  // tap on suspect when touchDrag active
+  document.addEventListener('touchend', (ev)=>{
+    if(!touchDrag) return;
+    const t = ev.changedTouches[0];
+    const elAt = document.elementFromPoint(t.clientX, t.clientY);
+    const zone = elAt && (elAt.closest && elAt.closest('.dropzone'));
+    if(zone){
+      const suspectId = zone.dataset.suspect;
+      if(suspectId) linkEvidence(suspectId, touchDrag.clueId);
+    }
+    // cleanup visuals
+    if(touchDrag && touchDrag.card) touchDrag.card.style.opacity = '';
+    touchDrag = null;
+  });
+
+  // link evidence
   function linkEvidence(suspectId, clueId){
     if(!state.links[suspectId]) state.links[suspectId] = [];
     if(!state.links[suspectId].includes(clueId)){
       state.links[suspectId].push(clueId);
-      showToast('Улика привязана к ' + suspectId);
-      updateLinksUI();
-      persistStateDebounced();
+      toast('Улика привязана к ' + suspectId);
+      updateDropzoneCounts();
+      saveAuto();
       updateProgress();
-    } else {
-      showToast('Улика уже привязана к этому подозреваемому');
-    }
+    } else toast('Улика уже привязана к этому подозреваемому');
   }
 
-  function updateLinksUI(){
-    // обновляем числа в зонах и суммарный список
-    for(const s of suspects){
-      const zone = document.querySelector('.dropzone[data-suspect="'+s.id+'"]');
-      if(zone) zone.textContent = (state.links[s.id] || []).length;
-    }
-    const s = [];
-    for(const su of suspects){
-      const arr = state.links[su.id] || [];
-      if(arr.length) s.push(`${su.name}: ${arr.join(', ')}`);
-    }
-    document.getElementById('linksSummary').textContent = s.length ? s.join('; ') : 'Пока нет связей.';
-    renderAccuseSelect();
-    renderTimeline();
-  }
-
-  /* -------------------------
-     Карта — обработчики комнат
-     ------------------------- */
-  function attachMapHandlers(){
-    document.querySelectorAll('.hotspot').forEach(h => {
-      h.addEventListener('click', () => {
-        const room = h.dataset.room;
-        inspectRoom(room);
-        // звуковой эффект (если включён)
-        playSound('click', 0.18);
-      });
+  function updateDropzoneCounts(){
+    suspects.forEach(s => {
+      const zone = document.querySelector(`.dropzone[data-suspect="${s.id}"]`);
+      if(zone) zone.textContent = (state.links[s.id] || []).length || '0';
     });
+    renderLinksSummary();
   }
 
+  function renderLinksSummary(){
+    const parts = [];
+    suspects.forEach(s => {
+      const arr = state.links[s.id] || [];
+      if(arr.length) parts.push(`${s.name}: ${arr.join(', ')}`);
+    });
+    id('linksSummary').textContent = parts.length ? parts.join('; ') : 'нет';
+  }
+
+  // inspect room (hotspot)
+  function attachHotspots(){
+    els('.hotspot').forEach(h => h.addEventListener('click', ()=> inspectRoom(h.dataset.room)));
+  }
   function inspectRoom(room){
-    // симуляция поиска: открываем все улики в комнате (если не заблокированы)
+    // reveal clues present in room (but keep locked ones closed until tools solved)
     const found = clues.filter(c => c.room === room);
-    if(!found.length){
-      showToast('Ничего не найдено в этой области.');
-      return;
-    }
+    if(found.length === 0){ toast('Ничего не обнаружено в этой области'); return; }
     found.forEach(c => {
-      const card = document.getElementById(c.id);
-      if(!card) return;
-      card.classList.remove('locked');
-      // если улика была locked = true и типа cipher — оставляем locked=true until puzzle solved
-      // but we mark as "found" (show hint text)
-      if(!c.locked){
-        card.querySelector('p').textContent = c.text;
-        state.opened[c.id] = true;
-      } else {
-        // показываем подсказку в карточке
-        card.querySelector('p').textContent = 'Найдена, но скрыта — требуется анализ';
+      const card = id(c.id);
+      if(card){
+        if(!c.locked){
+          card.classList.remove('locked');
+          card.querySelector('p').textContent = c.text;
+          state.opened[c.id] = true;
+        } else {
+          card.querySelector('p').textContent = 'Найдена, но скрыта — требуется инструмент';
+        }
       }
     });
-    showToast('Осмотр закончился — проверьте панель улик.');
-    persistStateDebounced();
-    renderClues(); // ensure visuals updated
-    attachDragDrop(); // reattach dropzones in case of DOM changes
+    toast(`Осмотр ${room}: найдено ${found.length} улик`);
+    saveAuto();
     updateProgress();
   }
 
-  /* -------------------------
-     Инструменты (модали)
-     ------------------------- */
-  function attachToolHandlers(){
-    document.getElementById('openCipher').addEventListener('click', openCipherModal);
-    document.getElementById('cipherClose').addEventListener('click', closeCipherModal);
-    document.getElementById('cipherTry').addEventListener('click', tryCipherShift);
-    document.getElementById('openMatch').addEventListener('click', () => openMatchModal(false));
-    document.getElementById('matchClose').addEventListener('click', closeMatchModal);
-    document.getElementById('openNotebook').addEventListener('click', openNotebookModal);
-    document.getElementById('openTimeline').addEventListener('click', openTimelineModal);
-    document.getElementById('addTimelineBtn').addEventListener('click', addTimelineEvent);
-    document.getElementById('clearTimelineBtn').addEventListener('click', clearTimeline);
-    document.getElementById('saveBtn').addEventListener('click', saveStateToStorage);
-    document.getElementById('loadBtn').addEventListener('click', loadStateFromStorage);
-    document.getElementById('accuseBtn').addEventListener('click', accuseSelected);
-    document.getElementById('reviewBtn').addEventListener('click', reviewEvidence);
-    document.getElementById('audioToggle').addEventListener('click', toggleAudio);
-  }
+  // simple toast
+  function toast(text){ const d=document.createElement('div'); d.textContent=text; d.style.position='fixed'; d.style.left='50%'; d.style.bottom='100px'; d.style.transform='translateX(-50%)'; d.style.background='rgba(0,0,0,0.8)'; d.style.color='#fff'; d.style.padding='8px 12px'; d.style.borderRadius='8px'; d.style.zIndex=99999; document.body.appendChild(d); setTimeout(()=>{ d.style.transition='opacity .5s'; d.style.opacity=0; setTimeout(()=>d.remove(),600); }, 1400); }
 
-  /* -------------------------
-     Цезарь: улика cl1
-     ------------------------- */
-  let currentCipherSource = '';
-  let currentCipherClueId = null;
-  function setCipherSource(text, clueId){
-    currentCipherSource = text;
-    currentCipherClueId = clueId;
-    document.getElementById('cipherOutput').value = '';
-    document.getElementById('cipherShift').value = 3;
-  }
+  // cipher modal logic
+  let currentCipher = { text:'', id:null };
   function openCipherModal(){
-    document.getElementById('modalCipher').style.display = 'flex';
-    document.getElementById('modalCipher').setAttribute('aria-hidden','false');
-    // default source from clue cl1 if exists
-    const c = clues.find(x=>x.type==='cipher') || clues.find(x=>x.id==='cl1');
-    if(c) setCipherSource(c.text, c.id);
+    id('modalCipher').style.display = 'flex';
+    id('modalCipher').setAttribute('aria-hidden','false');
   }
-  function closeCipherModal(){
-    document.getElementById('modalCipher').style.display = 'none';
-    document.getElementById('modalCipher').setAttribute('aria-hidden','true');
-  }
-
-  function tryCipherShift(){
-    const shift = Number(document.getElementById('cipherShift').value) || 0;
-    if(!currentCipherSource){
-      showToast('Нет исходного текста для расшифровки.');
-      return;
-    }
-    const decoded = caesarDecode(currentCipherSource, shift);
-    document.getElementById('cipherOutput').value = decoded;
-    debug('Цезарь s=' + shift + ' -> ' + decoded);
-    // если расшифровка содержит ключевую фразу — открываем улику
-    if(/он знает|он знает|he knows|в\./i.test(decoded) || shift === 3){
-      // раскрываем улику
-      revealClue(currentCipherClueId, 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»');
-      showToast('Записка расшифрована и добавлена в улики.');
+  function closeCipherModal(){ id('modalCipher').style.display = 'none'; id('modalCipher').setAttribute('aria-hidden','true'); }
+  function setCipherSource(text, clueId){ currentCipher.text = text; currentCipher.id = clueId; id('cipherOutput').value=''; }
+  function tryCipher(){
+    const shift = Number(id('cipherShift').value) || 0;
+    const dec = caesarDecode(currentCipher.text, shift);
+    id('cipherOutput').value = dec;
+    debug('dec:', dec);
+    // simple trigger if found keywords
+    if(/он знает|в\./i.test(dec) || shift === 3){
+      revealClue(currentCipher.id, 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»');
+      toast('Записка расшифрована');
       closeCipherModal();
     }
   }
-
-  function caesarDecode(text, shift){
-    if(!shift) return text;
-    const a = 'abcdefghijklmnopqrstuvwxyz';
-    const A = a.toUpperCase();
-    return text.split('').map(ch => {
-      const i = a.indexOf(ch);
-      if(i >= 0) return a[(i - shift + 26) % 26];
-      const I = A.indexOf(ch);
-      if(I >= 0) return A[(I - shift + 26) % 26];
+  function caesarDecode(s, shift){
+    if(!s) return s;
+    const a='abcdefghijklmnopqrstuvwxyz';
+    const A=a.toUpperCase();
+    return s.split('').map(ch=>{
+      if(a.includes(ch)) return a[(a.indexOf(ch)-shift+26)%26];
+      if(A.includes(ch)) return A[(A.indexOf(ch)-shift+26)%26];
       return ch;
     }).join('');
   }
 
-  /* -------------------------
-     Мини-игра: эмблемы (match)
-     ------------------------- */
-  const emblems = [
-    { id:'e1', img:'https://i.ibb.co/0VQbL1L/emblem1.png', tag:'morden' },
-    { id:'e2', img:'https://i.ibb.co/5kPZ8g7/emblem2.png', tag:'rosewood' },
-    { id:'e3', img:'https://i.ibb.co/7WcVY3J/emblem3.png', tag:'rosewood' },
-  ];
-  function openMatchModal(autoReveal){
-    const modal = document.getElementById('modalMatch');
-    const area = document.getElementById('matchArea');
-    area.innerHTML = '';
-    // shuffle choices
-    const shuffled = emblems.slice().sort(()=>Math.random()-0.5);
-    shuffled.forEach(e => {
-      const btn = document.createElement('div');
-      btn.style.cursor = 'pointer';
-      btn.style.padding = '6px';
-      btn.style.borderRadius = '8px';
-      btn.style.background = 'rgba(255,255,255,0.01)';
-      btn.style.display = 'flex';
-      btn.style.flexDirection = 'column';
-      btn.style.alignItems = 'center';
-      btn.style.gap = '6px';
-      btn.innerHTML = `<img src="${e.img}" alt="${e.id}" style="width:72px; height:72px; object-fit:contain"><div class="small-muted">${e.id}</div>`;
-      btn.addEventListener('click', () => {
-        // check correct tag (for demo, suppose 'rosewood' is correct)
-        if(e.tag === 'rosewood'){
-          showToast('Эмблема совпала — улика раскрыта!');
-          revealClue('cl4', 'Символ на стене — эмблема семьи Роузвуд.');
-          closeMatchModal();
-        } else {
-          showToast('Не то. Попробуйте другую эмблему.');
-          playFeedbackWrong();
-        }
-      });
-      area.appendChild(btn);
-    });
-    modal.style.display = 'flex';
-    modal.setAttribute('aria-hidden','false');
-    // auto demo: if autoReveal true — reveal something
-    if(autoReveal){
-      setTimeout(()=>{ revealClue('cl6', 'Части карты восстановлены: найден тайный проход.'); showToast('Карта частично восстановлена (демо).'); closeMatchModal(); }, 900);
-    }
-  }
-  function closeMatchModal(){
-    const modal = document.getElementById('modalMatch');
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden','true');
-  }
-
-  /* -------------------------
-     Помощники: reveal, toast, sounds
-     ------------------------- */
-  function revealClue(id, text){
-    const c = clues.find(x=>x.id === id);
+  // reveal clue programmatic
+  function revealClue(idc, text){
+    const c = clues.find(x=>x.id===idc);
     if(!c) return;
     c.locked = false;
     c.text = text;
-    state.opened[id] = true;
-    renderClues();
-    attachDragDrop();
+    state.opened[idc] = true;
+    const card = id(idc);
+    if(card){
+      card.classList.remove('locked');
+      card.querySelector('p').textContent = c.text;
+    }
     updateProgress();
+    saveAuto();
   }
 
-  function showToast(text){
-    // краткое уведомление (debug + простая визуальная подсказка)
-    debug('TOAST: ' + text);
-    const d = document.createElement('div');
-    d.textContent = text;
-    d.style.position='fixed';
-    d.style.left='50%';
-    d.style.bottom='24px';
-    d.style.transform='translateX(-50%)';
-    d.style.background='rgba(0,0,0,0.8)';
-    d.style.color='#fff';
-    d.style.padding='10px 14px';
-    d.style.borderRadius='10px';
-    d.style.zIndex=999999;
-    document.body.appendChild(d);
-    setTimeout(()=>{ d.style.transition='opacity .6s'; d.style.opacity='0'; setTimeout(()=>d.remove(),600); }, 1800);
+  // match modal (emblems)
+  const emblems = [
+    { id:'e1', tag:'morden', svg: emblemSVG('#b08a5c') },
+    { id:'e2', tag:'rosewood', svg: emblemSVG('#9b6b49') },
+    { id:'e3', tag:'other', svg: emblemSVG('#6b7f49') }
+  ];
+  function emblemSVG(color){ return `<svg width="72" height="72" xmlns="http://www.w3.org/2000/svg"><circle cx="36" cy="36" r="32" fill="${color}22"/><path d="M36 20 L44 44 L28 44 Z" fill="${color}"/></svg>`; }
+  function openMatchModal(autoReveal=false){
+    const modal = id('modalMatch');
+    const area = id('matchArea');
+    area.innerHTML = '';
+    emblems.sort(()=>Math.random()-0.5).forEach(e=>{
+      const div = document.createElement('div');
+      div.style.cursor='pointer';
+      div.innerHTML = e.svg + `<div style="text-align:center; color:var(--muted); margin-top:6px;">${e.id}</div>`;
+      div.addEventListener('click', ()=> {
+        if(e.tag === 'rosewood'){
+          revealClue('cl4', 'Символ совпадает с эмблемой семьи Роузвуд.');
+          toast('Эмблема совпала — улика открыта');
+          closeMatchModal();
+        } else {
+          toast('Не то. Попробуйте другую эмблему.');
+        }
+      });
+      area.appendChild(div);
+    });
+    modal.style.display='flex';
+    modal.setAttribute('aria-hidden','false');
+    if(autoReveal) setTimeout(()=>{ revealClue('cl6','Фрагменты карты восстановлены: найден тайный проход'); closeMatchModal(); }, 900);
   }
+  function closeMatchModal(){ id('modalMatch').style.display='none'; id('modalMatch').setAttribute('aria-hidden','true'); }
 
-  function playFeedbackWrong(){ try{ /* placeholder for sound feedback */ }catch(e){ debug('playFail', e); } }
+  // notebook & timeline
+  function openNotebook(){ id('modalNotebook').style.display='flex'; id('modalNotebook').setAttribute('aria-hidden','false'); id('notebookText').value = localStorage.getItem('rosewood_notes') || ''; }
+  function closeNotebook(){ id('modalNotebook').style.display='none'; id('modalNotebook').setAttribute('aria-hidden','true'); }
+  function saveNotebook(){ localStorage.setItem('rosewood_notes', id('notebookText').value || ''); toast('Блокнот сохранён'); }
 
-  /* -------------------------
-     Таймлайн
-     ------------------------- */
-  function addTimelineEvent(){
-    const inp = document.getElementById('timelineInput');
-    const v = inp.value && inp.value.trim();
-    if(!v){ showToast('Введите текст события'); return; }
-    state.timeline.push({ time: new Date().toISOString(), text: v });
-    inp.value = '';
+  function addTimeline(text){
+    if(!text) return;
+    state.timeline.push({ time: new Date().toISOString(), text });
     renderTimeline();
-    persistStateDebounced();
-  }
-  function clearTimeline(){
-    state.timeline = [];
-    renderTimeline();
-    persistStateDebounced();
+    saveAuto();
   }
   function renderTimeline(){
-    const el = document.getElementById('timelineList');
+    const el = id('timelineList');
     if(!el) return;
-    if(state.timeline.length === 0) { el.textContent = 'Пока пусто'; return; }
-    el.innerHTML = state.timeline.slice().reverse().map(t => `<div style="margin-bottom:6px">${new Date(t.time).toLocaleString()}: <strong>${t.text}</strong></div>`).join('');
+    if(!state.timeline.length) el.textContent = 'Пока пусто';
+    else el.innerHTML = state.timeline.slice().reverse().map(t=>`<div style="margin-bottom:6px">${new Date(t.time).toLocaleString()}: <strong>${t.text}</strong></div>`).join('');
   }
 
-  /* -------------------------
-     Обвинение и проверка
-     ------------------------- */
-  function renderAccuseSelect(){
-    const sel = document.getElementById('accuseSelect');
+  // accuse flow
+  function populateAccuseSelect(){
+    const sel = id('accuseSelect');
     sel.innerHTML = '<option value="">— Выберите —</option>';
     suspects.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s.id;
-      opt.textContent = s.name;
-      sel.appendChild(opt);
+      const o = document.createElement('option');
+      o.value = s.id; o.textContent = s.name;
+      sel.appendChild(o);
     });
   }
-  function accuseSelected(){
-    const sel = document.getElementById('accuseSelect');
-    const id = sel.value;
-    const out = document.getElementById('accuseResult');
-    if(!id){ out.textContent = 'Выберите подозреваемого'; out.style.color = '#ffb3b3'; return; }
-    const linked = state.links[id] || [];
+  function accuse(){
+    const sel = id('accuseSelect');
+    const out = id('accuseResult');
+    const idv = sel.value;
+    if(!idv){ out.textContent = 'Выберите подозреваемого'; out.style.color='#ffb3b3'; return; }
+    const linked = state.links[idv] || [];
     if(linked.length >= 3 && state.timeline.length >= 2){
-      // условная «правильность»: адриан — истинный убийца (для прототипа)
-      if(id === 'adrian'){
-        out.textContent = 'Успех — обосновано. Эдриан признан виновным.';
-        out.style.color = '#b7f6b7';
-      } else {
-        out.textContent = 'Обвинение не подтверждено — пересмотрите улики.';
-        out.style.color = '#ffd1d1';
-      }
-    } else {
-      out.textContent = 'Недостаточно доказательств — нужно ≥3 улики и ≥2 события таймлайна.';
-      out.style.color = '#ffd1d1';
-    }
+      if(idv === 'adrian'){ out.textContent='Успех: обвинение обосновано — Эдриан виновен'; out.style.color='#b7f6b7'; } else { out.textContent='Обвинение не подтверждено'; out.style.color='#ffd1d1'; }
+    } else { out.textContent='Недостаточно доказательств — нужно ≥3 улики и ≥2 события'; out.style.color='#ffd1d1'; }
   }
 
-  function reviewEvidence(){
-    const parts = [];
-    for(const s of suspects){
-      const arr = state.links[s.id] || [];
-      parts.push(`${s.name}: ${arr.length} улик`);
-    }
-    showToast(parts.join(' | '));
+  function review(){
+    const parts = suspects.map(s => `${s.name}: ${ (state.links[s.id] || []).length } улик`);
+    toast(parts.join(' | '));
   }
 
-  /* -------------------------
-     Сохранение / загрузка состояния
-     ------------------------- */
-  function saveStateToStorage(){
-    try{
-      localStorage.setItem('rosewood_state', JSON.stringify(state));
-      showToast('Прогресс сохранён');
-    }catch(e){ debug('save error', e); showToast('Ошибка при сохранении'); }
-  }
-  function loadStateFromStorage(){
+  // autoload / autosave
+  function saveAuto(){ try{ localStorage.setItem('rosewood_state', JSON.stringify(state)); debug('autosaved'); }catch(e){ debug('autosave err', e); } }
+  function loadAuto(){
     try{
       const raw = localStorage.getItem('rosewood_state');
-      if(!raw){ showToast('Сохранений не найдено'); return; }
+      if(!raw) return;
       const loaded = JSON.parse(raw);
       state = Object.assign(state, loaded);
       // ensure links keys exist
       suspects.forEach(s => state.links[s.id] = state.links[s.id] || []);
-      renderClues();
-      updateLinksUI();
-      renderTimeline();
-      updateProgress();
-      showToast('Прогресс загружен');
-    }catch(e){ debug('load error', e); showToast('Ошибка при загрузке'); }
-  }
-  function loadStateFromStorage(){ // alias bound earlier to UI
-    try{
-      const raw = localStorage.getItem('rosewood_state');
-      if(!raw){ showToast('Сохранений не найдено'); return; }
-      const loaded = JSON.parse(raw);
-      state = Object.assign({
-        opened:{}, links:{}, timeline:[], audioOn:false
-      }, loaded);
-      // ensure links keys exist
-      suspects.forEach(s => state.links[s.id] = state.links[s.id] || []);
-      renderClues();
-      updateLinksUI();
-      renderTimeline();
-      updateProgress();
-      showToast('Прогресс загружен');
-    }catch(e){ debug('load err', e); showToast('Ошибка при загрузке'); }
+    }catch(e){ debug('load err', e); }
   }
 
-  /* Debounced persist to avoid frequent writes */
-  let _persistTimer = null;
-  function persistStateDebounced(){
-    clearTimeout(_persistTimer);
-    _persistTimer = setTimeout(()=>{ try{ localStorage.setItem('rosewood_autosave', JSON.stringify(state)); debug('autosaved'); }catch(e){ debug('autosave err', e); } }, 700);
-  }
-
-  /* -------------------------
-     Utilities: update progress, sounds
-     ------------------------- */
+  // progress
   function updateProgress(){
-    const total = clues.length;
     const openedCount = Object.keys(state.opened || {}).length + Object.values(state.links || {}).flat().length;
-    const pct = Math.min(100, Math.round((openedCount / (total + 2)) * 100)); // adjust denominator so it's not 100 too early
-    document.getElementById('progressPct').textContent = pct + '%';
-    document.getElementById('progressNotes').textContent = `Открыто: ${Object.keys(state.opened || {}).length} улик. Связей: ${Object.values(state.links || {}).flat().length}.`;
-    updateLinksUI();
+    const pct = Math.min(100, Math.round((openedCount / (clues.length + 2)) * 100));
+    id('progressPct').textContent = pct + '%';
+    updateDropzoneCounts();
   }
 
-  /* -------------------------
-     Звуки (без внешних файлов — placeholder)
-     ------------------------- */
-  function toggleAudio(){
-    state.audioOn = !state.audioOn;
-    document.getElementById('audioToggle').textContent = 'Звук: ' + (state.audioOn ? 'вкл' : 'выкл');
-    showToast('Звук ' + (state.audioOn ? 'включён' : 'выключен'));
-  }
-  function playSound(name, vol){
-    // placeholder: можно добавить <audio> теги и воспроизводить их
-    debug('playSound', name, vol);
+  // small utilities
+  function toastOnceDemo(){
+    if(!localStorage.getItem('rosewood_demo')){ toast('Подсказка: долгий тап на улице запускает режим перетаскивания на мобильных'); localStorage.setItem('rosewood_demo', '1'); }
   }
 
-  /* -------------------------
-     Misc: modal openers, notebook & timeline UI
-     ------------------------- */
-  function openNotebookModal(){
-    const m = document.createElement('div');
-    m.className = 'modal';
-    m.id = 'notebookModal';
-    m.innerHTML = `<div class="card"><h3>Блокнот</h3><textarea id="notebookText" class="input" rows="8" placeholder="Ваши заметки..."></textarea><div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;"><button id="nbSave" class="btn">Сохранить</button><button id="nbClose" class="btn secondary">Закрыть</button></div></div>`;
-    document.body.appendChild(m);
-    m.style.display='flex';
-    document.getElementById('nbClose').addEventListener('click', ()=>{ m.style.display='none'; m.remove(); });
-    document.getElementById('nbSave').addEventListener('click', ()=>{ const v = (document.getElementById('notebookText').value||''); localStorage.setItem('rosewood_notes', v); showToast('Заметки сохранены'); });
-    const saved = localStorage.getItem('rosewood_notes');
-    if(saved) document.getElementById('notebookText').value = saved;
+  // initial UI wiring
+  function init(){
+    debug('init start');
+    loadAuto();
+    renderSuspects();
+    renderClues();
+    attachHotspots();
+    attachDropzones();
+    populateAccuseSelect();
+    renderTimeline();
+    updateProgress();
+    // bind buttons
+    id('openCipher').addEventListener('click', ()=>{ openCipherModal(); setCipherSource(clues.find(c=>c.type==='cipher').text, clues.find(c=>c.type==='cipher').id); });
+    id('cipherClose').addEventListener('click', closeCipherModal);
+    id('cipherTry').addEventListener('click', tryCipher);
+    id('matchClose').addEventListener('click', closeMatchModal);
+    id('openNotebook').addEventListener('click', openNotebook);
+    id('nbClose').addEventListener('click', closeNotebook);
+    id('nbSave').addEventListener('click', saveNotebook);
+    id('openTimeline').addEventListener('click', ()=>{ const txt=prompt('Добавьте событие (например, 23:10 — шаги)'); if(txt) addTimeline(txt); });
+    id('addTimelineBtn') && id('addTimelineBtn').addEventListener('click', ()=>{ const val = id('timelineInput') && id('timelineInput').value; if(val) addTimeline(val); });
+    id('accuseBtn').addEventListener('click', accuse);
+    id('reviewBtn').addEventListener('click', review);
+    id('quickNotebook').addEventListener('click', openNotebook);
+    id('quickCipher').addEventListener('click', ()=>{ openCipherModal(); setCipherSource(clues.find(c=>c.type==='cipher').text, clues.find(c=>c.type==='cipher').id); });
+    id('quickMatch').addEventListener('click', ()=>openMatchModal(false));
+    id('quickTimeline').addEventListener('click', ()=>{ const txt = prompt('Добавьте событие'); if(txt) addTimeline(txt); });
+    id('matchClose') && id('matchClose').addEventListener('click', closeMatchModal);
+
+    // mobile demo hint
+    toastOnceDemo();
+    debug('init done');
   }
 
-  function openTimelineModal(){
-    const m = document.createElement('div');
-    m.className = 'modal';
-    m.id = 'timelineModal';
-    m.innerHTML = `<div class="card"><h3>Таймлайн</h3><div id="timelineInner" class="small-muted" style="max-height:180px; overflow:auto;"></div><div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;"><button id="tlClose" class="btn secondary">Закрыть</button></div></div>`;
-    document.body.appendChild(m);
-    m.style.display='flex';
-    document.getElementById('tlClose').addEventListener('click', ()=>{ m.style.display='none'; m.remove(); });
-    document.getElementById('timelineInner').innerHTML = state.timeline.length ? state.timeline.map(t=>`<div style="margin-bottom:8px">${new Date(t.time).toLocaleString()}: ${t.text}</div>`).join('') : 'пусто';
-  }
-
-  /* -------------------------
-     Timeline UI helpers wired to right panel
-     ------------------------- */
-  document.getElementById && document.getElementById('addTimelineBtn') && document.getElementById('addTimelineBtn').addEventListener && document.getElementById('addTimelineBtn').addEventListener('click', function(){ /* handled above */ });
-
-  function renderAccuseSelect(){ /* defined earlier; placeholder to avoid reference errors */ }
-
-  /* ==================
-     Helpers & Init calls
-     ================== */
-  // ensure dynamic functions available to some UI bindings
+  // expose some for debugging/testing
   window.revealClue = revealClue;
-  window.loadStateFromStorage = loadStateFromStorage;
+  window.openMatchModal = openMatchModal;
 
-  // initial render calls
-  renderClues();
-  renderAccuseSelect();
-  renderTimeline();
-  attachDragDrop();
-  attachMapHandlers();
-  updateLinksUI();
-
-  debug('UI ready.');
-}());
+})();
 </script>
 </body>
 </html>
