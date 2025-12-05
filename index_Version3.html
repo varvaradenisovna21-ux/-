@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Убийство в особняке Роузвуд — Расследование</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel&family=IBM+Plex+Sans:wght@300;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141414; --panel:#232323; --accent:#b08a5c; --accent-2:#7a4e2f; --muted:#cfcfcf;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"IBM Plex Sans", system-ui, sans-serif;
+  background: linear-gradient(180deg,#0f0f0f 0%, #181818 70%);
+  color:#efece6;
+  -webkit-font-smoothing:antialiased;
+}
+header{
+  font-family:'Cinzel', serif;
+  background:linear-gradient(90deg,#1f1f1f,#2b2b2b);
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  justify-content:space-between;
+  border-bottom:2px solid rgba(176,138,92,0.06);
+}
+.title {
+  font-size:1.4rem;
+  letter-spacing:1px;
+}
+.header-controls {display:flex; gap:8px; align-items:center;}
+.badge {background:var(--accent); color:#070707; padding:6px 10px; border-radius:20px; font-weight:600; cursor:default;}
+
+/* layout */
+.main {
+  max-width:1100px;
+  margin:18px auto;
+  display:grid;
+  grid-template-columns: 360px 1fr 300px;
+  gap:18px;
+  padding:0 12px;
+}
+@media (max-width:1000px){
+  .main{grid-template-columns:1fr; padding-bottom:80px;}
+}
+
+/* left panel (кейс) */
+.panel {
+  background:linear-gradient(180deg,var(--panel), rgba(30,30,30,0.94));
+  padding:14px;
+  border-radius:10px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.6);
+}
+.case-title {font-family:'Cinzel', serif; font-size:1.05rem; margin-bottom:8px; color:#f7efe7;}
+.section {margin-top:12px;}
+.small {font-size:0.88rem; color:var(--muted);}
+
+/* suspects */
+.suspect {
+  display:flex; gap:10px; align-items:center; padding:8px; border-radius:8px; margin-bottom:8px;
+  background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+}
+.suspect img {width:56px; height:56px; border-radius:8px; object-fit:cover; border:2px solid rgba(255,255,255,0.03);}
+.suspect .meta {flex:1}
+.suspect .name {font-weight:700}
+.suspect .role {font-size:0.85rem; color:var(--muted)}
+
+/* center (карта и улики) */
+.map-wrap {border-radius:10px; overflow:hidden; position:relative;}
+#map {width:100%; display:block; height:auto; filter:contrast(0.9) saturate(0.9);}
+
+/* hotspots as subtle pins */
+.hotspot {
+  position:absolute; transform:translate(-50%,-50%);
+  background:var(--accent); color:#070707; padding:6px 8px; border-radius:10px; font-weight:700; font-size:0.8rem; cursor:pointer;
+  opacity:0.95; box-shadow:0 6px 16px rgba(0,0,0,0.6);
+}
+
+/* clues panel */
+.clues-grid {display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
+.clue-card {background:rgba(255,255,255,0.02); padding:10px; border-radius:8px; cursor:pointer; border:1px dashed rgba(255,255,255,0.02);}
+.clue-card.open {background:linear-gradient(180deg, rgba(176,138,92,0.06), rgba(176,138,92,0.03)); border:1px solid rgba(176,138,92,0.12);}
+
+/* right panel (инструменты) */
+.tools {position:sticky; top:18px;}
+.tool-btn {background:rgba(255,255,255,0.02); padding:10px; margin-bottom:8px; border-radius:8px; display:flex; gap:8px; align-items:center; cursor:pointer; border:1px solid rgba(255,255,255,0.02);}
+.tool-btn:hover {background:rgba(176,138,92,0.04);}
+
+/* notebook and timeline */
+.notebook {min-height:120px; padding:8px; background:linear-gradient(180deg,#0f0f0f,#151515); border-radius:8px; border:1px dashed rgba(255,255,255,0.02);}
+.timeline {margin-top:8px; font-size:0.9rem;}
+.timeline-event {padding:6px 8px; margin-bottom:6px; border-radius:6px; background:rgba(255,255,255,0.02); display:flex; justify-content:space-between; gap:8px; align-items:center;}
+
+/* cipher modal */
+.modal {position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:9999; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.8));}
+.modal .card {background:#151515; padding:14px; border-radius:10px; width:420px; max-width:92%; box-shadow:0 10px 40px rgba(0,0,0,0.8);}
+.field {display:flex; gap:8px; margin-top:8px}
+.input,textarea,select{background:#0e0e0e; color:#efece6; border:1px solid rgba(255,255,255,0.03); padding:8px; border-radius:6px; width:100%}
+.btn {background:var(--accent); color:#070707; padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:700; border:none}
+.btn.secondary{background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.03)}
+
+/* atmosphere */
+.flicker {animation:flicker 0.9s infinite;}
+@keyframes flicker {0%{filter:brightness(0.96)}25%{filter:brightness(1.04)}50%{filter:brightness(0.98)}75%{filter:brightness(1.02)}100%{filter:brightness(0.97)}}
+
+/* small helpers */
+.hint {font-size:0.9rem; color:var(--muted); margin-top:8px;}
+.center{display:flex; align-items:center; justify-content:center}
+.footer-note{font-size:0.8rem; color:var(--muted); margin-top:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">Убийство в особняке Роузвуд — Дело #7</div>
+  <div class="header-controls">
+    <div class="badge" id="audioToggle">Звук: выкл</div>
+    <div class="small">Прогресс: <span id="progressPerc">0%</span></div>
+  </div>
+</header>
+
+<main class="main" role="main" aria-label="Игровой интерфейс расследования">
+  <!-- Левый: подозреваемые и кейс -->
+  <aside class="panel" aria-labelledby="caseHeader">
+    <div id="caseHeader" class="case-title">Дело: Семья Роузвуд</div>
+    <div class="small">Соберите улики, расставьте таймлайн, свяжите доказательства с подозреваемыми и сделайте обоснованное обвинение.</div>
+
+    <div class="section">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong>Подозреваемые</strong>
+        <button class="btn secondary" id="viewProfiles">Открыть профили</button>
+      </div>
+      <div id="suspectsList" style="margin-top:10px">
+        <!-- suspects populated by JS -->
+      </div>
+    </div>
+
+    <div class="section">
+      <strong>Сводка дела</strong>
+      <div class="small" style="margin-top:6px">Жертва: лорд Ричард Роузвуд. Место: особняк. Время: ночь на 12 ноября.</div>
+      <div class="footer-note">Для успешного обвинения необходимо связать минимум 3 улики с подозреваемым и предоставить хронологию.</div>
+    </div>
+  </aside>
+
+  <!-- Центр: карта, улики, подсказки и мини-игры -->
+  <section class="panel" aria-live="polite">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div><strong>Карта особняка</strong></div>
+      <div class="hint">Нажмите на область, чтобы осмотреть</div>
+    </div>
+
+    <div class="map-wrap" style="margin-top:10px; position:relative;">
+      <img id="map" src="https://i.ibb.co/ZV0Y0WZ/rosewood-map.png" alt="Карта особняка">
+      <!-- hotspots (coords в процентах) -->
+      <div class="hotspot" style="left:18%; top:22%" data-room="library" title="Библиотека">Библиотека</div>
+      <div class="hotspot" style="left:48%; top:18%" data-room="music" title="Музыкальная комната">Музыка</div>
+      <div class="hotspot" style="left:62%; top:38%" data-room="office" title="Кабинет">Кабинет</div>
+      <div class="hotspot" style="left:26%; top:60%" data-room="garden" title="Сад">Сад</div>
+      <div class="hotspot" style="left:72%; top:66%" data-room="basement" title="Подвал">Подвал</div>
+    </div>
+
+    <div style="display:flex; gap:12px; margin-top:14px; align-items:flex-start;">
+      <div style="flex:1">
+        <strong>Улики</strong>
+        <div class="clues-grid" id="cluesGrid" style="margin-top:8px">
+          <!-- uлики -->
+        </div>
+      </div>
+
+      <div style="width:260px;">
+        <strong>Текущая задача</strong>
+        <div class="notebook" id="taskBox" style="margin-top:8px">
+          Откройте улики на карте и свяжите их с подозреваемыми. Некоторые улики — зашифрованы.
+        </div>
+
+        <div style="margin-top:8px">
+          <button class="btn" id="openNotebook">Открыть блокнот</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+      <div class="small">Подсказка: некоторые улики требуют расшифровки. Попробуйте применить найденные ключи.</div>
+      <div style="flex:1"></div>
+      <button class="btn secondary" id="shuffleClues">Перемешать улики (смена расположения)</button>
+    </div>
+
+  </section>
+
+  <!-- Правый: инструменты — блокнот, таймлайн, обвинение -->
+  <aside class="panel tools" aria-labelledby="toolsHeader">
+    <div id="toolsHeader" style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>Инструменты расследования</strong>
+      <div class="small">Сложность: средняя</div>
+    </div>
+
+    <div class="section">
+      <div class="tool-btn" id="notebookBtn">
+        <div style="flex:1"><strong>Блокнот</strong><div class="small">Записывайте догадки</div></div>
+      </div>
+
+      <div class="tool-btn" id="timelineBtn">
+        <div style="flex:1"><strong>Таймлайн</strong><div class="small">Постройте хронологию событий</div></div>
+      </div>
+
+      <div class="tool-btn" id="evidenceLinkerBtn">
+        <div style="flex:1"><strong>Связать улики</strong><div class="small">Назначьте улики подозреваемым</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <strong>Аккумулированные доказательства</strong>
+      <div id="linkedList" style="margin-top:8px" class="small">Пока нет связей.</div>
+    </div>
+
+    <div class="section">
+      <strong>Обвинение</strong>
+      <div class="small" style="margin-top:6px">Выберите подозреваемого, к которому прикреплено не менее 3 улик и постройте таймлайн.</div>
+      <select id="accuseSelect" style="width:100%; margin-top:8px; background:#0e0e0e; color:#efece6; padding:8px; border-radius:6px; border:1px solid rgba(255,255,255,0.03)">
+        <option value="">— Выберите подозреваемого —</option>
+      </select>
+      <div style="margin-top:8px; display:flex; gap:8px;">
+        <button class="btn" id="accuseBtn">Обвинить</button>
+        <button class="btn secondary" id="reviewBtn">Проверить доказательства</button>
+      </div>
+      <div id="accuseResult" style="margin-top:10px; font-weight:700"></div>
+    </div>
+
+    <div class="section">
+      <strong>Мини-игры</strong>
+      <div class="small" style="margin-top:6px">Расшифровать заметку — откроет важную улику.</div>
+      <div style="margin-top:8px; display:flex; gap:8px;">
+        <button class="btn" id="openCipher">Запустить шифр</button>
+        <button class="btn secondary" id="autoSolve">Авто-решение (демо)</button>
+      </div>
+    </div>
+
+  </aside>
+</main>
+
+<!-- Модали -->
+<div class="modal" id="cipherModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="card">
+    <h3>Цезарь — расшифровка заметки</h3>
+    <div class="small">Введите сдвиг (1–25) и нажмите "Попробовать".</div>
+    <div class="field" style="margin-top:8px;">
+      <input id="shiftInput" class="input" type="number" min="1" max="25" value="3">
+      <button class="btn" id="tryShift">Попробовать</button>
+    </div>
+    <div style="margin-top:8px;">
+      <textarea id="cipherOutput" rows="5" class="input" readonly></textarea>
+    </div>
+    <div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;">
+      <button class="btn secondary" id="closeCipher">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="profilesModal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="card">
+    <h3>Профили подозреваемых</h3>
+    <div id="profilesContent" style="margin-top:8px"></div>
+    <div style="margin-top:8px; text-align:right;">
+      <button class="btn secondary" id="closeProfiles">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<!-- Аудио -->
+<audio id="bgMusic" loop preload="auto"><source src="https://cdn.pixabay.com/audio/2022/04/09/audio_2839a1de58.mp3" type="audio/mpeg"></audio>
+<audio id="footstep" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2021/08/08/audio_8663b8c2d4.mp3?filename=footstep-6948.mp3" type="audio/mpeg"></audio>
+<audio id="typeSound" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2022/02/25/audio_9b3d4a7bea.mp3?filename=typewriter-6053.mp3" type="audio/mpeg"></audio>
+<audio id="chime" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2023/03/03/audio_8f0b52d1b4.mp3?filename=interface-click-116929.mp3" type="audio/mpeg"></audio>
+
+<script>
+/* Расширенная логика: подозреваемые, связывание улик, таймлайн, шифр, проверки */
+const suspects = [
+  {id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', img:'https://i.ibb.co/3s3h4qj/person1.jpg', desc:'Известный коллекционер; ссоры с отцом.'},
+  {id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', img:'https://i.ibb.co/qdV4y6k/person2.jpg', desc:'Всё видела, но боится говорить.'},
+  {id:'prof', name:'Профессор Морден', role:'Старинный друг', img:'https://i.ibb.co/8m9h3PZ/person3.jpg', desc:'Работал с Архивами — разбирается в шифрах.'}
+];
+
+const clues = [
+  {id:'c1', title:'Тайная записка (зашифрована)', room:'office', text:'Vkr ghqv wrfkh', locked:true, hint:'цезарь'},
+  {id:'c2', title:'След обуви', room:'garden', text:'След крови и грязи, подошва с логотипом фабрики B.7', locked:false},
+  {id:'c3', title:'Разорванный лист', room:'library', text:'Имя вырвано, но даты совпадают с прибытием Эдріана', locked:false},
+  {id:'c4', title:'Символ на стене', room:'music', text:'Нарисован странный символ — совпадает с эмблемой общества Морденов', locked:false},
+  {id:'c5', title:'Карта тайных ходов (частично сожжена)', room:'basement', text:'Часть хода замаскирована — нужен снимок', locked:true, hint:'сжечь'}
+];
+
+let opened = {}; // какие улики открыты
+let links = {};  // {suspectId: [clueId,...]}
+let timeline = []; // [{time, event}]
+const progressEl = document.getElementById('progressPerc');
+const bgMusic = document.getElementById('bgMusic');
+
+function init(){
+  // заполнить список подозреваемых
+  const sList = document.getElementById('suspectsList');
+  const accuseSelect = document.getElementById('accuseSelect');
+  suspects.forEach(s => {
+    const div = document.createElement('div'); div.className='suspect';
+    div.innerHTML = `<img src="${s.img}" alt="${s.name}"><div class="meta"><div class="name">${s.name}</div><div class="role">${s.role}</div><div class="small">${s.desc}</div></div>`;
+    sList.appendChild(div);
+
+    // options
+    const opt = document.createElement('option'); opt.value=s.id; opt.textContent=s.name;
+    accuseSelect.appendChild(opt);
+    links[s.id]=[];
+  });
+
+  // заполнить улики
+  const grid = document.getElementById('cluesGrid');
+  clues.forEach(c=>{
+    const card = document.createElement('div');
+    card.className='clue-card';
+    card.id=c.id;
+    card.innerHTML = `<strong>${c.title}</strong><div class="small" style="margin-top:6px">${c.locked ? 'Зашифрована / скрыта' : c.text}</div>`;
+    card.onclick = ()=>openClue(c.id);
+    grid.appendChild(card);
+  });
+
+  // hotspots
+  document.querySelectorAll('.hotspot').forEach(h=>{
+    h.addEventListener('click', ()=>{ play('footstep'); inspectRoom(h.dataset.room) });
+  });
+
+  // кнопки
+  document.getElementById('openCipher').addEventListener('click', ()=>openModal('cipherModal'));
+  document.getElementById('closeCipher').addEventListener('click', ()=>closeModal('cipherModal'));
+  document.getElementById('tryShift').addEventListener('click', tryShift);
+  document.getElementById('profilesModal').addEventListener('click', (e)=>{ if(e.target.id==='profilesModal') closeModal('profilesModal')});
+  document.getElementById('viewProfiles').addEventListener('click', ()=>openProfiles());
+  document.getElementById('closeProfiles').addEventListener('click', ()=>closeModal('profilesModal'));
+  document.getElementById('accuseBtn').addEventListener('click', accuse);
+  document.getElementById('reviewBtn').addEventListener('click', reviewEvidence);
+  document.getElementById('notebookBtn').addEventListener('click', ()=>openModal('cipherModal'));
+  document.getElementById('timelineBtn').addEventListener('click', ()=>addTimelineEvent());
+  document.getElementById('evidenceLinkerBtn').addEventListener('click', ()=>linkEvidenceMode());
+  document.getElementById('shuffleClues').addEventListener('click', shuffleClues);
+  document.getElementById('autoSolve').addEventListener('click', autoSolveDemo);
+  document.getElementById('audioToggle').addEventListener('click', toggleAudio);
+
+  updateLinkedDisplay();
+  updateProgress();
+}
+init();
+
+/* основное взаимодействие */
+function inspectRoom(room){
+  const task = document.getElementById('taskBox');
+  task.textContent = `Осматриваете: ${room}. Ищем улики...`;
+  play('chime',0.6);
+  // открываем улики, привязанные к комнате (если не зашифрованы)
+  const found = clues.filter(c=>c.room===room);
+  setTimeout(()=>{
+    if(found.length===0){ task.textContent = 'Ничего примечательного.'; return; }
+    found.forEach(c=>{
+      // визуальный эффект
+      const el = document.getElementById(c.id);
+      el.classList.add('open');
+      if(!c.locked){
+        el.querySelector('.small').textContent = c.text;
+        opened[c.id]=true;
+      } else {
+        el.querySelector('.small').textContent = 'Зашифрована / требует разгадки';
+      }
+    });
+    updateProgress();
+    task.textContent = `Найдено ${found.length} улики в ${room}. Откройте их в панели.`;
+  }, 600);
+}
+
+/* открыть улику вручную */
+function openClue(id){
+  const clue = clues.find(c=>c.id===id);
+  const el = document.getElementById(id);
+  // если зашифрована и не решена — подсказка к шифру
+  if(clue.locked && !opened[id]){
+    // подсказка: нужно открыть модал шифра
+    openModal('cipherModal');
+    document.getElementById('cipherOutput').value = 'Улика зашифрована. Попробуйте сдвиг по Цезарю или ищите ключ в других уликaх.';
+    return;
+  }
+  // показать содержимое
+  if(!opened[id]){
+    opened[id]=true;
+    play('typeSound', 0.5);
+    el.querySelector('.small').textContent = clue.text;
+    el.classList.add('open');
+    updateProgress();
+  } else {
+    // сворачиваем
+    delete opened[id];
+    el.querySelector('.small').textContent = clue.locked ? 'Зашифрована / скрыта' : clue.text;
+    el.classList.remove('open');
+    updateProgress();
+  }
+}
+
+/* шифр (Цезарь для заметки c1) */
+function tryShift(){
+  const shift = Number(document.getElementById('shiftInput').value) || 0;
+  const cipherTxt = clues.find(c=>c.id==='c1').text;
+  // очень простая реализация: попытка сдвига назад
+  const out = caesarDecode(cipherTxt, shift);
+  document.getElementById('cipherOutput').value = out;
+  play('chime');
+  // проверка — в демо правильный сдвиг = 3 (пример)
+  if(out.toLowerCase().includes('он знает') || shift===3){
+    // разблокировать улику
+    revealClue('c1', 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»');
+    closeModal('cipherModal');
+    alert('Записка расшифрована — важная улика открыта.');
+  }
+}
+
+/* простая реализация Цезаря (латиница и русские буквы не смешаны в примере) */
+function caesarDecode(s, shift){
+  if(!shift) return s;
+  // декодируем латинскую часть и простые буквы
+  const a='abcdefghijklmnopqrstuvwxyz';
+  const A='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const res = s.split('').map(ch=>{
+    if(a.includes(ch)) return a[(a.indexOf(ch)-shift+26)%26];
+    if(A.includes(ch)) return A[(A.indexOf(ch)-shift+26)%26];
+    return ch;
+  }).join('');
+  return res;
+}
+
+/* разблокировка улика */
+function revealClue(id, text){
+  const clue = clues.find(c=>c.id===id);
+  if(!clue) return;
+  clue.locked=false;
+  clue.text = text;
+  opened[id]=true;
+  const el = document.getElementById(id);
+  if(el) el.querySelector('.small').textContent = text;
+  updateProgress();
+}
+
+/* связывание улик с подозреваемыми (простая интерактивная логика) */
+function linkEvidenceMode(){
+  const suspectId = prompt('Введите ID подозреваемого для привязки улик (adrian / beatrice / prof):');
+  if(!suspectId || !links[suspectId]){ alert('Неверный подозреваемый.'); return; }
+  const clueId = prompt('Введите ID улики для привязки (например c1, c2):');
+  if(!clueId || !clues.find(c=>c.id===clueId)){ alert('Улика не найдена'); return; }
+  if(!links[suspectId].includes(clueId)) links[suspectId].push(clueId);
+  updateLinkedDisplay();
+  play('chime');
+}
+
+/* обновление отображения связей */
+function updateLinkedDisplay(){
+  const linked = document.getElementById('linkedList');
+  const parts = [];
+  for(const s of suspects){
+    if(links[s.id].length>0){
+      parts.push(`${s.name}: ${links[s.id].join(', ')}`);
+    }
+  }
+  linked.textContent = parts.length ? parts.join('; ') : 'Пока нет связей.';
+}
+
+/* обвинение */
+function accuse(){
+  const suspectId = document.getElementById('accuseSelect').value;
+  const res = document.getElementById('accuseResult');
+  if(!suspectId){ res.textContent='Выберите подозреваемого.'; return; }
+  const linked = links[suspectId] || [];
+  // условный критерий: минимум 3 улики и в таймлайне есть 2 события
+  if(linked.length >= 3 && timeline.length >= 2){
+    // проверка "правильного" убийцы — в этом кейсе Эдриан (adrian)
+    if(suspectId === 'adrian'){
+      res.style.color='#b5f6b5';
+      res.textContent = 'Обвинение принято: Вы правы. Доказательства совпадают. Эдриан признан виновным.';
+      play('chime',0.9);
+    } else {
+      res.style.color='#ffb3b3';
+      res.textContent = 'Обвинение отклонено: улики не согласуются с хронологией. Пересмотрите доказательства.';
+      play('footstep',0.5);
+    }
+  } else {
+    res.style.color='#ffb3b3';
+    res.textContent = 'Недостаточно доказательств: привяжите минимум 3 улики и постройте таймлайн из 2 событий.';
+  }
+  updateProgress();
+}
+
+/* обзор доказательств — выводит сводку */
+function reviewEvidence(){
+  let summary = 'Сводка:\n';
+  for(const s of suspects){
+    summary += `${s.name}: ${links[s.id].length} улик\n`;
+  }
+  alert(summary);
+}
+
+/* таймлайн */
+function addTimelineEvent(){
+  const ev = prompt('Добавьте событие в таймлайн (формат "22:30 - слышали крик"):');
+  if(ev){
+    timeline.push({time: new Date().toISOString(), text:ev});
+    renderTimeline();
+    play('typeSound', 0.4);
+  }
+}
+function renderTimeline(){
+  const container = document.querySelector('#linkedList');
+  // отображаем количество в связях, а также таймлайн под ним
+  let html = '';
+  html += 'Связи: ' + (Object.values(links).flat().length || 0) + ' улик.<br/>';
+  html += '<div class="timeline">';
+  timeline.slice(-5).forEach(t=> html += `<div class="timeline-event"><div>${t.text}</div><div class="small">${new Date(t.time).toLocaleTimeString()}</div></div>`);
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+/* вспомогательные: shuffle, autoplay demo */
+function shuffleClues(){
+  // перетасовать порядок в DOM
+  const grid = document.getElementById('cluesGrid');
+  const nodes = Array.from(grid.children);
+  nodes.sort(()=>Math.random()-0.5);
+  nodes.forEach(n=>grid.appendChild(n));
+  play('chime',0.6);
+}
+
+function autoSolveDemo(){
+  // для демо разблокируем карту и одну улику
+  revealClue('c5', 'Карта показывает потайную дверь у боковой стены. Сильные повреждения свидетельствуют о попытке поджога.');
+  alert('Демонстрация: часть улик автоматически открыта для теста.');
+  play('chime',0.6);
+}
+
+/* медиа и утилиты */
+function play(id, vol=1.0){
+  if(document.getElementById('audioToggle').textContent.includes('вкл')){
+    const el = document.getElementById(id);
+    if(!el) return;
+    try{
+      const clone = el.cloneNode(true);
+      clone.volume = vol;
+      clone.play();
+      clone.addEventListener('ended', ()=>clone.remove());
+    }catch(e){}
+  }
+}
+function toggleAudio(){
+  const btn = document.getElementById('audioToggle');
+  if(btn.textContent.includes('вкл')){
+    btn.textContent = 'Звук: выкл';
+    bgMusic.pause();
+  }else{
+    btn.textContent = 'Звук: вкл';
+    bgMusic.volume = 0.16;
+    bgMusic.play().catch(()=>{});
+  }
+}
+
+/* модали */
+function openModal(id){ const m=document.getElementById(id); m.style.display='flex'; m.setAttribute('aria-hidden','false'); }
+function closeModal(id){ const m=document.getElementById(id); m.style.display='none'; m.setAttribute('aria-hidden','true'); }
+
+/* показать профили */
+function openProfiles(){
+  const c = document.getElementById('profilesContent');
+  c.innerHTML = '';
+  suspects.forEach(s=>{
+    const div = document.createElement('div');
+    div.style.marginBottom='8px';
+    div.innerHTML = `<strong>${s.name}</strong> — <em>${s.role}</em><div class="small">${s.desc}</div><div class="small">ID: <code>${s.id}</code></div>`;
+    c.appendChild(div);
+  });
+  openModal('profilesModal');
+}
+
+/* прогресс */
+function updateProgress(){
+  const total = clues.length;
+  const openedCount = Object.keys(opened).length;
+  const pct = Math.round((openedCount/total)*100);
+  progressEl.textContent = pct + '%';
+  if(pct >= 60) document.getElementById('taskBox').textContent = 'Достаточно улик для анализа. Начните связывать их с подозреваемыми.';
+}
+
+/* первичная инициализация состояния (сохранение/загрузка из localStorage можно добавить позже) */
+
+/* заметка: сюда можно добавить дополнительные мини-игры — подбор отпечатков, анализ почерка и т.д. */
+
+</script>
+</body>
+</html>
