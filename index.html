@@ -1,623 +1,698 @@
+```html name=index.html
 <!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Роузвуд — исправленная версия</title>
+<title>Убийство в особняке Роузвуд — Исправленная расширенная версия</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg-1:#040406; --bg-2:#0b0b0d;
-  --panel:#121212; --accent:#b04e3a; --muted:#bfb7ae;
-  --glass: rgba(255,255,255,0.03); --radius:12px; --danger:#9b2b2b;
+  --bg:#060607;
+  --panel:#141214;
+  --accent:#b08a5c;
+  --muted:#cfcfcf;
+  --danger:#b04a4a;
+  --coin:#ffd166;
+  --glass: rgba(255,255,255,0.03);
+  --radius:12px;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:#efe7df;-webkit-font-smoothing:antialiased}
-.header{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;margin:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
-.logo{width:48px;height:48px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(180deg,#2b1f18,#191010);font-family:Cinzel,serif}
-.app{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:320px 1fr 360px;gap:16px;padding:12px}
-@media(max-width:1100px){.app{grid-template-columns:1fr}}
-.panel{background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.008));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-.small{color:var(--muted);font-size:0.95rem}
-.suspect{display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;margin-top:10px;background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent);cursor:pointer}
-.avatar{width:64px;height:64px;border-radius:10px;object-fit:cover;background:#1b1412}
+html,body{height:100%; margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:linear-gradient(180deg,#040405 0%, #0b0b0d 80%); color:#efece6; -webkit-font-smoothing:antialiased;}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.02);position:sticky;top:0;z-index:80;background:rgba(6,6,6,0.6)}
+.logo{width:46px;height:46px;border-radius:10px;background:linear-gradient(180deg,#2b1f18,#191010);display:grid;place-items:center;font-family:Cinzel,serif;font-size:18px;color:#f7efe7;border:1px solid rgba(255,255,255,0.03)}
+.container{max-width:1200px;margin:18px auto;padding:14px;display:grid;grid-template-columns:320px 1fr 360px;gap:18px;align-items:start}
+@media (max-width:1100px){.container{grid-template-columns:1fr}.right-panel{order:3}}
+.panel{background:linear-gradient(180deg,rgba(255,255,255,0.015),rgba(255,255,255,0.008));padding:14px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.02);box-shadow:0 14px 36px rgba(0,0,0,0.65)}
+.small{color:var(--muted);font-size:0.92rem}
+.btn{background:var(--accent);color:#070707;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+.btn.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
+.hud{display:flex;gap:12px;align-items:center;font-size:0.95rem;color:var(--muted)}
+.coins{background:linear-gradient(90deg,#ffd166,#ffb703);color:#2b2b2b;padding:6px 10px;border-radius:8px;font-weight:800;box-shadow:0 6px 18px rgba(0,0,0,0.5)}
+.suspect{display:flex;gap:12px;align-items:center;padding:10px;margin-top:10px;border-radius:10px;background:linear-gradient(90deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.02);cursor:pointer}
+.avatar{width:64px;height:64px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,255,255,0.03);background:#1b1412}
 .smeta{flex:1}
-.map{border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#1b1411,#0f0f0f);padding:10px;min-height:500px}
-.map-canvas{position:relative;height:360px;border-radius:8px;overflow:hidden;background:linear-gradient(180deg,#231815,#0f0d0d)}
-.hotspot{position:absolute;transform:translate(-50%,-50%);background:linear-gradient(180deg, rgba(176,138,92,0.12), rgba(176,138,92,0.06));padding:8px 12px;border-radius:999px;cursor:pointer;border:1px solid rgba(176,138,92,0.08)}
-.clues{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
-.clue{display:flex;gap:10px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
-.thumb{width:56px;height:56px;border-radius:8px;background:#201612;display:grid;place-items:center}
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85));z-index:9999}
-.card{width:760px;max-width:94%;background:linear-gradient(180deg,#121212,#0f0f0f);padding:18px;border-radius:12px}
-.menu-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center, rgba(0,0,0,0.6), rgba(0,0,0,0.95));z-index:99999}
-.menu-card{width:900px;max-width:96%;display:flex;gap:16px;background:linear-gradient(180deg,#0f0f0f,#080808);padding:20px;border-radius:12px}
-.blood-overlay{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 30%, rgba(180,20,20,0.22) 0 6%, transparent 12%),radial-gradient(circle at 70% 50%, rgba(120,10,10,0.16) 0 8%, transparent 14%);mix-blend-mode:multiply;opacity:0;transition:opacity .5s}
+.map{position:relative;border-radius:12px;overflow:hidden;padding:10px;min-height:420px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(0,0,0,0.22),rgba(0,0,0,0.36))}
+.map-canvas{width:100%;border-radius:8px;overflow:hidden;background:linear-gradient(180deg,#231a17,#1b1411);display:block;position:relative;height:340px}
+.hotspot{position:absolute;transform:translate(-50%,-50%);background:linear-gradient(180deg,rgba(176,138,92,0.14),rgba(176,138,92,0.08));padding:8px 12px;border-radius:999px;font-weight:700;color:#120b06;cursor:pointer;border:1px solid rgba(176,138,92,0.12);box-shadow:0 10px 28px rgba(0,0,0,0.6);user-select:none;transition:transform .14s ease}
+.hotspot:hover{transform:translate(-50%,-50%) scale(1.05)}
+.clues{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.clue{background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.005));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.thumb{width:56px;height:56px;border-radius:8px;background:#201612;display:grid;place-items:center;font-size:18px;color:#d9c8ae}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:9999;background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(0,0,0,0.85))}
+.card{width:760px;max-width:94%;background:linear-gradient(180deg,#121212,#0f0f0f);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);color:#efece6;box-shadow:0 30px 80px rgba(0,0,0,0.8)}
+.card.small{width:520px;max-width:92%}
+.attack-options{display:flex;gap:8px;margin-top:12px}
+.countdown{font-weight:800;color:#ffd166}
+.minigame-img{width:100%;height:180px;object-fit:cover;border-radius:8px}
+.blood-overlay{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 30%, rgba(180,20,20,0.22) 0 6%, transparent 12%), radial-gradient(circle at 70% 50%, rgba(120,10,10,0.16) 0 8%, transparent 14%);mix-blend-mode:multiply;opacity:0;transition:opacity .6s}
 .blood-overlay.on{opacity:1}
-.coin{background:linear-gradient(90deg,#ffd166,#ffb703);color:#222;padding:6px 10px;border-radius:8px;font-weight:800}
-.debug{position:fixed;right:12px;bottom:12px;background:rgba(0,0,0,0.6);padding:8px;border-radius:8px;color:#cfcfcf;font-family:monospace;font-size:12px;z-index:99999}
+.debug{position:fixed;right:12px;bottom:12px;width:320px;max-height:260px;overflow:auto;background:linear-gradient(180deg,rgba(0,0,0,0.6),rgba(8,8,8,0.85));color:#fff;border-radius:8px;padding:10px;border:1px solid rgba(255,255,255,0.03);font-size:12px;z-index:99998}
+.note{color:var(--muted);font-size:0.9rem}
 </style>
 </head>
 <body>
 
-<!-- cinematic menu -->
-<div id="menuScreen" class="menu-screen" role="dialog" aria-modal="true">
-  <div class="menu-card">
+<!-- MENU (start must be clicked to enable audio) -->
+<div id="menuScreen" class="modal" style="display:flex;align-items:center;justify-content:center;z-index:99999">
+  <div class="card small" style="width:900px;display:flex;gap:12px;">
     <div style="flex:0 0 420px;border-right:1px solid rgba(255,255,255,0.02);padding-right:12px">
-      <h1 style="font-family:Cinzel,serif;margin:0;color:#f3e6dc">Роузвуд — Темная правда</h1>
-      <p class="small" style="margin-top:8px">Я переработал игру: теперь должна работать корректно — улики кликабельны, кнопки реагируют, звук и голос детектива работают после нажатия "Начать".</p>
+      <h1 style="font-family:Cinzel,serif;margin:0">Убийство в особняке Роузвуд</h1>
+      <p class="note">Атмосферная детективная игра: улики, мини‑игры, ДНК‑анализ и опасности.</p>
       <div style="margin-top:16px;display:flex;gap:8px">
-        <button id="startBtn" class="btn">Начать</button>
-        <button id="soundBtn" class="btn secondary">Разрешить звук</button>
+        <button id="startBtn" class="btn">Начать игру</button>
+        <button id="enableSound" class="btn secondary">Включить звук (рекомендуется)</button>
         <button id="loadBtn" class="btn secondary">Загрузить автосейв</button>
       </div>
-      <p class="small" style="margin-top:12px;color:var(--muted)">Если звук не воспроизводится — нажмите "Разрешить звук", затем "Начать".</p>
+      <p class="note" style="margin-top:10px">Нажмите Начать — это даст приложению пользовательский жест и позволит проигрывать звук.</p>
     </div>
     <div style="flex:1;padding-left:12px">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <div><strong>Особенности ремастера</strong></div>
-        <div class="coin" id="menuCoins">0</div>
+        <div><strong>Подсказка</strong></div>
+        <div class="hud">Монеты: <span id="coinDisplay" class="coins">0</span></div>
       </div>
-      <ul style="margin-top:12px;color:var(--muted)">
-        <li>Реактивная обработка кликов (делегирование) — улики кликаются стабильно</li>
-        <li>Озвучка через Web Speech и сэмплы (включается после клика)</li>
-        <li>Атаки с таймером 10с, лаборатория, ДНК, кровь</li>
-      </ul>
+      <p class="note" style="margin-top:8px">Инструкция: осматривайте комнаты → решайте мини‑игры → связывайте улики с подозреваемыми → допросы / ДНК → обвинение.</p>
     </div>
   </div>
 </div>
 
-<header class="header" role="banner">
+<!-- HEADER -->
+<header class="header">
   <div style="display:flex;gap:12px;align-items:center">
     <div class="logo">Р</div>
     <div>
-      <div style="font-family:Cinzel,serif">Роузвуд — Темная правда</div>
-      <div class="small">Исправлено: улики и кнопки — теперь работают</div>
+      <div style="font-family:Cinzel,serif">Убийство в особняке Роузвуд</div>
+      <div class="small">Расширенная версия — с анализом ДНК и опасностями</div>
     </div>
   </div>
-  <div style="display:flex;gap:12px;align-items:center">
-    <div>Монеты: <span id="coinTop" class="coin">0</span></div>
-    <div>Здоровье: <progress id="healthBar" max="100" value="100" style="width:140px"></progress></div>
-    <button id="menuToggle" class="btn secondary">Меню</button>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="hud">Монеты: <span id="coinDisplayTop" class="coins">0</span></div>
+    <div class="hud">Здоровье: <progress id="healthBar" max="100" value="100" style="width:120px"></progress></div>
+    <button id="menuOpenBtn" class="btn secondary">Меню</button>
   </div>
 </header>
 
-<div class="app" role="main" aria-live="polite">
-  <aside class="panel" aria-label="Подозреваемые">
+<!-- MAIN -->
+<main class="container" role="main" aria-live="polite">
+  <!-- LEFT -->
+  <aside class="panel left-panel">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <strong style="font-family:Cinzel,serif">Подозреваемые</strong>
       <button id="profilesBtn" class="btn secondary">Профили</button>
     </div>
-    <div id="suspectsList" style="margin-top:12px;max-height:360px;overflow:auto"></div>
+    <div id="suspectsList" style="margin-top:12px;max-height:420px;overflow:auto"></div>
+
+    <div style="margin-top:14px">
+      <strong>Блокнот</strong>
+      <textarea id="notebook" rows="6" style="width:100%;margin-top:8px;background:#0b0b0b;color:#efece6;border-radius:8px;padding:8px;border:1px solid rgba(255,255,255,0.03)"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="saveNotes" class="btn">Сохранить</button>
+        <button id="clearNotes" class="btn secondary">Очистить</button>
+        <button id="partnerHelp" class="btn">Помощь напарника</button>
+      </div>
+    </div>
 
     <div style="margin-top:12px">
       <strong>Лаборатория</strong>
-      <div class="small" style="margin-top:6px;color:var(--muted)">ДНК и кровь — симулированные проверки</div>
+      <div class="note" style="margin-top:8px">Здесь можно запустить ДНК‑тест, анализ крови, отпечатков и токсикологию.</div>
       <div style="display:flex;gap:8px;margin-top:8px">
-        <button id="dnaBtn" class="btn">ДНК</button>
-        <button id="bloodBtn" class="btn secondary">Кровь</button>
-        <button id="fpBtn" class="btn secondary">Отпечатки</button>
+        <button id="dnaLab" class="btn">ДНК‑тест</button>
+        <button id="bloodLab" class="btn secondary">Анализ крови</button>
+        <button id="fpLab" class="btn secondary">Отпечатки</button>
       </div>
     </div>
   </aside>
 
-  <main class="panel" aria-label="Карта и улики">
+  <!-- CENTER -->
+  <section class="panel map-panel">
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="font-family:Cinzel,serif">Карта особняка</div>
+      <div style="font-family:Cinzel,serif;font-size:1.05rem">Карта особняка</div>
       <div style="display:flex;gap:8px;align-items:center">
-        <button id="accuseBtn" class="btn">Обвинить</button>
+        <button id="findKiller" class="btn">Узнать убийцу</button>
         <button id="interrogateBtn" class="btn secondary">Допрос</button>
-        <button id="phoneBtn" class="btn secondary">Телефон</button>
+        <button id="phoneOpenBtn" class="btn secondary">Телефон</button>
+        <button id="revealBlood" class="btn secondary">Показать кровь</button>
       </div>
     </div>
 
-    <div class="map" style="margin-top:12px">
-      <div class="map-canvas" id="mapCanvas">
-        <div class="hotspot" data-room="library" style="left:14%;top:20%">📚 Библиотека</div>
-        <div class="hotspot" data-room="hall" style="left:40%;top:16%">🚪 Коридор</div>
-        <div class="hotspot" data-room="office" style="left:72%;top:22%">🗄 Кабинет</div>
-        <div class="hotspot" data-room="dining" style="left:30%;top:58%">🍽 Столовая</div>
-        <div class="hotspot" data-room="garden" style="left:10%;top:82%">🌿 Сад</div>
+    <div class="map">
+      <div class="map-canvas" id="mapCanvas" aria-label="Карта особняка">
+        <div class="hotspot" data-room="library" style="left:18%;top:22%">📚 Библиотека</div>
+        <div class="hotspot" data-room="music" style="left:48%;top:18%">🎹 Музыка</div>
+        <div class="hotspot" data-room="office" style="left:76%;top:22%">🗄 Кабинет</div>
+        <div class="hotspot" data-room="dining" style="left:34%;top:56%">🍽 Столовая</div>
+        <div class="hotspot" data-room="garden" style="left:14%;top:78%">🌹 Сад</div>
         <div class="hotspot" data-room="basement" style="left:74%;top:76%">⚙️ Подвал</div>
-        <div class="hotspot" data-room="attic" style="left:58%;top:44%">🕰 Чердак</div>
+        <div class="hotspot" data-room="attic" style="left:54%;top:44%">🕰 Чердак</div>
 
-        <div id="bloodOverlay" class="blood-overlay" aria-hidden="true"></div>
+        <div id="bloodOverlay" class="blood-overlay"></div>
       </div>
 
       <div style="display:flex;gap:12px;margin-top:12px">
-        <section style="flex:1">
+        <div style="flex:1">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <strong>Улики</strong>
             <div><span id="openedCount">0</span> / <span id="totalClues">0</span></div>
           </div>
-          <div id="cluesGrid" class="clues"></div>
-        </section>
+          <div id="cluesGrid" class="clues" style="margin-top:10px;max-height:260px;overflow:auto"></div>
+        </div>
 
-        <aside style="width:320px">
+        <div style="width:320px">
           <div class="panel small">
             <strong>Таймлайн</strong>
-            <div id="timeline" style="margin-top:8px;min-height:100px;color:var(--muted)"></div>
+            <div id="timelineList" style="margin-top:8px;min-height:80px;color:var(--muted)"></div>
             <div style="display:flex;gap:8px;margin-top:8px">
-              <input id="timelineInput" placeholder="22:44 — звук" style="flex:1;padding:8px;border-radius:8px;background:#0b0b0b;color:#efece6;border:1px solid rgba(255,255,255,0.03)">
-              <button id="timelineAdd" class="btn">Добавить</button>
+              <input id="timelineInput" placeholder="23:10 — крик" style="flex:1;background:#0b0b0b;color:#efece6;border-radius:8px;padding:8px;border:1px solid rgba(255,255,255,0.03)">
+              <button id="addTimeline" class="btn">Добавить</button>
             </div>
           </div>
 
-          <div style="margin-top:12px" class="panel small">
+          <div class="panel small" style="margin-top:12px">
             <strong>Мини‑игры</strong>
             <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-              <button id="memGame" class="btn">Пары (+10)</button>
-              <button id="spotGame" class="btn secondary">Различия (+12)</button>
-              <button id="imgPuzzle" class="btn secondary">Пазл (+15)</button>
+              <button id="gamememory" class="btn">Память — пары (+10 монет)</button>
+              <button id="gamespot" class="btn secondary">Найди различие (+12 монет)</button>
+              <button id="gameimagepuzzle" class="btn secondary">Пазл‑изображение (+15 монет)</button>
             </div>
+            <div style="margin-top:8px;color:var(--muted)">Награды можно тратить на предметы или использовать для ускорения анализов.</div>
           </div>
 
-          <div style="margin-top:12px" class="panel small">
+          <div class="panel small" style="margin-top:12px">
             <strong>Телефон</strong>
-            <div style="display:flex;gap:8px;margin-top:8px">
-              <button id="callPartner" class="btn secondary">Напарник</button>
-              <button id="callPolice" class="btn secondary">Полиция</button>
+            <div class="phone" style="margin-top:8px">
+              <div class="screen" id="phoneScreen"><div style="padding:6px;color:var(--muted)">Контакты:<div style="display:flex;gap:6px;margin-top:6px"><button id="callPartner" class="btn secondary">Напарник</button><button id="callPolice" class="btn secondary">Полиция</button></div></div>
+              <div id="phoneLog" style="margin-top:8px;color:var(--muted);max-height:120px;overflow:auto"></div></div>
+              <div style="display:flex;gap:8px;margin-top:8px">
+                <input id="phoneInput" class="input" placeholder="Номер или сайт" style="flex:1;padding:8px;border-radius:8px;background:#0b0b0b;color:#efece6;border:1px solid rgba(255,255,255,0.03)">
+                <button id="phoneCall" class="btn">Звонок</button>
+              </div>
             </div>
-            <div id="phoneLog" style="margin-top:8px;color:var(--muted);max-height:80px;overflow:auto"></div>
           </div>
-        </aside>
+
+        </div>
       </div>
     </div>
-  </main>
+  </section>
 
+  <!-- RIGHT -->
   <aside class="panel right-panel">
-    <div>
+    <div class="tool">
       <strong>Статистика</strong>
-      <div class="small" style="margin-top:8px">Связей: <span id="linksCount">0</span></div>
-      <div class="small" style="margin-top:8px">Ритуал: <span id="ritualState">нет</span></div>
-      <div class="small" style="margin-top:8px">Монеты: <span id="coinRight" class="coin">0</span></div>
+      <div style="margin-top:8px">Связей: <span id="linksCount">0</span></div>
+      <div style="margin-top:8px">Ритуал: <span id="ritualState">нет</span></div>
+      <div style="margin-top:8px">Монеты: <span id="coinDisplayRight" class="coins">0</span></div>
     </div>
 
-    <div style="margin-top:12px">
-      <strong>Лаборатория / ДНК</strong>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <input id="dnaInput" placeholder="Вставьте код (пример ER189)" style="flex:1;padding:8px;border-radius:8px;background:#0b0b0b;color:#efece6;border:1px solid rgba(255,255,255,0.03)">
-        <button id="dnaCheck" class="btn">Сверить</button>
+    <div class="tool" style="margin-top:12px">
+      <strong>Концовки</strong>
+      <div style="margin-top:8px;color:var(--muted)">Просмотреть доступные концовки.</div>
+      <div style="display:flex;gap:8px;margin-top:8px"><button id="endingsBtn" class="btn">Концовки</button><button id="ritualBtn" class="btn secondary">Ритуал</button></div>
+    </div>
+
+    <div class="tool" style="margin-top:12px">
+      <strong>Настройки</strong>
+      <div style="margin-top:8px">
+        <label><input type="checkbox" id="toggleMusic"> Фоновая музыка</label><br>
+        <label style="margin-top:6px"><input type="checkbox" id="toggleAmbience" checked> Туман / эффекты</label><br>
+        <label style="margin-top:6px"><input type="checkbox" id="toggleDetectiveVoice" checked> Голос (TTS)</label>
       </div>
-      <div id="labLog" style="margin-top:8px;color:var(--muted)"></div>
     </div>
 
-    <div style="margin-top:12px">
-      <strong>Финалы</strong>
-      <div style="margin-top:8px"><button id="showEndings" class="btn">Просмотреть</button></div>
+    <div class="tool" style="margin-top:12px">
+      <strong>Лаборатория — быстрые тесты</strong>
+      <div style="margin-top:8px;color:var(--muted)">Например, «Сверить ДНК» — сравнение строки образца с подозреваемыми.</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input id="dnaInput" placeholder="Вставьте DNA-код (пример: ACGT123)" style="flex:1;padding:8px;border-radius:8px;background:#0b0b0b;color:#efece6;border:1px solid rgba(255,255,255,0.03)">
+        <button id="dnaCompare" class="btn">Сверить ДНК</button>
+      </div>
     </div>
   </aside>
-</div>
+</main>
 
-<!-- Modals (profiles, interrogation, cipher, mini-games, attack, endings) -->
-<div id="profilesModal" class="modal"><div class="card small"><h3>Профили</h3><div id="profilesContent" style="margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="closeProfiles" class="btn secondary">Закрыть</button></div></div></div>
+<!-- Attack modal -->
+<div id="attackModal" class="modal" aria-hidden="true"><div class="card small"><h3>Нападение!</h3><p class="note">На вас напал неизвестный. Выберите действие — у вас <span id="attackCountdown" class="countdown">10</span> сек.</p><div class="attack-options"><button id="attackFight" class="btn">Драться</button><button id="attackRun" class="btn secondary">Убежать</button><button id="attackUseItem" class="btn">Использовать предмет (-5 монет)</button></div></div></div>
 
-<div id="interrogateModal" class="modal"><div class="card"><h3>Допрос</h3><div class="small" style="margin-top:6px">Выберите и задайте вопрос</div><div style="display:flex;gap:8px;margin-top:12px"><select id="interrogateSelect" style="flex:1;padding:8px;border-radius:8px;background:#0b0b0b;color:#efece6"></select><button id="startInterrogate" class="btn">Открыть</button></div><div id="chatBox" style="margin-top:12px;max-height:220px;overflow:auto"></div><div style="display:flex;gap:8px;margin-top:8px"><input id="chatInput" class="input" placeholder="Вопрос"><button id="chatSend" class="btn">Спросить</button><button id="closeChat" class="btn secondary">Закрыть</button></div></div></div>
+<!-- Mini-game modals -->
+<div id="memoryModal" class="modal" aria-hidden="true"><div class="card small"><h3>Память — пары</h3><p class="note">Найдите пары карт. Награда: +10 монет</p><div id="memoryBoard" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="memoryClose" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="cipherModal" class="modal"><div class="card small"><h3>Цезарь</h3><div style="display:flex;gap:8px;margin-top:8px"><input id="caesarShift" type="number" min="1" max="25" value="3" style="padding:8px;border-radius:8px"><button id="caesarTry" class="btn">Попробовать</button></div><textarea id="caesarOut" readonly style="margin-top:8px;width:100%;height:80px;background:#0b0b0b;color:#efece6;border-radius:8px;padding:8px"></textarea><div style="text-align:right;margin-top:8px"><button id="caesarClose" class="btn secondary">Закрыть</button></div></div></div>
+<div id="spotModal" class="modal" aria-hidden="true"><div class="card small"><h3>Найди различие</h3><p class="note">Найдите 3 отличия. Награда: +12 монет</p><img id="spotImgA" class="minigame-img" src="https://picsum.photos/seed/spotA/800/400" alt=""><img id="spotImgB" class="minigame-img" src="https://picsum.photos/seed/spotB/800/400" alt=""><div id="spotChoices" style="display:flex;gap:8px;margin-top:8px"></div><div style="text-align:right;margin-top:12px"><button id="spotClose" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="attackModal" class="modal"><div class="card small"><h3>Нападение!</h3><p class="small">На вас напали — выберите действие. Время: <span id="attackTimer">10</span>s</p><div style="display:flex;gap:8px"><button id="fightBtn" class="btn">Драться</button><button id="runBtn" class="btn secondary">Убежать</button><button id="itemBtn" class="btn">Использовать (-5)</button></div></div></div>
+<div id="imgPuzzleModal" class="modal" aria-hidden="true"><div class="card small"><h3>Пазл‑изображение</h3><p class="note">Соберите 3x3. Награда: +15 монет</p><div id="imgPuzzleBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="imgPuzzleClose" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="memoryModal" class="modal"><div class="card small"><h3>Пары</h3><p class="small">Найдите пары — +10 монет</p><div id="memoryBoard" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="memoryClose" class="btn secondary">Закрыть</button></div></div></div>
+<!-- Profiles/Interrogate/Cipher/Match/Endings -->
+<div id="profilesModal" class="modal" aria-hidden="true"><div class="card small"><h3>Профили</h3><div id="profilesContent" style="margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="closeProfiles" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="spotModal" class="modal"><div class="card small"><h3>Различия</h3><p class="small">Найдите 3 отличия — +12 монет</p><img id="spotA" style="width:100%;height:120px;object-fit:cover;border-radius:6px" src="https://picsum.photos/seed/spotA/800/400"><img id="spotB" style="width:100%;height:120px;object-fit:cover;border-radius:6px;margin-top:8px" src="https://picsum.photos/seed/spotB/800/400"><div id="spotChoices" style="display:flex;gap:8px;margin-top:8px"></div><div style="text-align:right;margin-top:12px"><button id="spotClose" class="btn secondary">Закрыть</button></div></div></div>
+<div id="interrogateModal" class="modal" aria-hidden="true"><div class="card"><h3>Допрос — Нейросеть</h3><div class="note">Выберите подозреваемого и задавайте вопросы. (Симуляция)</div><div style="display:flex;gap:8px;margin-top:12px"><select id="interrogateSelect" style="flex:1;padding:8px;border-radius:8px;background:#0b0b0b;color:#efece6"></select><button id="interrogateStart" class="btn">Выбрать</button></div><div class="chat" id="chatWindow" style="margin-top:12px"></div><div style="display:flex;gap:8px;margin-top:8px"><input id="chatInput" class="input" placeholder="Вопрос"><button id="chatSend" class="btn">Спросить</button><button id="chatClose" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="imgPuzzleModal" class="modal"><div class="card small"><h3>Пазл</h3><p class="small">Соберите 3x3 — +15 монет</p><div id="imgPuzzleBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="imgPuzzleClose" class="btn secondary">Закрыть</button></div></div></div>
+<div id="cipherModal" class="modal" aria-hidden="true"><div class="card small"><h3>Цезарь</h3><div style="display:flex;gap:8px;margin-top:8px"><input id="cipherShift" type="number" min="1" max="25" value="3" class="input" style="padding:8px;border-radius:8px"><button id="cipherTryBtn" class="btn">Попробовать</button></div><textarea id="cipherOutput" rows="4" readonly class="input" style="margin-top:8px;width:100%"></textarea><div style="text-align:right;margin-top:8px"><button id="cipherCloseBtn" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="endingsModal" class="modal"><div class="card"><h3>Концовки</h3><div id="endingsList" style="margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="endingsClose" class="btn secondary">Закрыть</button></div></div></div>
+<div id="matchModal" class="modal" aria-hidden="true"><div class="card small"><h3>Эмблемы</h3><div id="matchArea" style="display:flex;gap:8px;margin-top:12px;justify-content:space-around"></div><div style="text-align:right;margin-top:12px"><button id="matchCloseBtn" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="endingModal" class="modal"><div class="card small"><h3 id="endingTitle"></h3><div id="endingText" style="margin-top:8px;color:var(--muted)"></div><div style="text-align:right;margin-top:12px"><button id="endingClose" class="btn">OK</button></div></div></div>
+<div id="endingsModal" class="modal" aria-hidden="true"><div class="card"><h3>Концовки</h3><div id="endingsList" style="margin-top:12px"></div><div style="text-align:right;margin-top:12px"><button id="endingsClose" class="btn secondary">Закрыть</button></div></div></div>
 
-<!-- audio assets -->
+<div id="endingRevealModal" class="modal" aria-hidden="true"><div class="card"><h3 id="endingTitle"></h3><div id="endingText" style="margin-top:12px;color:var(--muted)"></div><div style="text-align:right;margin-top:12px"><button id="endingClose" class="btn">OK</button></div></div></div>
+
+<!-- audio elements -->
 <audio id="bgMusic" loop preload="auto"><source src="https://cdn.pixabay.com/audio/2022/04/09/audio_2839a1de58.mp3" type="audio/mpeg"></audio>
 <audio id="ambience" loop preload="auto"><source src="https://cdn.pixabay.com/audio/2021/08/04/audio_5f5a8f1f44.mp3" type="audio/mpeg"></audio>
-<audio id="fxJump" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_5f5a8f1f44.mp3?filename=impact-6052.mp3" type="audio/mpeg"></audio>
+<audio id="fxClick" preload="auto"><source src="https://cdn.pixabay.com/download/audio/2023/03/03/audio_8f0b52d1b4.mp3?filename=interface-click-116929.mp3" type="audio/mpeg"></audio>
 
-<div class="debug" id="debugPanel">DEBUG:<div id="debugLog"></div></div>
+<div class="debug" id="debugPanel"><strong>DEBUG</strong><div id="debugLog" style="white-space:pre-wrap;margin-top:8px;font-family:monospace;color:#cfcfcf">init...</div></div>
 
 <script>
-/* Исправления и улучшения:
-   - Надёжная обработка кликов: делегирование для динамических элементов (.clue, .hotspot, .dropzone)
-   - Все кнопки привязаны через делегирование/явные слушатели; проверены id
-   - Добавлен safePlay() для аудио (включается после жеста пользователя)
-   - Добавлена функция detectiveSpeak() (TTS) — детектив "говорит" при клике на улику и при важных событиях
-   - Исправлены причины, по которым "улики не нажимались" (перекрывающий overlay, ранняя привязка): теперь обработчики вешаются после DOMContentLoaded и используются делегированные клики
-   - Лёгкая симуляция лаборатории, мини‑игр и атак
+/* Исправленная и расширенная версия — всё привязано через делегирование и user gesture для звука.
+   Новые функции: мини‑игры с картинками, игровая валюта (coins), нападения на детектива (10s таймер), лаборатория ДНК, "кровь" — визуал.
+   Этот файл самодостаточен — поместите его в проект и откройте в браузере по http(s) или localhost.
 */
 
-/* --- Utils --- */
-const LOG = (...a)=>{ try{ document.getElementById('debugLog').textContent += '\\n' + a.join(' '); console.log(...a); }catch(e){ console.log(...a); } };
+/* ====== Утилиты ====== */
+const LOG = (...args) => { try { const el = document.getElementById('debugLog'); if(el) el.textContent += '\\n' + args.join(' '); console.log(...args); } catch(e){ console.log(...args); } };
 const $ = id => document.getElementById(id);
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
-function showToast(msg, t=1500){ const d=document.createElement('div'); d.textContent=msg; d.style.position='fixed'; d.style.left='50%'; d.style.bottom='20px'; d.style.transform='translateX(-50%)'; d.style.background='rgba(0,0,0,0.85)'; d.style.color='#fff'; d.style.padding='8px 12px'; d.style.borderRadius='8px'; d.style.zIndex=100000; document.body.appendChild(d); setTimeout(()=>{ d.style.transition='opacity .4s'; d.style.opacity=0; setTimeout(()=>d.remove(),420); }, t); }
+function showToast(msg){ const d=document.createElement('div'); d.textContent=msg; d.style.position='fixed'; d.style.left='50%'; d.style.bottom='18px'; d.style.transform='translateX(-50%)'; d.style.background='rgba(0,0,0,0.85)'; d.style.color='#fff'; d.style.padding='8px 12px'; d.style.borderRadius='8px'; d.style.zIndex=999999; document.body.appendChild(d); setTimeout(()=>{ d.style.transition='opacity .5s'; d.style.opacity=0; setTimeout(()=>d.remove(),500); },1500); }
+function save(key){ try{ localStorage.setItem('rose_'+key, JSON.stringify(state)); LOG('Saved',key); }catch(e){ LOG('save err',e); } }
+function load(key){ try{ const raw = localStorage.getItem('rose_'+key); return raw?JSON.parse(raw):null; }catch(e){ LOG('load err',e); return null; } }
 
-/* --- Game model simplified --- */
-let GAME = {
-  suspects: [],
-  clues: [],
-  opened: {},
-  links: {},
-  timeline: [],
-  coins: 20,
-  health: 100,
-  ritual: false
-};
-
+/* ====== Initial data ====== */
 const DEFAULT_SUSPECTS = [
-  { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', height:189, shoe:44, desc:'Холодный' },
-  { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', height:165, shoe:37, desc:'Внимательная' },
-  { id:'prof', name:'Профессор Морден', role:'Архивариус', height:178, shoe:42, desc:'Символист' },
-  { id:'victoria', name:'Виктория Роузвуд', role:'Жена', height:172, shoe:39, desc:'Эмоциональна' },
-  { id:'lina', name:'Лина Монт', role:'Гостья', height:168, shoe:38, desc:'Мистическая' }
+  { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', male:true, height:189, shoe:44, desc:'Холодный и сдержанный.' },
+  { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', male:false, height:165, shoe:37, desc:'Внимательная и молчаливая.' },
+  { id:'prof', name:'Профессор Морден', role:'Архивариус', male:true, height:178, shoe:42, desc:'Знает символы и историю семьи.' },
+  { id:'victoria', name:'Виктория Роузвуд', role:'Жена', male:false, height:172, shoe:39, desc:'Эмоциональная и властная.' },
+  { id:'lina', name:'Лина Монт', role:'Гостья', male:false, height:168, shoe:38, desc:'Интересуется эзотерикой.' }
 ];
-
 const MASTER_CLUES = [
-  { id:'c1', title:'Записка (шифр)', room:'office', type:'cipher', text:'Vkr ghqv wrfkh', locked:true },
-  { id:'c2', title:'Следы обуви', room:'garden', type:'foot', text:'Подошва: B7', locked:false },
-  { id:'c3', title:'Лист с надписью', room:'library', type:'paper', text:'"...12/11..."', locked:false },
-  { id:'c4', title:'Символ кровью', room:'music', type:'symbol', text:'Треугольник', locked:false },
-  { id:'c5', title:'Фрагмент карты', room:'basement', type:'puzzle', text:'План подвала', locked:true }
+  { id:'cl1', title:'Тайная записка', room:'office', type:'cipher', text:'Vkr ghqv wrfkh', locked:true },
+  { id:'cl2', title:'След обуви', room:'garden', type:'foot', text:'Подошва с логотипом B7', locked:false },
+  { id:'cl3', title:'Разорванный лист', room:'library', type:'paper', text:'Вырвано имя, пометка: 12/11', locked:false },
+  { id:'cl4', title:'Символ на стене', room:'music', type:'symbol', text:'Странный символ', locked:false },
+  { id:'cl5', title:'Пепел и масло', room:'dining', type:'ash', text:'Пепел и следы горючего', locked:false },
+  { id:'cl6', title:'Фрагмент карты', room:'basement', type:'puzzle', text:'Части карты — нужен пазл', locked:true },
+  { id:'cl7', title:'Флакон с эфиром', room:'attic', type:'vial', text:'Редкий эфир', locked:false }
+];
+const ENDINGS = [
+  { id:'truth', title:'Правда и суд', desc:'Собраны доказательства — виновный осуждён.', cond: s => (s.links.adrian && s.links.adrian.length>=3) && s.timeline.length>=2 },
+  { id:'open', title:'Нераскрыто', desc:'Недостаточно доказательств — дело остаётся тайной.', cond: s => Object.values(s.links).flat().length < 3 }
 ];
 
-/* --- Audio / TTS helpers --- */
-const AUDIO = {
-  bg: $('bgMusic'),
-  amb: $('ambience'),
-  fx: $('fxJump')
+/* ====== Game state ====== */
+let state = {
+  suspects: [], clues: [], opened:{}, links:{}, timeline:[], ritualPerformed:false,
+  coins: 0, health: 100, audioOn:false, musicOn:false, detectiveVoice:true
 };
-function safePlay(el){
-  if(!el) return Promise.reject('no audio');
-  el.muted = false;
-  el.volume = el.volume || 0.12;
-  return el.play().catch(err => { LOG('audio play rejected', err); return Promise.reject(err); });
-}
-function detectiveSpeak(text){
-  // also show a quick toast
-  showToast(text, 1600);
-  if(!('speechSynthesis' in window)) return;
-  const u = new SpeechSynthesisUtterance(text);
-  const voices = speechSynthesis.getVoices();
-  if(voices && voices.length) u.voice = voices[0];
-  u.rate = 1;
-  speechSynthesis.cancel();
-  speechSynthesis.speak(u);
+
+/* ====== Safe audio play helper ====== */
+function safePlay(audioEl){
+  if(!audioEl) return Promise.reject(new Error('no-audio'));
+  audioEl.muted = false;
+  audioEl.volume = audioEl.volume || 0.12;
+  return audioEl.play().catch(err => {
+    LOG('Audio play rejected', err);
+    return Promise.reject(err);
+  });
 }
 
-/* --- Initialization --- */
-document.addEventListener('DOMContentLoaded', ()=> {
-  LOG('DOM loaded — binding handlers');
-  setupGame();
-  bindUI();
-  // prompt autosave presence (menu remains visible until user Start)
-});
+/* ====== Menu delegation (ensures handlers work even if earlier script errors) ====== */
+document.addEventListener('click', function delegatedMenu(e){
+  const btn = e.target.closest('#startBtn, #enableSound, #loadBtn, #menuOpenBtn');
+  if(!btn) return;
+  if(btn.id === 'startBtn'){
+    $('menuScreen').style.display = 'none';
+    if(state.suspects.length === 0) startNewGame();
+    // play audio because user interacted
+    if($('toggleMusic') && $('toggleMusic').checked){ safePlay($('bgMusic')).catch(()=>{}); }
+    safePlay($('ambience')).catch(()=>{});
+  }
+  if(btn.id === 'enableSound'){
+    // attempt to unlock audio
+    safePlay($('bgMusic')).catch(()=>{}); safePlay($('ambience')).catch(()=>{});
+    showToast('Попытка включить звук. Если браузер блокирует — нажмите Start затем "Включить звук" ещё раз.');
+  }
+  if(btn.id === 'loadBtn'){
+    const autos = load('autosave'); if(autos && confirm('Загрузить автосейв?')){ state = autos; renderAll(); $('menuScreen').style.display='none'; showToast('Автосейв загружен'); } else showToast('Автосейв не найден'); 
+  }
+  if(btn.id === 'menuOpenBtn'){ $('menuScreen').style.display = 'flex'; }
+}, true);
 
-/* --- Setup game data --- */
-function setupGame(){
-  GAME.suspects = JSON.parse(JSON.stringify(DEFAULT_SUSPECTS));
-  GAME.clues = JSON.parse(JSON.stringify(MASTER_CLUES));
-  GAME.opened = {}; GAME.links = {};
-  GAME.suspects.forEach(s => GAME.links[s.id] = []);
+/* ====== Start new game ====== */
+function startNewGame(){
+  state = {
+    suspects: JSON.parse(JSON.stringify(DEFAULT_SUSPECTS)).sort(()=>Math.random()-0.5),
+    clues: JSON.parse(JSON.stringify(MASTER_CLUES)),
+    opened: {}, links:{}, timeline:[], ritualPerformed:false,
+    coins: 20, health:100, audioOn:false, musicOn:false, detectiveVoice:true
+  };
+  state.suspects.forEach(s => state.links[s.id]=[]);
+  // add a few extras for variety
+  for(let i=0;i<3;i++){
+    const base = MASTER_CLUES[Math.floor(Math.random()*MASTER_CLUES.length)];
+    state.clues.push(Object.assign({}, base, { id: base.id + '_x' + i, title: base.title + ' (вспл.)', locked: Math.random() < 0.5 }));
+  }
+  save('autosave');
   renderAll();
+  showToast('Новая игра запущена. Монеты: ' + state.coins);
 }
 
-/* --- Render helpers --- */
+/* ====== Rendering functions ====== */
 function renderAll(){
-  renderSuspects();
-  renderClues();
-  renderTimeline();
-  renderStats();
-  populateInterrogateSelect();
+  renderSuspects(); renderClues(); renderTimeline(); renderStats(); renderProfilesModal(); populateAccuse();
 }
 function renderSuspects(){
-  const el = $('suspectsList'); el.innerHTML = '';
-  GAME.suspects.forEach((s,i)=>{
-    const div = document.createElement('div'); div.className='suspect'; div.dataset.suspect = s.id;
-    const avatar = `<div class="avatar">${escapeHtml(s.name[0])}</div>`;
-    const linked = GAME.links[s.id].length;
-    div.innerHTML = `${avatar}<div class="smeta"><div class="sname">${escapeHtml(s.name)}</div><div class="meta-row">${escapeHtml(s.role)}</div><div style="margin-top:6px;color:var(--muted)">${escapeHtml(s.desc)}</div></div><div style="padding-left:8px">${linked}</div>`;
-    el.appendChild(div);
-    div.addEventListener('click', ()=> { openProfile(s); });
+  const area = $('suspectsList'); area.innerHTML = '';
+  state.suspects.forEach((s, idx) => {
+    const div = document.createElement('div'); div.className = 'suspect'; div.dataset.suspect = s.id;
+    let avatar = `<div class="avatar">${escape(s.name[0])}</div>`;
+    if(!s.male){
+      const femaleIndex = state.suspects.filter(x=>!x.male).map(x=>x.id).indexOf(s.id);
+      const src = `assets/female${Math.min(3,femaleIndex+1)}.jpg`;
+      avatar = `<img class="avatar" src="${src}" alt="${escape(s.name)}" onerror="this.style.display='none'">`;
+    }
+    const linked = (state.links[s.id] || []).length;
+    div.innerHTML = `${avatar}<div class="smeta"><div class="sname">${escape(s.name)}</div><div class="meta-row">${escape(s.role)} · Рост ${s.height} см · Обувь ${s.shoe}</div><div style="margin-top:6px;color:var(--muted)">${escape(s.desc)}</div></div><div class="dropzone" data-suspect="${s.id}">${linked}</div>`;
+    div.addEventListener('click', ()=> openProfileModal(s));
+    area.appendChild(div);
   });
+  attachDropzones();
 }
 function renderClues(){
   const grid = $('cluesGrid'); grid.innerHTML = '';
-  GAME.clues.forEach(c=>{
-    const opened = !!GAME.opened[c.id];
-    const item = document.createElement('div'); item.className='clue'; item.dataset.clue = c.id;
-    item.innerHTML = `<div class="thumb">${getIcon(c.type)}</div><div><h4>${escapeHtml(c.title)}</h4><p>${opened ? escapeHtml(c.text) : (c.locked ? 'Зашифрована / скрыта' : escapeHtml(c.text))}</p></div>`;
-    grid.appendChild(item);
+  state.clues.forEach(c => {
+    const opened = !!state.opened[c.id];
+    const el = document.createElement('div'); el.className = 'clue'; el.id = c.id; el.dataset.clue = c.id;
+    el.innerHTML = `<div class="thumb">${getIcon(c.type)}</div><div><h4>${escape(c.title)}</h4><p>${opened ? escape(c.text) : (c.locked ? 'Зашифрована / скрыта' : escape(c.text))}</p></div>`;
+    el.addEventListener('click', ()=> onClueClick(c));
+    el.draggable = true; el.addEventListener('dragstart', ev => ev.dataTransfer.setData('text/plain', c.id));
+    addTouchDragSupport(el,c.id);
+    grid.appendChild(el);
   });
-  $('totalClues').textContent = GAME.clues.length;
-  $('openedCount').textContent = Object.keys(GAME.opened).length;
+  $('totalClues').textContent = state.clues.length;
+  $('openedCount').textContent = Object.keys(state.opened).length;
 }
 function renderTimeline(){
-  const el = $('timeline');
-  if(GAME.timeline.length === 0){ el.innerHTML = '<div class="small" style="color:var(--muted)">Пока пусто</div>'; return; }
-  el.innerHTML = GAME.timeline.slice().reverse().map(t=> `<div style="margin-bottom:6px">${escapeHtml(t.text)} <span style="color:var(--muted);font-size:0.82rem">(${new Date(t.time).toLocaleTimeString()})</span></div>`).join('');
+  const el = $('timelineList');
+  if(state.timeline.length === 0){ el.innerHTML = '<div class="small" style="color:var(--muted)">Пока пусто</div>'; return; }
+  el.innerHTML = state.timeline.slice().reverse().map(t => `<div style="margin-bottom:6px">${escape(t.text)} <span style="color:var(--muted);font-size:0.82rem">(${new Date(t.time).toLocaleTimeString()})</span></div>`).join('');
 }
 function renderStats(){
-  $('linksCount').textContent = Object.values(GAME.links).flat().length;
-  $('coinTop').textContent = GAME.coins;
-  $('coinRight').textContent = GAME.coins;
-  $('healthBar').value = GAME.health;
-  $('ritualState').textContent = GAME.ritual ? 'да' : 'нет';
+  $('linksCount').textContent = Object.values(state.links).flat().length;
+  $('ritualState').textContent = state.ritualPerformed ? 'да' : 'нет';
+  $('coinDisplay').textContent = state.coins;
+  $('coinDisplayTop').textContent = state.coins;
+  $('coinDisplayRight') && ($('coinDisplayRight').textContent = state.coins);
+  $('healthBar').value = state.health;
+  updateProgress();
+}
+function renderProfilesModal(){
+  const cont = $('profilesContent'); cont.innerHTML = '';
+  state.suspects.forEach(s=>{
+    const div = document.createElement('div'); div.style.marginBottom='12px';
+    const linked = (state.links[s.id]||[]).length;
+    div.innerHTML = `<strong>${escape(s.name)}</strong> — <em>${escape(s.role)}</em><div class="small" style="color:var(--muted);margin-top:6px">Рост: ${s.height} см · Обувь: ${s.shoe} · Улик: ${linked}</div><div style="margin-top:6px">${escape(s.desc)}</div><div style="margin-top:8px"><button class="btn" onclick="inspectSuspect('${s.id}')">Допросить</button> <button class="btn secondary" onclick="showPhysical('${s.id}')">Внешность</button></div>`;
+    cont.appendChild(div);
+  });
 }
 
-/* --- Event binding (robust) --- */
-function bindUI(){
-  // Menu
-  document.querySelector('#startBtn').addEventListener('click', ()=> {
-    $('menuScreen').style.display = 'none';
-    // start audio on user gesture
-    safePlay(AUDIO.amb).catch(()=>{});
-    safePlay(AUDIO.bg).catch(()=>{});
-    detectiveSpeak('Расследование начато');
-  });
-  document.querySelector('#soundBtn').addEventListener('click', ()=> {
-    safePlay(AUDIO.bg).catch(()=>{});
-    safePlay(AUDIO.amb).catch(()=>{});
-    showToast('Попытка включить звук');
-  });
-  document.querySelector('#loadBtn').addEventListener('click', ()=> {
-    const s = localStorage.getItem('rose_autosave');
-    if(s && confirm('Загрузить автосейв?')){ try{ GAME = JSON.parse(s); renderAll(); $('menuScreen').style.display='none'; showToast('Загружено'); }catch(e){ showToast('Ошибка загрузки'); } } else showToast('Сохранений нет');
-  });
-  document.querySelector('#menuToggle').addEventListener('click', ()=> $('menuScreen').style.display = 'flex');
-
-  // Delegated clicks for clues and hotspots and dropzones
-  document.addEventListener('click', (e) => {
-    const clueEl = e.target.closest('.clue');
-    if(clueEl){
-      const id = clueEl.dataset.clue;
-      onClueClick(id);
-      return;
-    }
-    const hotspot = e.target.closest('.hotspot');
-    if(hotspot){
-      const room = hotspot.dataset.room;
-      inspectRoom(room);
-      return;
-    }
-    const dropzone = e.target.closest('.dropzone');
-    if(dropzone && document.body.dataset.draggingClue){
-      const suspectId = dropzone.dataset.suspect;
-      const clueId = document.body.dataset.draggingClue;
-      linkEvidence(suspectId, clueId);
-      document.body.dataset.draggingClue='';
-      return;
-    }
-    // specific buttons
-    if(e.target.id === 'timelineAdd'){
-      const v = $('timelineInput').value.trim(); if(!v) return;
-      GAME.timeline.push({ text:v, time:new Date().toISOString() }); $('timelineInput').value=''; renderTimeline(); saveGame(); showToast('Добавлено в таймлайн');
-    }
-    if(e.target.id === 'memGame'){ openMemory(); }
-    if(e.target.id === 'spotGame'){ openSpot(); }
-    if(e.target.id === 'imgPuzzle'){ openImgPuzzle(); }
-    if(e.target.id === 'profilesBtn'){ renderProfilesModal(); $('profilesModal').style.display='flex'; }
-    if(e.target.id === 'closeProfiles'){ $('profilesModal').style.display='none'; }
-    if(e.target.id === 'interrogateBtn'){ $('interrogateModal').style.display='flex'; populateInterrogateSelect(); }
-    if(e.target.id === 'accuseBtn'){ attemptAccuse(); }
-    if(e.target.id === 'dnaCheck'){ dnaCheck(); }
-    if(e.target.id === 'callPartner'){ phoneCall('partner'); }
-    if(e.target.id === 'callPolice'){ phoneCall('police'); }
-    if(e.target.id === 'showEndings'){ renderEndings(); $('endingsModal').style.display='flex'; }
-    if(e.target.id === 'endingsClose'){ $('endingsModal').style.display='none'; }
-    if(e.target.id === 'endingClose'){ $('endingModal').style.display='none'; }
-  });
-
-  // dragstart for clues: set data attribute for mobile fallback
-  document.addEventListener('dragstart', (e) => {
-    const el = e.target.closest('.clue');
-    if(el) e.dataTransfer.setData('text/plain', el.dataset.clue);
-  });
-
-  // Allow drag->drop to suspect dropzones (they are created with suspect cards)
-  document.addEventListener('dragover', (e)=> e.preventDefault());
-  document.addEventListener('drop', (e)=> {
-    const suspectEl = e.target.closest('.suspect');
-    if(!suspectEl) return;
-    const clueId = e.dataTransfer.getData('text/plain');
-    if(!clueId) return;
-    const suspectId = suspectEl.dataset.suspect;
-    linkEvidence(suspectId, clueId);
-  });
-
-  // mini-game specific close buttons
-  const mc = $('memoryClose'); if(mc) mc.addEventListener('click', ()=> $('memoryModal').style.display='none');
-  const sc = $('spotClose'); if(sc) sc.addEventListener('click', ()=> $('spotModal').style.display='none');
-  const ipc = $('imgPuzzleClose'); if(ipc) ipc.addEventListener('click', ()=> $('imgPuzzleModal').style.display='none');
-
-  // attack modal options
-  $('fightBtn').addEventListener('click', ()=> resolveAttack('fight'));
-  $('runBtn').addEventListener('click', ()=> resolveAttack('run'));
-  $('itemBtn').addEventListener('click', ()=> { if(GAME.coins>=5){ GAME.coins -=5; renderStats(); resolveAttack('use'); } else showToast('Нет монет'); });
-
-  // cipher modal handlers
-  $('caesarTry').addEventListener('click', ()=> {
-    const shift = Number($('caesarShift').value) || 0;
-    const target = GAME.clues.find(c=> c.locked && c.type === 'cipher') || GAME.clues[0];
-    if(!target){ showToast('Нет зашифрованных записок'); return; }
-    const dec = caesarDecode(target.text, shift); $('caesarOut').value = dec;
-    if(/он знает|в\./i.test(dec) || shift === 3){ target.locked = false; GAME.opened[target.id] = true; renderClues(); renderStats(); $('cipherModal').style.display='none'; saveGame(); showToast('Записка расшифрована'); detectiveSpeak('Записка расшифрована'); }
-  });
-  $('caesarClose').addEventListener('click', ()=> $('cipherModal').style.display='none');
-
-  // interrogation chat
-  $('startInterrogate').addEventListener('click', ()=> {
-    const id = $('interrogateSelect').value; if(!id) { showToast('Выберите подозреваемого'); return; }
-    addChat('ai', 'Допрос начат: ' + GAME.suspects.find(s=>s.id===id).name); detectiveSpeak('Допрос начат');
-  });
-  $('chatSend').addEventListener('click', ()=> {
-    const q = $('chatInput').value.trim(); if(!q) return; addChat('user', q); $('chatInput').value=''; const id = $('interrogateSelect').value;
-    setTimeout(()=> { const r = aiReply(q, id); addChat('ai', r); detectiveSpeak(r); }, 600);
-  });
-  $('closeChat').addEventListener('click', ()=> $('interrogateModal').style.display='none');
-
-  LOG('UI bound (delegated handlers)');
-}
-
-/* --- On clue click (robust) --- */
-function onClueClick(id){
-  const clue = GAME.clues.find(c=>c.id===id);
-  if(!clue){ showToast('Улика не найдена'); LOG('clue not found', id); return; }
-  if(clue.locked && !GAME.opened[clue.id]){
-    // open cipher/puzzle modals depending on type
-    if(clue.type === 'cipher'){ $('cipherModal').style.display='flex'; $('caesarOut').value = ''; detectiveSpeak('Записка требует расшифровки'); }
-    else if(clue.type === 'puzzle'){ $('imgPuzzleModal').style.display='flex'; detectiveSpeak('Похоже, нужен пазл'); }
-    else { showToast('Эта улика скрыта.'); }
+/* ====== Clue interactions ====== */
+function onClueClick(c){
+  LOG('clue clicked', c.id);
+  if(c.locked && !state.opened[c.id]){
+    if(c.type === 'cipher' || c.type === 'cipher2'){ openCipherModal(c); return; }
+    if(c.type === 'puzzle'){ openPuzzleModal(); return; }
+    if(c.type === 'symbol' || c.type === 'seal'){ openMatchModal(c); return; }
+    showToast('Эта улика скрыта — используйте инструмент');
     return;
   }
-  // open or reveal
-  if(!GAME.opened[clue.id]){ GAME.opened[clue.id] = true; renderClues(); renderStats(); detectiveSpeak('Вы обнаружили ' + clue.title); saveGame(); return; }
-  // show details
-  $('endingTitle').innerText = clue.title;
-  $('endingText').innerHTML = `<div style="color:var(--muted)">${escapeHtml(clue.text)}</div>`;
-  $('endingModal').style.display = 'flex';
-  detectiveSpeak('Детектив читает улику: ' + clue.title);
+  if(!state.opened[c.id]){ state.opened[c.id] = true; revealClue(c); renderClues(); renderStats(); return; }
+  showDetail(c);
+}
+function revealClue(c){
+  if(c.type === 'cipher' && c.text === 'Vkr ghqv wrfkh') c.text = 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»';
+  state.opened[c.id] = true;
+}
+function showDetail(c){
+  $('endingTitle').innerText = c.title; $('endingText').innerHTML = `<div style="color:var(--muted)">${escape(c.text)}</div>`; $('endingRevealModal').style.display = 'flex';
 }
 
-/* --- Link evidence to suspect --- */
+/* ====== Drag & Mobile linking ====== */
+function attachDropzones(){
+  document.querySelectorAll('.dropzone').forEach(zone=>{
+    zone.addEventListener('dragover', ev=>{ ev.preventDefault(); zone.style.outline = '2px dashed rgba(176,138,92,0.6)'; });
+    zone.addEventListener('dragleave', ev=> zone.style.outline = '');
+    zone.addEventListener('drop', ev=> { ev.preventDefault(); zone.style.outline=''; const clueId = ev.dataTransfer.getData('text/plain'); const suspectId = zone.dataset.suspect; if(clueId && suspectId) linkEvidence(suspectId, clueId); });
+    zone.addEventListener('touchend', ()=> {
+      const held = document.body.dataset.draggingClue;
+      if(held){ const suspectId = zone.dataset.suspect; linkEvidence(suspectId, held); document.body.dataset.draggingClue = ''; }
+    });
+  });
+}
+function addTouchDragSupport(el, clueId){
+  let timer = null;
+  el.addEventListener('touchstart', ()=> { timer = setTimeout(()=> { document.body.dataset.draggingClue = clueId; el.style.opacity = 0.6; showToast('Тапните по подозреваемому, чтобы привязать улику'); }, 600); }, {passive:true});
+  el.addEventListener('touchend', ()=> { clearTimeout(timer); setTimeout(()=> { el.style.opacity=''; document.body.dataset.draggingClue=''; }, 200); });
+}
 function linkEvidence(suspectId, clueId){
-  if(!GAME.links[suspectId]) GAME.links[suspectId] = [];
-  if(GAME.links[suspectId].includes(clueId)){ showToast('Уже привязано'); return; }
-  GAME.links[suspectId].push(clueId);
+  if(!state.links[suspectId]) state.links[suspectId] = [];
+  if(state.links[suspectId].includes(clueId)){ showToast('Улика уже привязана'); return; }
+  state.links[suspectId].push(clueId);
   showToast('Улика привязана');
-  saveGame(); renderStats();
+  renderAll(); save('autosave');
 }
 
-/* --- Inspect room (reveal clues) --- */
-function inspectRoom(room){
-  const found = GAME.clues.filter(c=> c.room === room);
-  if(found.length === 0){ showToast('Ничего не найдено'); return; }
-  found.forEach(c=> {
-    if(!c.locked) GAME.opened[c.id] = true;
-  });
-  renderAll();
-  showToast(`Найдено ${found.length} улик(и) в ${room}`);
-  // random attack chance
-  if(Math.random() < 0.18) triggerAttack();
-  saveGame();
-}
-
-/* --- Mini-games implementations (same as earlier but compact) --- */
-let memoryState=null;
-function openMemory(){
+/* ====== Mini-games (memory, spot, img puzzle) ====== */
+/* Memory pairs */
+let memoryState = null;
+function openMemoryGame(){
   $('memoryModal').style.display='flex';
-  const b = $('memoryBoard'); b.innerHTML='';
+  const board = $('memoryBoard'); board.innerHTML='';
   const imgs = []; for(let i=0;i<8;i++) imgs.push('https://picsum.photos/seed/mem'+i+'/200/200');
-  const arr = imgs.concat(imgs).sort(()=>Math.random()-0.5);
-  memoryState = { first:null, second:null, matched:0, board:b };
-  arr.forEach(src=>{
-    const card = document.createElement('div'); card.style.height='80px'; card.style.background='#131212'; card.style.borderRadius='6px'; card.style.cursor='pointer'; card.dataset.src = src;
-    card.addEventListener('click', ()=> {
-      if(card.classList.contains('matched')) return;
-      card.style.backgroundImage = `url(${card.dataset.src})`; card.style.backgroundSize='cover';
-      if(!memoryState.first){ memoryState.first = card; return; }
-      memoryState.second = card;
-      if(memoryState.first.dataset.src === memoryState.second.dataset.src){
-        memoryState.first.classList.add('matched'); memoryState.second.classList.add('matched'); memoryState.matched += 2; memoryState.first = null; memoryState.second = null;
-        if(memoryState.matched === memoryState.board.children.length){ GAME.coins += 10; renderStats(); saveGame(); showToast('+10 монет'); $('memoryModal').style.display='none'; }
-      } else {
-        setTimeout(()=> { memoryState.first.style.backgroundImage=''; memoryState.second.style.backgroundImage=''; memoryState.first=null; memoryState.second=null; }, 700);
-      }
-    });
-    b.appendChild(card);
+  const pair = imgs.concat(imgs).sort(()=>Math.random()-0.5);
+  memoryState = { first:null, second:null, matched:0, board };
+  pair.forEach(src=>{
+    const card = document.createElement('div'); card.style.height='80px'; card.style.background='#151212'; card.style.borderRadius='6px'; card.style.cursor='pointer'; card.dataset.src = src;
+    card.addEventListener('click', ()=> memoryFlip(card));
+    board.appendChild(card);
   });
 }
-
-function openSpot(){
-  $('spotModal').style.display='flex';
-  const choices = $('spotChoices'); choices.innerHTML=''; let rem=3;
-  for(let i=0;i<3;i++){
-    const btn = document.createElement('button'); btn.className='btn'; btn.textContent='Отметить';
-    btn.addEventListener('click', ()=> {
-      if(confirm('Отметить отличие?')){ rem--; showToast('Отличие отмечено. Осталось: ' + rem); if(rem===0){ GAME.coins += 12; renderStats(); saveGame(); $('spotModal').style.display='none'; showToast('+12 монет'); } }
-    });
-    choices.appendChild(btn);
+function memoryFlip(card){
+  if(card.classList.contains('matched') || memoryState.second) return;
+  card.style.backgroundImage = `url(${card.dataset.src})`; card.style.backgroundSize='cover';
+  if(!memoryState.first){ memoryState.first = card; return; }
+  memoryState.second = card;
+  if(memoryState.first.dataset.src === memoryState.second.dataset.src){
+    memoryState.first.classList.add('matched'); memoryState.second.classList.add('matched');
+    memoryState.matched += 2; memoryState.first=null; memoryState.second=null;
+    if(memoryState.matched === memoryState.board.children.length){ state.coins += 10; renderStats(); showToast('+10 монет (пары)'); $('memoryModal').style.display='none'; save('autosave'); }
+  } else {
+    setTimeout(()=>{ memoryState.first.style.backgroundImage=''; memoryState.second.style.backgroundImage=''; memoryState.first=null; memoryState.second=null; }, 700);
   }
 }
 
-function openImgPuzzle(){
+/* Spot differences (very simple) */
+let spotRemaining = 3;
+function openSpotGame(){
+  $('spotModal').style.display='flex';
+  const choices = $('spotChoices'); choices.innerHTML='';
+  spotRemaining = 3;
+  for(let i=0;i<3;i++){
+    const b = document.createElement('button'); b.className='btn'; b.textContent='Отметить'; b.addEventListener('click', ()=> {
+      if(confirm('Вы уверены?')){ spotRemaining--; showToast('Отличие отмечено. Осталось: ' + spotRemaining); if(spotRemaining===0){ state.coins += 12; renderStats(); showToast('+12 монет (различия)'); $('spotModal').style.display='none'; save('autosave'); } }
+    });
+    choices.appendChild(b);
+  }
+}
+
+/* Image puzzle */
+function openImagePuzzle(){
   $('imgPuzzleModal').style.display='flex';
   const board = $('imgPuzzleBoard'); board.innerHTML='';
   const nums = [1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-0.5);
-  nums.forEach(n=>{
-    const p = document.createElement('div'); p.style.height='80px'; p.style.background='#201612'; p.style.display='grid'; p.style.placeItems='center'; p.style.borderRadius='6px'; p.textContent = n===9 ? '' : n; p.dataset.num = n;
-    p.addEventListener('click', ()=> {
-      const empty = Array.from(board.children).find(c=>c.dataset.num=='9'); if(!empty) return;
-      const idx = Array.from(board.children).indexOf(p), eidx = Array.from(board.children).indexOf(empty); const dist = Math.abs(idx-eidx);
-      if(dist===1 || dist===3){ const t = p.dataset.num; p.dataset.num = empty.dataset.num; empty.dataset.num = t; const tmp = p.textContent; p.textContent = empty.textContent; empty.textContent = tmp;
-        const order = Array.from(board.children).map(c=>Number(c.dataset.num)); if(order.every((v,i)=> v===i+1)){ GAME.coins += 15; renderStats(); saveGame(); $('imgPuzzleModal').style.display='none'; showToast('+15 монет'); }
-      }
-    });
-    board.appendChild(p);
+  nums.forEach(n=>{ const p=document.createElement('div'); p.style.height='80px'; p.style.background='#201612'; p.style.display='grid'; p.style.placeItems='center'; p.style.borderRadius='6px'; p.textContent = n===9? '': n; p.dataset.num = n; p.addEventListener('click', ()=> imgPuzzleClick(board,p)); board.appendChild(p); });
+}
+function imgPuzzleClick(board,piece){
+  const empty = Array.from(board.children).find(c=>c.dataset.num=='9'); if(!empty) return;
+  const idx = Array.from(board.children).indexOf(piece), eidx = Array.from(board.children).indexOf(empty); const dist = Math.abs(idx-eidx);
+  if(dist===1||dist===3){ const t=piece.dataset.num; piece.dataset.num=empty.dataset.num; empty.dataset.num=t; const tmp=piece.textContent; piece.textContent=empty.textContent; empty.textContent=tmp; imgPuzzleCheck(board); }
+}
+function imgPuzzleCheck(board){ const order = Array.from(board.children).map(c=>Number(c.dataset.num)); if(order.every((v,i)=> v===i+1)){ state.coins += 15; renderStats(); showToast('+15 монет (пазл)'); $('imgPuzzleModal').style.display='none'; save('autosave'); } }
+
+/* ====== Attack mechanic ====== */
+let attackTimer = null;
+function maybeTriggerAttack(){ if(Math.random() < 0.18){ triggerAttack(); } }
+function triggerAttack(){
+  $('attackModal').style.display='flex';
+  let t = 10; $('attackCountdown').textContent = t;
+  attackTimer = setInterval(()=>{ t--; $('attackCountdown').textContent = t; if(t<=0){ clearInterval(attackTimer); attackTimer = null; resolveAttack('timeout'); } }, 1000);
+}
+function resolveAttack(action){
+  clearInterval(attackTimer); attackTimer=null; $('attackModal').style.display='none';
+  if(action==='fight'){ if(Math.random()<0.65){ showToast('Вы отбились!'); } else { state.health = Math.max(0, state.health-30); showToast('Проиграли — здоровье -30'); } }
+  else if(action==='run'){ if(Math.random()<0.55){ state.coins = Math.max(0, state.coins-5); showToast('Убежали — потеря -5 монет'); } else { state.health = Math.max(0, state.health-20); showToast('Не удалось — здоровье -20'); } }
+  else if(action==='use'){ showToast('Предмет использован'); }
+  else if(action==='timeout'){ state.health = Math.max(0, state.health-35); showToast('Время вышло — здоровье -35'); }
+  renderStats(); save('autosave');
+  if(state.health <= 0) gameOver();
+}
+$('attackFight') && $('attackFight').addEventListener('click', ()=> resolveAttack('fight'));
+$('attackRun') && $('attackRun').addEventListener('click', ()=> resolveAttack('run'));
+$('attackUseItem') && $('attackUseItem').addEventListener('click', ()=> { if(state.coins>=5){ state.coins -=5; resolveAttack('use'); } else showToast('Нет монет'); });
+
+/* ====== Interrogation (simulated neural + TTS) ====== */
+function openInterrogation(){ $('interrogateModal').style.display='flex'; populateInterrogateSelect(); $('chatWindow').innerHTML=''; }
+function populateInterrogateSelect(){ const sel = $('interrogateSelect'); sel.innerHTML = '<option value="">— Выберите —</option>'; state.suspects.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); }); }
+function startInterrogation(){ const id = $('interrogateSelect').value; if(!id){ showToast('Выберите подозреваемого'); return; } addChatAI('Допрос начат: ' + state.suspects.find(s=>s.id===id).name); }
+function handleChatAsk(){ const q = $('chatInput').value.trim(); if(!q) return; addChatUser(q); $('chatInput').value=''; setTimeout(()=>{ const id = $('interrogateSelect').value; const r = generateAIResponse(q,id); addChatAI(r); }, 600); }
+function addChatAI(text){ const chat = $('chatWindow'); const m=document.createElement('div'); m.className='msg ai'; m.textContent = text; chat.appendChild(m); chat.scrollTop = chat.scrollHeight; if(state.detectiveVoice) speak(text); }
+function addChatUser(text){ const chat = $('chatWindow'); const m=document.createElement('div'); m.className='msg user'; m.textContent = text; chat.appendChild(m); chat.scrollTop = chat.scrollHeight; if(state.detectiveVoice) speak(text); }
+function generateAIResponse(q, id){ if(!id) return 'Вы не выбрали подозреваемого.'; const s = state.suspects.find(x=>x.id===id); q=q.toLowerCase(); if(q.includes('где')) return `${s.name}: Я был(а) в доме около 23:00.`; if(q.includes('запис')) return `${s.name}: В записке упоминается "В." — инициал.`; return `${s.name}: Я не буду отвечать.`; }
+function speak(text){ if(!('speechSynthesis' in window) || !state.detectiveVoice) return; const u = new SpeechSynthesisUtterance(text); const voices = speechSynthesis.getVoices(); if(voices.length) u.voice = voices[0]; speechSynthesis.cancel(); speechSynthesis.speak(u); }
+$('chatSend') && $('chatSend').addEventListener('click', handleChatAsk);
+$('chatClose') && $('chatClose').addEventListener('click', ()=> $('interrogateModal').style.display='none');
+
+/* ====== DNA / Blood lab (simple simulated tests) ====== */
+function bindLab(){
+  $('dnaCompare').addEventListener('click', ()=> {
+    const code = $('dnaInput').value.trim();
+    if(!code){ showToast('Вставьте DNA-код'); return; }
+    // simulate: each suspect has a short DNA id derived from name
+    const matches = state.suspects.map(s => ({ id: s.id, name: s.name, dnaId: s.name.split(' ').map(p=>p[0]).join('') + (s.height%100) }));
+    const found = matches.find(m => m.dnaId.toLowerCase() === code.toLowerCase());
+    if(found){ showToast('ДНК совпала с ' + found.name); state.coins += 8; save('autosave'); renderStats(); } else { showToast('Совпадений не найдено'); }
+  });
+  $('bloodLab') && $('bloodLab').addEventListener('click', ()=> {
+    // simple blood analysis yields blood type and possible toxin
+    const types = ['A', 'B', 'AB', 'O']; const t = types[Math.floor(Math.random()*types.length)];
+    showToast('Анализ крови: тип ' + t + '. Возможно следы горючего.');
+    // reveal blood overlay to emphasize
+    $('bloodOverlay').classList.add('on'); setTimeout(()=> $('bloodOverlay').classList.remove('on'), 6000);
+  });
+  $('fpLab') && $('fpLab').addEventListener('click', ()=> {
+    showToast('Отпечатки проанализированы: есть совпадение с перчаткой на столе.');
   });
 }
+bindLab();
 
-/* --- Interrogation AI --- */
-function populateInterrogateSelect(){
-  const sel = $('interrogateSelect'); sel.innerHTML = '<option value="">— Выберите —</option>';
-  GAME.suspects.forEach(s => { const o = document.createElement('option'); o.value = s.id; o.textContent = s.name; sel.appendChild(o); });
-}
-function addChat(who, text){
-  const box = $('chatBox'); const d = document.createElement('div'); d.style.marginBottom='6px'; d.textContent = `${who === 'ai' ? 'Свидетель: ' : 'Вы: '}${text}`; d.style.color = who==='ai' ? '#e6e6e6' : '#ffd166'; box.appendChild(d); box.scrollTop = box.scrollHeight;
-}
-function aiReply(q, id){
-  if(!id) return 'Выберите подозреваемого';
-  const s = GAME.suspects.find(x=>x.id===id);
-  q = q.toLowerCase();
-  if(q.includes('где')) return `${s.name}: Я был в доме вечером.`;
-  if(q.includes('кров')) return `${s.name}: Я видел(а) кровь в кабинете.`;
-  return `${s.name}: Я не буду отвечать на это.`;
+/* ====== Partner help ====== */
+$('partnerHelp') && $('partnerHelp').addEventListener('click', ()=> {
+  const locked = state.clues.filter(c=> c.locked && !state.opened[c.id]);
+  if(locked.length){ const pick = locked[Math.floor(Math.random()*locked.length)]; const el = document.getElementById(pick.id); if(el){ el.style.boxShadow='0 0 18px rgba(176,138,92,0.95)'; setTimeout(()=> el.style.boxShadow='', 2600); } showToast('Напарник подсказал: ' + pick.title); } else showToast('Напарник советует проверить чернильные следы.');
+});
+
+/* ====== Misc helpers ====== */
+function getIcon(t){ switch(t){ case 'cipher': return '✉️'; case 'puzzle': return '🧩'; case 'symbol': return '🔱'; case 'vial': return '🧪'; case 'foot': return '👣'; case 'ink': return '🖋️'; default: return '🔎'; } }
+function updateProgress(){ const opened = Object.keys(state.opened).length + Object.values(state.links).flat().length; const total = state.clues.length + 2; const pct = Math.min(100, Math.round((opened/total)*100)); $('progressPct') && ($('progressPct').innerText = pct + '%'); }
+function escape(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ====== Core binds and initial UI wiring ====== */
+function bindGlobalUI(){
+  // hotspots - inspect room + maybe attack
+  document.querySelectorAll('.hotspot').forEach(h => h.addEventListener('click', ()=> { const room = h.dataset.room; inspectRoom(room); maybeTriggerAttack(); }));
+  // tools bindings
+  $('cipherTryBtn') && $('cipherTryBtn').addEventListener('click', tryCipher);
+  $('cipherCloseBtn') && $('cipherCloseBtn').addEventListener('click', ()=> $('cipherModal').style.display='none');
+  // mini-games
+  $('gamememory') && $('gamememory').addEventListener('click', openMemoryGame);
+  $('gamespot') && $('gamespot').addEventListener('click', openSpotGame);
+  $('gameimagepuzzle') && $('gameimagepuzzle').addEventListener('click', openImagePuzzle);
+  // phone
+  if($('callPartner')){ $('callPartner').addEventListener('click', ()=> { const log=$('phoneLog'); log.innerHTML = `<div style="color:var(--muted)">Звонок напарнику...</div>` + log.innerHTML; setTimeout(()=> log.innerHTML = `<div style="color:var(--muted)">'Я еду', — говорит напарник.</div>` + log.innerHTML, 1200); }); }
+  if($('callPolice')){ $('callPolice').addEventListener('click', ()=> { const log=$('phoneLog'); log.innerHTML = `<div style="color:var(--muted)">Вызов полиции...</div>` + log.innerHTML; setTimeout(()=> log.innerHTML = `<div style="color:var(--muted)">'Патруль выехал', — сообщает диспетчер.</div>` + log.innerHTML, 1200); }); }
+  $('phoneCall') && $('phoneCall').addEventListener('click', ()=> { const v=$('phoneInput').value.trim(); const log=$('phoneLog'); if(!v) return; if(v.includes('.')||v.startsWith('http')){ window.open(v.startsWith('http')?v:'http://'+v,'_blank'); log.innerHTML = `<div style="color:var(--muted)">Открыт сайт: ${escape(v)}</div>` + log.innerHTML; } else { log.innerHTML = `<div style="color:var(--muted)">Вызов ${escape(v)}...</div>` + log.innerHTML; setTimeout(()=> log.innerHTML = `<div style="color:var(--muted)">'Номер не отвечает', — автоответчик.</div>` + log.innerHTML, 1200); } });
+  // other binds
+  $('profilesBtn') && $('profilesBtn').addEventListener('click', ()=> { renderProfilesModal(); $('profilesModal').style.display='flex'; });
+  $('closeProfiles') && $('closeProfiles').addEventListener('click', ()=> $('profilesModal').style.display='none');
+  $('interrogateBtn') && $('interrogateBtn').addEventListener('click', ()=> openInterrogation());
+  $('findKiller') && $('findKiller').addEventListener('click', tryFindKiller);
+  $('endingsBtn') && $('endingsBtn').addEventListener('click', ()=> { renderEndings(); $('endingsModal').style.display='flex'; });
+  $('endingsClose') && $('endingsClose').addEventListener('click', ()=> $('endingsModal').style.display='none');
+  $('endingClose') && $('endingClose').addEventListener('click', ()=> $('endingRevealModal').style.display='none');
+  $('revealBlood') && $('revealBlood').addEventListener('click', ()=> { $('bloodOverlay').classList.toggle('on'); });
+  $('dnaCompare') && $('dnaCompare').addEventListener('click', ()=> {
+    const code = $('dnaInput').value.trim();
+    if(!code){ showToast('Вставьте DNA-код'); return; }
+    const matches = state.suspects.map(s => ({ id: s.id, name: s.name, dna: (s.name.split(' ').map(p=>p[0]).join('')+(s.height%100)) }));
+    const found = matches.find(m => m.dna.toLowerCase() === code.toLowerCase());
+    if(found){ showToast('ДНК совпала: ' + found.name); state.coins += 8; renderStats(); save('autosave'); } else showToast('Совпадений не найдено');
+  });
+  $('addTimeline') && $('addTimeline').addEventListener('click', ()=> { const v = $('timelineInput').value.trim(); if(!v) return; state.timeline.push({ text:v, time:new Date().toISOString() }); $('timelineInput').value=''; renderTimeline(); save('autosave'); renderStats(); });
+  $('partnerHelp') && $('partnerHelp').addEventListener('click', partnerHelp);
+  $('saveNotes') && $('saveNotes').addEventListener('click', ()=> { localStorage.setItem('rose_notes', $('notebook').value||''); showToast('Заметки сохранены'); });
+  $('clearNotes') && $('clearNotes').addEventListener('click', ()=> { if(confirm('Очистить заметки?')){ $('notebook').value=''; localStorage.removeItem('rose_notes'); } });
+  // cipher modal close
+  $('cipherCloseBtn') && $('cipherCloseBtn').addEventListener('click', ()=> $('cipherModal').style.display='none');
 }
 
-/* --- Cipher decode --- */
-function caesarDecode(text, shift){ if(!text) return text; const a='abcdefghijklmnopqrstuvwxyz'; const A=a.toUpperCase(); return text.split('').map(ch=>{ if(a.includes(ch)) return a[(a.indexOf(ch)-shift+26)%26]; if(A.includes(ch)) return A[(A.indexOf(ch)-shift+26)%26]; return ch; }).join(''); }
+/* ====== DNA & labs bound above (bindLab already called earlier in some flows) ====== */
 
-/* --- Profiles modal --- */
-function openProfile(s){ renderProfileDetail(s); $('profilesModal').style.display='flex'; }
-function renderProfileDetail(s){
-  $('profilesContent').innerHTML = `<strong>${escapeHtml(s.name)}</strong> — <em>${escapeHtml(s.role)}</em><div style="margin-top:6px;color:var(--muted)">Рост: ${s.height} см · Обувь: ${s.shoe}</div><div style="margin-top:6px">${escapeHtml(s.desc)}</div><div style="margin-top:8px"><button class="btn" onclick="inspectSuspect('${s.id}')">Допросить</button></div>`;
-}
-function inspectSuspect(id){ $('profilesModal').style.display='none'; $('interrogateModal').style.display='flex'; $('interrogateSelect').value = id; addChat('ai','Допрос начат: ' + GAME.suspects.find(s=>s.id===id).name); detectiveSpeak('Допрос начат'); }
+/* ====== Helper functions and small UI functions ====== */
+function inspectSuspect(id){ $('profilesModal').style.display='none'; $('interrogateModal').style.display='flex'; $('interrogateSelect').value = id; addChatAI('Допрос начат: ' + state.suspects.find(s=>s.id===id).name); }
+function showPhysical(id){ const s = state.suspects.find(x=>x.id===id); if(!s) return; const text = `${s.name}. Рост: ${s.height} см. Обувь: ${s.shoe}. Внешность: ${s.desc}`; $('endingTitle').innerText = 'Внешность'; $('endingText').innerHTML = `<div style="color:var(--muted)">${escape(text)}</div>`; $('endingRevealModal').style.display='flex'; }
+function partnerHelp(){ const locked = state.clues.filter(c=> c.locked && !state.opened[c.id]); if(locked.length){ const pick = locked[Math.floor(Math.random()*locked.length)]; const el = document.getElementById(pick.id); if(el){ el.style.boxShadow='0 0 18px rgba(176,138,92,0.95)'; setTimeout(()=> el.style.boxShadow='',2600); } showToast('Напарник: проверьте ' + pick.title); } else showToast('Напарник: проверьте чернильные следы'); }
 
-/* --- Accuse / endings --- */
-function attemptAccuse(){
-  // simple heuristic: suspect with most linked clues
-  const counts = GAME.suspects.map(s=>({id:s.id,name:s.name,c:GAME.links[s.id].length}));
-  counts.sort((a,b)=>b.c-a.c);
-  const top = counts[0];
-  if(!top || top.c === 0){ showToast('Недостаточно доказательств'); detectiveSpeak('Недостаточно доказательств'); return; }
-  // decide ending
-  const matched = ENDINGS.find(e => e.cond(GAME));
-  if(matched){ showEnding(matched.id); } else { showToast('Неоднозначно'); detectiveSpeak('Неоднозначно'); }
-}
+/* ====== Render endings ====== */
 function renderEndings(){
-  const node = $('endingsList'); node.innerHTML = '';
+  const list = $('endingsList'); list.innerHTML = '';
   ENDINGS.forEach(e=>{
-    const unlocked = e.cond(GAME);
-    const div = document.createElement('div'); div.style.padding='8px'; div.style.marginBottom='8px'; div.style.border='1px solid rgba(255,255,255,0.03)';
-    div.innerHTML = `<strong>${escapeHtml(e.title)}</strong><div style="color:var(--muted);margin-top:6px">${escapeHtml(e.desc)}</div><div style="color:${unlocked? '#9fff9f':'#cfcfcf'};margin-top:6px">${unlocked? 'Доступна' : 'Недоступна'}</div>`;
-    div.addEventListener('click', ()=> { if(unlocked) showEnding(e.id); else showToast('Закрыта'); });
-    node.appendChild(div);
+    const unlocked = e.cond(state);
+    const card = document.createElement('div'); card.className='ending-card'; card.style.padding='10px'; card.style.marginBottom='8px'; card.style.border='1px solid rgba(255,255,255,0.03)';
+    card.innerHTML = `<div style="display:flex;justify-content:space-between"><strong>${escape(e.title)}</strong><div style="color:${unlocked?'#9fff9f':'#cfcfcf'}">${unlocked? 'Доступна':'Недоступна'}</div></div><div style="color:var(--muted);margin-top:6px">${escape(e.desc)}</div>`;
+    card.addEventListener('click', ()=> { if(unlocked) showEnding(e.id); else showToast('Эта концовка закрыта'); });
+    list.appendChild(card);
   });
 }
-function showEnding(id){
-  const e = ENDINGS.find(x=>x.id===id); if(!e) return; $('endingTitle').innerText = e.title; $('endingText').innerText = e.desc; $('endingModal').style.display='flex'; detectiveSpeak('Концовка: ' + e.title);
+function showEnding(id){ const e = ENDINGS.find(x=>x.id===id); if(!e) return; $('endingTitle').innerText = e.title; $('endingText').innerText = e.desc; $('endingRevealModal').style.display='flex'; const hist = JSON.parse(localStorage.getItem('rose_endings')||'[]'); hist.unshift({id:e.id,time:new Date().toISOString()}); localStorage.setItem('rose_endings', JSON.stringify(hist.slice(0,50))); }
+
+/* ====== Basic gameplay: room inspection, clue reveal ====== */
+function inspectRoom(room){
+  const found = state.clues.filter(c=> c.room === room);
+  if(found.length === 0){ showToast('В этой комнате ничего'); return; }
+  found.forEach(c=> {
+    if(!c.locked) state.opened[c.id] = true;
+    else {
+      const el = document.getElementById(c.id);
+      if(el) el.querySelector('p').textContent = 'Найдена, но скрыта — используйте инструмент';
+    }
+  });
+  renderAll();
+  showToast(`В ${room} найдено ${found.length} улик`);
+  save('autosave');
 }
 
-/* --- Save / load --- */
-function saveGame(){ try{ localStorage.setItem('rose_autosave', JSON.stringify(GAME)); LOG('autosave saved'); }catch(e){ LOG('save err', e); } }
-function loadGame(){ const s = localStorage.getItem('rose_autosave'); if(!s) return false; try{ GAME = JSON.parse(s); renderAll(); return true; }catch(e){ return false; } }
+/* ====== Cipher functions (simple Caesar) ====== */
+function tryCipher(){
+  const shift = Number($('cipherShift').value) || 0; const clueId = $('cipherModal').dataset.clue;
+  const clue = state.clues.find(c=> c.id === clueId) || state.clues.find(c=> c.type === 'cipher' || c.type === 'cipher2');
+  if(!clue){ showToast('Записка не найдена'); return; }
+  const decoded = caesarDecode(clue.text, shift); $('cipherOutput').value = decoded;
+  if(/он знает|в\./i.test(decoded) || shift === 3){
+    showToast('Записка расшифрована');
+    clue.locked = false; clue.text = 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»'; state.opened[clue.id] = true; renderAll(); $('cipherModal').style.display='none'; save('autosave');
+  }
+}
+function caesarDecode(text, shift){ if(!text) return text; const a='abcdefghijklmnopqrstuvwxyz'; const A=a.toUpperCase(); return text.split('').map(ch=>{ const i = a.indexOf(ch); if(i>=0) return a[(i-shift+26)%26]; const I=A.indexOf(ch); if(I>=0) return A[(I-shift+26)%26]; return ch; }).join(''); }
 
-/* --- Helpers --- */
-function getIcon(type){ switch(type){ case 'cipher': return '✉️'; case 'puzzle': return '🧩'; case 'symbol': return '🔱'; case 'vial': return '🧪'; case 'foot': return '👣'; default: return '🔎'; } }
+/* ====== Initialize UI on load (attempt to load autosave prompt) ====== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  LOG('Initializing UI');
+  bindGlobalUI();
+  bindPhone(); bindMinigameTriggers();
+  // load notes
+  const notes = localStorage.getItem('rose_notes'); if(notes) $('notebook').value = notes;
+  // autosave prompt
+  const autos = load('autosave'); if(autos && confirm('Найден автосейв. Загрузить?')){ state = autos; renderAll(); $('menuScreen').style.display='none'; showToast('Автосейв загружен'); } else {
+    // leave menu visible until Start
+  }
+});
 
-/* --- Setup initial content --- */
-setupGame(); renderAll();
+/* ====== Helpers for binds not defined earlier ====== */
+function bindPhone(){ /* already bound in bindGlobalUI via function, left for safe access */ }
+function bindMinigameTriggers(){ /* bound in bindGlobalUI */ }
 
-LOG('Fixes applied: клики делегированы; улики теперь кликабельны; добавлена озвучка и голос детектива (TTS).');
+/* ====== Expose some functions for debugging/testing ====== */
+window.startNewGame = startNewGame;
+window.triggerAttack = triggerAttack;
+window.safePlay = safePlay;
+
+LOG('Script loaded — ready.');
 </script>
 </body>
 </html>
+```
