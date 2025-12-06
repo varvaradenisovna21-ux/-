@@ -3,696 +3,822 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Убийство в особняке Роузвуд — Мобильная и ПК версии</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Raleway:wght@300;500;700&display=swap" rel="stylesheet">
+<title>Убийство в особняке Роузвуд — Полная версия</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg-1:#060607;
-  --bg-2:#141214;
-  --panel:#1c1818;
+  --bg:#0b0b0d;
+  --panel:#141215;
   --accent:#b08a5c;
   --accent-2:#7a4e2f;
   --muted:#cfcfcf;
-  --glass: rgba(255,255,255,0.03);
-  --radius:12px;
-  --gap:14px;
+  --danger:#b04a4a;
+  --glass:rgba(255,255,255,0.035);
+  --radius:14px;
 }
 *{box-sizing:border-box}
-html,body{height:100%; margin:0; font-family:"Raleway",system-ui,Arial; -webkit-font-smoothing:antialiased;}
-body{
-  color:#efeae4;
-  background:
-    radial-gradient(800px 400px at 8% 8%, rgba(176,138,92,0.03), transparent),
-    linear-gradient(180deg,var(--bg-1), var(--bg-2));
-  -webkit-font-smoothing:antialiased;
-  padding-bottom:80px;
-}
-
-/* Header */
+html,body{height:100%; margin:0; background:linear-gradient(180deg,#070607 0%, #0e0e10 80%); color:#efece6; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased;}
 .header{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  justify-content:space-between;
-  padding:18px 16px;
-  border-bottom:1px solid rgba(255,255,255,0.03);
+  display:flex; justify-content:space-between; align-items:center; padding:18px 22px; border-bottom:1px solid rgba(255,255,255,0.02); position:sticky; top:0; backdrop-filter: blur(4px); z-index:40;
 }
-.title h1{ margin:0; font-family:'Cinzel', serif; font-size:1.2rem; letter-spacing:1px;}
-.title p{ margin:2px 0 0 0; color:var(--muted); font-size:0.88rem;}
+.brand { display:flex; gap:14px; align-items:center; }
+.logo { width:56px; height:56px; border-radius:8px; background:linear-gradient(180deg,#2b1f18,#191010); display:grid; place-items:center; font-family:Cinzel, serif; font-size:18px; color:#f7efe7; border:1px solid rgba(255,255,255,0.03); }
+.title { font-family:Cinzel, serif; font-size:1.2rem; color:#efe6dc; }
+.controls { display:flex; gap:10px; align-items:center; }
 
-/* Layout */
-.container{
-  max-width:1200px;
-  margin:18px auto;
-  display:grid;
-  grid-template-columns:320px 1fr 320px;
-  gap:var(--gap);
-  padding:0 16px;
-}
-@media (max-width:1000px){
-  .container{ grid-template-columns:1fr; }
-}
+.container { max-width:1200px; margin:20px auto; padding:12px; display:grid; grid-template-columns: 320px 1fr 360px; gap:18px; align-items:start; }
+@media (max-width:1100px){ .container{ grid-template-columns: 1fr; } .right-panel{ order:3 } }
 
-/* Panels */
-.panel{
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  padding:12px;
-  border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,0.02);
-  box-shadow:0 10px 30px rgba(0,0,0,0.6);
-}
+.panel { background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:14px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.02); box-shadow: 0 16px 40px rgba(0,0,0,0.6); }
 
-/* Suspects */
-.suspect{ display:flex; gap:10px; align-items:center; padding:8px; border-radius:10px; margin-top:10px; background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent); }
-.avatar{ width:56px; height:56px; border-radius:8px; overflow:hidden; flex:0 0 56px; display:grid; place-items:center; background:linear-gradient(180deg,#2b2420,#211817); border:2px solid rgba(255,255,255,0.03); }
-.suspect .meta{ flex:1; }
-.suspect .name{ font-weight:700; }
-.dropzone{ min-width:44px; min-height:44px; border-radius:8px; background:var(--glass); display:grid; place-items:center; color:var(--muted); font-weight:700; }
+.left-panel .case-title { font-family:Cinzel, serif; font-size:1.04rem; margin-bottom:8px; color:#fdecd6; }
+.small { color:var(--muted); font-size:0.92rem; }
 
-/* Map & hotspots */
-.map{ position:relative; border-radius:var(--radius); overflow:hidden; padding:10px; min-height:260px; }
-#mapSvg{ width:100%; height:auto; display:block; border-radius:8px; filter:contrast(0.9) saturate(0.9); }
-.hotspot{ position:absolute; transform:translate(-50%,-50%); background:linear-gradient(180deg, rgba(176,138,92,0.14), rgba(176,138,92,0.08)); padding:8px 10px; border-radius:999px; font-weight:700; color:#120b06; cursor:pointer; border:1px solid rgba(176,138,92,0.12); box-shadow:0 8px 22px rgba(0,0,0,0.6); user-select:none; }
-.hotspot:active{ transform:translate(-50%,-50%) scale(0.98); }
+.suspect { display:flex; gap:12px; align-items:center; padding:10px; margin-top:10px; border-radius:10px; background:linear-gradient(90deg, rgba(255,255,255,0.01), transparent); border:1px solid rgba(255,255,255,0.02); }
+.avatar { width:64px; height:64px; border-radius:10px; object-fit:cover; border:2px solid rgba(255,255,255,0.03); background:#1b1412; }
+.smeta { flex:1; }
+.sname { font-weight:700; }
+.srole { color:var(--muted); font-size:0.9rem; }
 
-/* Clues */
-.clues{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin-top:10px; }
-.clue{ background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); cursor:pointer; user-select:none; display:flex; gap:10px; align-items:flex-start; }
-.thumb{ width:56px; height:56px; border-radius:8px; flex:0 0 56px; display:grid; place-items:center; background:linear-gradient(180deg,#211815,#1a1412); }
-.clue h4{ margin:0; font-size:0.95rem; }
-.clue p{ margin:6px 0 0 0; color:var(--muted); font-size:0.86rem; }
-.clue.locked{ opacity:0.8; filter:grayscale(0.1); }
+.map { position:relative; border-radius:12px; overflow:hidden; padding:8px; min-height:360px; display:flex; flex-direction:column; gap:12px; background:linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.36)); }
+.map-canvas { width:100%; border-radius:8px; overflow:hidden; background:linear-gradient(180deg,#231a17,#1b1411); display:block; position:relative; height:320px; }
+.hotspot { position:absolute; transform:translate(-50%,-50%); background:linear-gradient(180deg, rgba(176,138,92,0.14), rgba(176,138,92,0.08)); padding:8px 12px; border-radius:999px; font-weight:700; color:#120b06; cursor:pointer; border:1px solid rgba(176,138,92,0.12); box-shadow:0 10px 28px rgba(0,0,0,0.6); user-select:none; transition:transform .12s ease, box-shadow .12s ease; }
+.hotspot:hover { transform:translate(-50%,-50%) scale(1.05); box-shadow:0 18px 40px rgba(0,0,0,0.7); }
 
-/* Tools right */
-.tools .row{ display:flex; gap:8px; margin-top:8px; }
-.input{ width:100%; padding:8px; border-radius:8px; background:#0e0e0e; color:#efeae4; border:1px solid rgba(255,255,255,0.03); }
+.clues { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:12px; }
+.clue { background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); cursor:pointer; display:flex; gap:10px; align-items:flex-start; transition:transform .12s ease; }
+.clue:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,0.6); }
+.thumb { width:64px; height:64px; border-radius:8px; background:#201612; display:grid; place-items:center; font-size:18px; color:#d9c8ae; }
+.clue h4 { margin:0; font-size:1rem; }
+.clue p { margin:6px 0 0 0; color:var(--muted); font-size:0.9rem; }
 
-/* Modals */
-.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:9999; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85)); }
-.card{ width:520px; max-width:94%; background:linear-gradient(180deg,#151414,#0f0f0f); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); }
+.right-panel .tool { margin-bottom:12px; }
+.btn { background:var(--accent); color:#070707; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
+.btn.secondary { background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.03); }
+.control-row { display:flex; gap:8px; align-items:center; margin-top:8px; }
 
-/* mobile footer toolbar */
-.footerToolbar{ display:none; position:fixed; left:0; right:0; bottom:0; background:linear-gradient(90deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)); padding:8px 12px; gap:10px; justify-content:space-between; align-items:center; z-index:9999; }
-.footerToolbar .btn{ padding:8px 12px; border-radius:10px; }
-@media (max-width:1000px){
-  .footerToolbar{ display:flex; }
-  .header{ padding:12px; }
-  .title h1{ font-size:1.05rem; }
-  .map{ min-height:200px; }
-}
+.modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:9999; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85)); }
+.card { width:760px; max-width:94%; background:linear-gradient(180deg,#121212,#0f0f0f); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); color:#efece6; box-shadow:0 30px 80px rgba(0,0,0,0.8); }
+.card.small { width:520px; max-width:92%; }
 
+.header-overlay { display:flex; gap:12px; align-items:center; }
+.progress { color:var(--muted); font-size:0.95rem; }
+.footer-note { text-align:center; color:var(--muted); margin-top:18px; }
+
+/* spooky touches */
+.candle { width:10px; height:28px; background:linear-gradient(180deg,#ffd5a6,#ffcf8a); border-radius:6px; display:inline-block; margin-right:6px; box-shadow:0 0 16px rgba(255,200,120,0.08); }
+.flicker { animation:flicker 1.2s infinite; }
+@keyframes flicker { 0%{filter:brightness(0.95)} 25%{filter:brightness(1.12)} 50%{filter:brightness(0.9)} 75%{filter:brightness(1.06)} 100%{filter:brightness(0.94)} }
+
+/* endings list */
+.endings-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+.ending-card { padding:12px; border-radius:10px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border:1px solid rgba(255,255,255,0.02); }
 /* debug */
-#debug{ position:fixed; right:12px; bottom:86px; width:300px; max-height:260px; overflow:auto; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(8,8,8,0.85)); color:#fff; border-radius:8px; padding:10px; border:1px solid rgba(255,255,255,0.03); font-size:12px; z-index:99999; }
-
-/* subtle vignette */
-.vignette{ position:fixed; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.7) 70%); z-index:0; }
+#debug { position:fixed; right:14px; bottom:14px; width:320px; max-height:260px; overflow:auto; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(8,8,8,0.85)); color:#fff; border-radius:8px; padding:10px; border:1px solid rgba(255,255,255,0.03); font-size:12px; z-index:99999; }
 </style>
 </head>
 <body>
   <header class="header">
-    <div class="title">
-      <h1>Убийство в особняке Роузвуд</h1>
-      <p>Адаптировано для ПК и мобильных устройств — детали и мини‑игры</p>
+    <div class="brand">
+      <div class="logo">Р</div>
+      <div>
+        <div class="title">Убийство в особняке Роузвуд</div>
+        <div class="small">Полная, атмосферная версия — множественные концовки и мини‑игры</div>
+      </div>
     </div>
-    <div style="display:flex; gap:10px; align-items:center;">
-      <div id="progressText" style="color:var(--muted)">Прогресс: <strong id="progressPct">0%</strong></div>
-      <button id="audioToggle" class="btn" style="background:transparent; border:1px solid rgba(255,255,255,0.03); color:var(--muted)">Звук: выкл</button>
+    <div class="controls header-overlay">
+      <div class="candle flicker" title="Свеча"></div>
+      <div class="progress">Прогресс: <strong id="progressPct">0%</strong></div>
+      <button id="audioToggle" class="btn secondary">Звук: выкл</button>
+      <button id="newGame" class="btn">Новая игра</button>
+      <div class="small">Сохранения: <span id="saveStatus">нет</span></div>
     </div>
   </header>
 
-  <main class="container" role="main">
-    <!-- LEFT: suspects -->
-    <aside class="panel" aria-label="Подозреваемые">
-      <div class="case-title" style="font-family:'Cinzel', serif; font-size:1.05rem;">Дело: Роузвуд</div>
-      <div style="color:var(--muted); margin-top:6px;">Перетащите улику на карточку подозреваемого или нажмите на улице для подробностей. На мобильных — удерживайте улику, затем выберите подозреваемого.</div>
+  <main class="container">
+    <!-- LEFT -->
+    <aside class="panel left-panel">
+      <div class="case-title">Дело: Смерть лорда Ричарда</div>
+      <div class="small">Ночь. Гроза. Особняк хранят больше тайн, чем видно на карте. Ищите улики, расшифровывайте записки, играйте в мини‑игры и принимайте решения — они влияют на финал.</div>
 
-      <div id="suspectsArea" style="margin-top:12px"></div>
-
-      <div style="margin-top:12px; color:var(--muted)">
-        <div>Связи: <span id="linksSummary">нет</span></div>
-      </div>
-    </aside>
-
-    <!-- CENTER: map + clues -->
-    <section class="panel" aria-label="Карта и улики">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div style="font-family:'Cinzel', serif; font-size:1.02rem;">Карта особняка</div>
-        <div style="color:var(--muted); font-size:0.9rem">Нажмите на область, чтобы осмотреть</div>
+      <div style="margin-top:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong>Подозреваемые</strong>
+          <button id="viewProfiles" class="btn secondary">Профили</button>
+        </div>
+        <div id="suspectsList" style="margin-top:10px"></div>
       </div>
 
-      <div class="map" style="margin-top:10px;">
-        <!-- simple generated SVG map -->
-        <svg id="mapSvg" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схематичная карта особняка">
-          <defs>
-            <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#2b2320"/><stop offset="1" stop-color="#191414"/></linearGradient>
-            <filter id="grain"><feTurbulence baseFrequency="0.8" numOctaves="1" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#g1)"/>
-          <!-- rooms (simple boxes) -->
-          <rect x="40" y="40" width="300" height="200" rx="12" fill="#2b1f18" stroke="#3a2a22"/>
-          <text x="190" y="150" fill="#cfc0a8" font-size="22" font-family="Cinzel" text-anchor="middle">Библиотека</text>
-
-          <rect x="380" y="40" width="260" height="180" rx="10" fill="#2b1f18" stroke="#3a2a22"/>
-          <text x="510" y="120" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Музыкальная</text>
-
-          <rect x="660" y="40" width="280" height="180" rx="10" fill="#2b1f18" stroke="#3a2a22"/>
-          <text x="800" y="120" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Кабинет</text>
-
-          <rect x="40" y="270" width="380" height="300" rx="10" fill="#231a17" stroke="#33231f"/>
-          <text x="230" y="420" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Библиотека / Склад</text>
-
-          <rect x="440" y="270" width="500" height="300" rx="10" fill="#231a17" stroke="#33231f"/>
-          <text x="690" y="420" fill="#cfc0a8" font-size="20" font-family="Cinzel" text-anchor="middle">Главный этаж / Подвал</text>
-        </svg>
-
-        <!-- hotspots (positioned in percents) -->
-        <div class="hotspot" data-room="library" style="left:18%; top:22%;">Библиотека</div>
-        <div class="hotspot" data-room="music" style="left:49%; top:16%;">Музыка</div>
-        <div class="hotspot" data-room="office" style="left:78%; top:20%;">Кабинет</div>
-        <div class="hotspot" data-room="garden" style="left:26%; top:62%;">Сад</div>
-        <div class="hotspot" data-room="basement" style="left:76%; top:76%;">Подвал</div>
-        <div class="hotspot" data-room="attic" style="left:56%; top:62%;">Чердак</div>
-      </div>
-
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-        <div style="font-weight:700">Улики</div>
-        <div style="color:var(--muted)">Держите и перетаскивайте на подозреваемого</div>
-      </div>
-
-      <div id="cluesGrid" class="clues" aria-live="polite"></div>
-    </section>
-
-    <!-- RIGHT: tools -->
-    <aside class="panel tools" aria-label="Инструменты">
-      <div>
-        <h3 style="margin:0; font-family:'Cinzel', serif;">Инструменты</h3>
-        <div style="color:var(--muted); margin-top:6px;">Блокнот, таймлайн, шифры и мини‑игры</div>
-        <div class="row" style="margin-top:10px;">
-          <button id="openNotebook" class="btn">Блокнот</button>
-          <button id="openTimeline" class="btn secondary">Таймлайн</button>
-          <button id="openCipher" class="btn">Цезарь</button>
+      <div style="margin-top:12px;">
+        <strong>Блокнот</strong>
+        <textarea id="notebook" rows="6" style="width:100%; margin-top:8px; resize:vertical; background:#0b0b0b; color:#efece6; border-radius:8px; padding:8px; border:1px solid rgba(255,255,255,0.03)"></textarea>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button id="saveNotes" class="btn">Сохранить заметки</button>
+          <button id="clearNotes" class="btn secondary">Очистить</button>
         </div>
       </div>
 
       <div style="margin-top:12px;">
-        <h3 style="margin:0; font-family:'Cinzel', serif;">Обвинение</h3>
-        <div style="color:var(--muted); margin-top:6px;">Выберите и предъявите доказательства</div>
-        <select id="accuseSelect" class="input" style="margin-top:8px;">
-          <option value="">— Выберите —</option>
-        </select>
-        <div style="display:flex; gap:8px; margin-top:8px;">
-          <button id="accuseBtn" class="btn">Обвинить</button>
-          <button id="reviewBtn" class="btn secondary">Проверить</button>
+        <strong>Подсказка</strong>
+        <div id="hintBox" class="small" style="margin-top:6px;">Откройте хотя бы 3 улики, чтобы получить первую подсказку.</div>
+      </div>
+
+    </aside>
+
+    <!-- CENTER -->
+    <section class="panel map-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong style="font-family:Cinzel, serif; font-size:1.05rem;">Карта особняка</strong>
+        <div class="small">Кликните на область — осмотрите и соберите улики</div>
+      </div>
+
+      <div class="map">
+        <div class="map-canvas" id="mapCanvas" role="img" aria-label="Карта особняка">
+          <!-- Hotspots: absolute positions in percent -->
+          <div class="hotspot" data-room="library" style="left:18%; top:22%;">📚 Библиотека</div>
+          <div class="hotspot" data-room="music" style="left:48%; top:18%;">🎹 Музыка</div>
+          <div class="hotspot" data-room="office" style="left:76%; top:22%;">🗄 Кабинет</div>
+          <div class="hotspot" data-room="dining" style="left:34%; top:56%;">🍽 Столовая</div>
+          <div class="hotspot" data-room="garden" style="left:14%; top:78%;">🌹 Сад</div>
+          <div class="hotspot" data-room="basement" style="left:74%; top:76%;">⚙️ Подвал</div>
+          <div class="hotspot" data-room="attic" style="left:54%; top:44%;">🕰 Чердак</div>
         </div>
-        <div id="accuseResult" style="margin-top:8px; font-weight:700;"></div>
+
+        <div style="display:flex; justify-content:space-between; gap:12px; margin-top:12px;">
+          <div style="flex:1">
+            <strong>Улики</strong>
+            <div id="cluesGrid" class="clues" style="margin-top:10px;"></div>
+          </div>
+
+          <div style="width:320px;">
+            <div class="panel small" style="padding:12px;">
+              <strong>Таймлайн</strong>
+              <div id="timelineList" style="margin-top:8px; min-height:80px; color:var(--muted)">Пока пусто</div>
+              <div style="display:flex; gap:8px; margin-top:8px;">
+                <input id="timelineInput" placeholder="23:10 — крик" style="flex:1; background:#0b0b0b; color:#efece6; border-radius:8px; padding:8px; border:1px solid rgba(255,255,255,0.03)"/>
+                <button id="addTimeline" class="btn">Добавить</button>
+              </div>
+            </div>
+
+            <div class="panel tool" style="margin-top:12px; padding:12px;">
+              <strong>Инструменты</strong>
+              <div style="display:flex; gap:8px; margin-top:8px;">
+                <button id="cipherBtn" class="btn">Цезарь (записка)</button>
+                <button id="puzzleBtn" class="btn secondary">Пазл (карта)</button>
+                <button id="matchBtn" class="btn secondary">Эмблемы</button>
+              </div>
+              <div style="margin-top:10px; color:var(--muted); font-size:0.9rem;">Мини‑игры дают ключи и открывают скрытые улики.</div>
+            </div>
+
+            <div class="panel tool" style="margin-top:12px;">
+              <strong>Обвинение</strong>
+              <select id="accuseSelect" style="width:100%; margin-top:8px; background:#0b0b0b; color:#efece6; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.03)"></select>
+              <div style="display:flex; gap:8px; margin-top:8px;">
+                <button id="accuseBtn" class="btn">Обвинить</button>
+                <button id="reviewBtn" class="btn secondary">Проверить доказательства</button>
+              </div>
+              <div id="accuseResult" style="margin-top:10px; font-weight:700;"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-note">Подсказка: некоторые концовки зависят от коллекции улик, таймлайна и одного скрытого решения. Ищите не только факты — ищите мотив.</div>
+    </section>
+
+    <!-- RIGHT -->
+    <aside class="panel right-panel">
+      <div class="tool">
+        <strong>Статистика</strong>
+        <div style="margin-top:8px;">Улик открыто: <span id="openedCount">0</span> / <span id="totalClues">0</span></div>
+        <div style="margin-top:8px;">Связей (доказательства → подозреваемые): <span id="linksCount">0</span></div>
+        <div style="margin-top:8px;">Сохранение: <button id="saveBtn" class="btn secondary">Сохранить</button></div>
+      </div>
+
+      <div class="tool">
+        <strong>Концовки</strong>
+        <div style="margin-top:8px; color:var(--muted)">Нажмите "Просмотреть концовки", чтобы открыть список. Обратите внимание: некоторые концовки скрыты и требуют специальных действий.</div>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button id="endingsBtn" class="btn">Просмотреть концовки</button>
+          <button id="revealSecret" class="btn secondary">Сделать странный ритуал</button>
+        </div>
+      </div>
+
+      <div class="tool" style="margin-top:12px;">
+        <strong>Атмосфера</strong>
+        <div style="margin-top:8px;">
+          <label style="display:flex; gap:8px; align-items:center;"><input id="toggleFog" type="checkbox"> Туман</label>
+          <label style="display:flex; gap:8px; align-items:center; margin-top:6px;"><input id="toggleVfx" type="checkbox"> Эффекты свечи</label>
+        </div>
       </div>
     </aside>
   </main>
 
-  <!-- mobile toolbar -->
-  <div class="footerToolbar" aria-hidden="false">
-    <div style="display:flex; gap:8px;">
-      <button id="quickNotebook" class="btn secondary">Блокнот</button>
-      <button id="quickTimeline" class="btn secondary">Таймлайн</button>
-    </div>
-    <div style="display:flex; gap:8px;">
-      <button id="quickCipher" class="btn">Заметка</button>
-      <button id="quickMatch" class="btn secondary">Эмблемы</button>
-    </div>
-  </div>
+  <!-- MODALS -->
+  <div id="profilesModal" class="modal"><div class="card"><h3>Профили подозреваемых</h3><div id="profilesContent" style="margin-top:12px"></div><div style="margin-top:12px; text-align:right"><button id="closeProfiles" class="btn secondary">Закрыть</button></div></div></div>
 
-  <!-- modals -->
-  <div id="modalCipher" class="modal" aria-hidden="true">
-    <div class="card">
-      <h3>Расшифровать записку — Цезарь</h3>
-      <div style="margin-top:6px; color:var(--muted)">Вводите сдвиг 1–25</div>
-      <div style="display:flex; gap:8px; margin-top:10px;">
-        <input id="cipherShift" type="number" min="1" max="25" value="3" class="input" />
-        <button id="cipherTry" class="btn">Попробовать</button>
-        <button id="cipherClose" class="btn secondary">Закрыть</button>
-      </div>
-      <textarea id="cipherOutput" rows="4" class="input" style="margin-top:10px" readonly></textarea>
-    </div>
-  </div>
+  <div id="cipherModal" class="modal"><div class="card small"><h3>Расшифровка (Цезарь)</h3><div class="small" style="margin-top:6px">Введите сдвиг (1–25)</div><div style="display:flex; gap:8px; margin-top:8px;"><input id="cipherShift" class="input" type="number" min="1" max="25" value="3" style="padding:8px; border-radius:8px; background:#0b0b0b; color:#efece6; border:1px solid rgba(255,255,255,0.03)"><button id="cipherTryBtn" class="btn">Попробовать</button></div><textarea id="cipherOutput" rows="4" class="input" style="margin-top:8px; width:100%; background:#0b0b0b; color:#efece6; border-radius:8px; padding:8px; border:1px solid rgba(255,255,255,0.03)" readonly></textarea><div style="margin-top:8px; text-align:right"><button id="cipherCloseBtn" class="btn secondary">Закрыть</button></div></div></div>
 
-  <div id="modalMatch" class="modal" aria-hidden="true">
-    <div class="card">
-      <h3>Мини‑игра: Эмблемы</h3>
-      <div style="margin-top:8px; color:var(--muted)">Выберите эмблему, совпадающую с символом</div>
-      <div id="matchArea" style="display:flex; gap:10px; margin-top:12px; justify-content:space-around"></div>
-      <div style="display:flex; justify-content:flex-end; margin-top:12px;">
-        <button id="matchClose" class="btn secondary">Закрыть</button>
-      </div>
-    </div>
-  </div>
+  <div id="puzzleModal" class="modal"><div class="card small"><h3>Пазл — Восстановите карту</h3><div id="puzzleBoard" style="margin-top:12px; display:grid; gap:4px; grid-template-columns: repeat(3, 1fr);"></div><div style="margin-top:12px; text-align:right"><button id="puzzleClose" class="btn secondary">Отмена</button></div></div></div>
 
-  <div id="modalNotebook" class="modal" aria-hidden="true">
-    <div class="card">
-      <h3>Блокнот</h3>
-      <textarea id="notebookText" class="input" rows="8" placeholder="Ваши заметки..."></textarea>
-      <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
-        <button id="nbSave" class="btn">Сохранить</button>
-        <button id="nbClose" class="btn secondary">Закрыть</button>
-      </div>
-    </div>
-  </div>
+  <div id="matchModal" class="modal"><div class="card small"><h3>Эмблемы — Найдите верную</h3><div id="matchArea" style="display:flex; gap:8px; margin-top:12px; justify-content:space-around;"></div><div style="margin-top:12px; text-align:right"><button id="matchCloseBtn" class="btn secondary">Закрыть</button></div></div></div>
+
+  <div id="endingsModal" class="modal"><div class="card"><h3>Список концовок</h3><div id="endingsList" style="margin-top:12px"></div><div style="margin-top:12px; text-align:right"><button id="endingsClose" class="btn secondary">Закрыть</button></div></div></div>
+
+  <div id="endingRevealModal" class="modal"><div class="card"><h3 id="endingTitle"></h3><div id="endingText" style="margin-top:12px; color:var(--muted)"></div><div style="margin-top:12px; text-align:right"><button id="endingClose" class="btn">OK</button></div></div></div>
 
   <div id="debug" aria-hidden="false"><strong>DEBUG</strong><div id="debugLog" style="white-space:pre-wrap; margin-top:8px; font-family:monospace; color:#cfcfcf">init...</div></div>
-  <div class="vignette"></div>
 
 <script>
 /*
-  Улучшенный, стабильный JS:
-  - адаптивный интерфейс (ПК + мобильные)
-  - drag & drop для ПК, touch support для мобильных (симулированная перетаскивание)
-  - встроенные SVG картинки (аватары, эмблемы, мини‑карта)
-  - дополнительные улики и мини‑игры
-  - debug панель для ошибок
+  Полная версия: детектив, страшная атмосфера, много концовок.
+  Особенности:
+  - Более 12 улик (случайным образом раскрываются дополнительные)
+  - Мини-игры: Цезарь, Пазл (3x3), Эмблемы (match)
+  - Система связывания улик с подозреваемыми (drag&drop для ПК + tap для моб)
+  - Таймлайн, блокнот, сохранение/загрузка
+  - Множество финалов в зависимости от найденных уликов, связей, таймлайна и "ритуалов"
 */
 
 (function(){
-  const debugEl = id('debugLog');
-  function debug(...a){ try{ if(debugEl) debugEl.textContent += '\\n' + a.join(' '); console.log(...a); }catch(e){} }
+  const LOG = (msg)=>{ try{ const el=document.getElementById('debugLog'); if(el) el.textContent += '\\n' + msg; console.log(msg);}catch(e){} };
 
-  window.onerror = function(msg, src, line, col, err){
-    debug('ERROR:', msg, src + ':' + line + ':' + col, err && err.stack ? err.stack.split('\\n')[0] : '');
+  window.addEventListener('error', (e)=> LOG('ERROR: '+e.message+' @ '+e.filename+':'+e.lineno) );
+
+  const DEFAULT_SUSPECTS = [
+    { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', male:true },
+    { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', male:false },
+    { id:'prof', name:'Профессор Морден', role:'Архивариус', male:true },
+    { id:'victoria', name:'Виктория Роузвуд', role:'Жена', male:false },
+    { id:'lina', name:'Лина Монт', role:'Гостья', male:false }
+  ];
+
+  // базовые улики — дополнительные могут генерироваться при новой игре
+  const MASTER_CLUES = [
+    { id:'cl1', title:'Тайная записка (зашифрована)', room:'office', type:'cipher', text:'Vkr ghqv wrfkh', locked:true },
+    { id:'cl2', title:'След обуви', room:'garden', type:'foot', text:'Подошва с логотипом B7', locked:false },
+    { id:'cl3', title:'Разорванный лист', room:'library', type:'paper', text:'Вырвано имя, пометка: 12/11', locked:false },
+    { id:'cl4', title:'Символ на стене', room:'music', type:'symbol', text:'Странный символ — эмблема', locked:false },
+    { id:'cl5', title:'Пепел и пятна масла', room:'dining', type:'ash', text:'Пепел и следы горючего', locked:false },
+    { id:'cl6', title:'Фрагмент карты (сожжен)', room:'basement', type:'puzzle', text:'Части карты — нужен пазл', locked:true },
+    { id:'cl7', title:'Флакон с эфиром', room:'attic', type:'vial', text:'Редкий эфир — запах наставляет на мысль', locked:false },
+    { id:'cl8', title:'Записка в книге', room:'library', type:'note', text:'"Власть — через тайну" — подпись В.', locked:false },
+    { id:'cl9', title:'Запечатанный конверт', room:'office', type:'seal', text:'Конверт с печатью', locked:true },
+    { id:'cl10', title:'Чернильные брызги', room:'office', type:'ink', text:'Чернила Wyn — редкая фирма', locked:false },
+    { id:'cl11', title:'Отпечаток перчатки', room:'music', type:'glove', text:'След перчатки с волокнами', locked:false },
+    { id:'cl12', title:'Неизвестные записи', room:'attic', type:'cipher2', text:'Uifsf dbo zpv', locked:true }
+  ];
+
+  // Endings — id + title + description + condition function (evaluates state) — many endings
+  const ENDINGS = [
+    { id:'end_true_crime', title:'Правда и суд', desc:'Вы собрали убедительные доказательства — Эдриан признан виновным и предан суду.', cond: (s)=> s.links['adrian'] && s.links['adrian'].length>=3 && s.timeline.length>=2 },
+    { id:'end_frame', title:'Подставлен', desc:'Вы обнаружили, что улики были подброшены. Истина — сложнее. Подозреваемый был подставлен.', cond: (s)=> (s.links['beatrice'] && s.links['beatrice'].length>=2) && (s.opened['cl6']===true) },
+    { id:'end_society', title:'Тайное общество', desc:'Вы раскрыли связь с обществом Морденов — дело масштабнее: закрытый заговор.', cond: (s)=> s.opened['cl4'] && s.opened['cl9'] },
+    { id:'end_supernatural', title:'За гранью', desc:'Необъяснимое. Вы нашли ритуальные отметки и странный эфир — события идут к сверхъестественному финалу.', cond: (s)=> s.opened['cl5'] && s.opened['cl7'] && s.ritualPerformed },
+    { id:'end_innocent', title:'Невиновен', desc:'Вы неправильно связали улики — настоящий убийца остался на свободе.', cond: (s)=> s.links['adrian'] && s.links['adrian'].length===0 && Object.values(s.links).flat().length>=3 },
+    { id:'end_treachery', title:'Предательство', desc:'Открылось предательство: близкий человек замешан в преступлении.', cond: (s)=> s.links['victoria'] && s.links['victoria'].length>=2 && s.opened['cl8'] },
+    { id:'end_open', title:'Открытый финал', desc:'Не хватило доказательств — дело осталось нераскрытым. Мир продолжает жить со своей тайной.', cond: (s)=> Object.values(s.links).flat().length < 3 && Object.keys(s.opened).length < 4 },
+    { id:'end_multiple_convict', title:'Множественное обвинение', desc:'Вы запутали следствие — арестовали сразу нескольких людей, но справедливость под вопросом.', cond: (s)=> Object.values(s.links).filter(a=>a.length>0).length>=3 }
+  ];
+
+  // Application state
+  let state = {
+    suspects: JSON.parse(JSON.stringify(DEFAULT_SUSPECTS)),
+    clues: [],
+    opened: {},          // opened clue ids map to true
+    links: {},           // suspectId => [clueId...]
+    timeline: [],
+    ritualPerformed: false,
+    audioOn: false,
+    fog: false,
+    vfx: true
   };
 
-  document.addEventListener('DOMContentLoaded', init);
+  // Utilities
+  const byId = id => document.getElementById(id);
+  function randShuffle(arr){ return arr.slice().sort(()=>Math.random()-0.5); }
 
-  // данные
-  const suspects = [
-    { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', color:'#9b6b49' },
-    { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', color:'#6b7f49' },
-    { id:'prof', name:'Профессор Морден', role:'Архивариус', color:'#406b7f' },
-    { id:'victoria', name:'Виктория Роузвуд', role:'Жена', color:'#7f4b6b' }
-  ];
-
-  const clues = [
-    { id:'cl1', title:'Тайная записка (зашифрована)', room:'office', text:'Vkr ghqv wrfkh', locked:true, type:'cipher' },
-    { id:'cl2', title:'След обуви', room:'garden', text:'Подошва с логотипом B7', locked:false, type:'foot' },
-    { id:'cl3', title:'Разорванный лист', room:'library', text:'Вырвано имя, пометка: 12/11', locked:false, type:'paper' },
-    { id:'cl4', title:'Символ на стене', room:'music', text:'Неизвестный символ', locked:false, type:'symbol' },
-    { id:'cl5', title:'Пепел на перилах', room:'dining', text:'Следы поджога и масла', locked:false, type:'ash' },
-    { id:'cl6', title:'Карта (фрагмент)', room:'basement', text:'Фрагмент карты с отметкой', locked:true, type:'photo' },
-    { id:'cl7', title:'Флакон с эфиром', room:'attic', text:'Реактив: запах редкого эфира', locked:false, type:'vial' },
-    { id:'cl8', title:'Записка в книге', room:'library', text:'"Власть — через тайну" — подпись В.', locked:false, type:'note' },
-    { id:'cl9', title:'Запечатанный конверт', room:'office', text:'Печать семьи', locked:true, type:'seal' },
-    { id:'cl10', title:'След перьевой ручки', room:'office', text:'Чернильные брызги: Wyn', locked:false, type:'ink' }
-  ];
-
-  // state
-  let state = { opened: {}, links: {}, timeline: [], audioOn:false };
-  suspects.forEach(s => state.links[s.id] = []);
-
-  // helper
-  function id(i){ return document.getElementById(i); }
-  function el(q, ctx=document){ return ctx.querySelector(q); }
-  function els(q, ctx=document){ return Array.from(ctx.querySelectorAll(q)); }
-  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
-
-  // render suspects (with generated SVG avatars)
-  function renderSuspects(){
-    const area = id('suspectsArea');
-    area.innerHTML = '';
-    suspects.forEach(s => {
-      const d = document.createElement('div');
-      d.className = 'suspect';
-      d.dataset.id = s.id;
-      d.innerHTML = `
-        <div class="avatar" aria-hidden="true">${avatarSVG(s.name, s.color)}</div>
-        <div class="meta">
-          <div class="name">${s.name}</div>
-          <div class="role">${s.role}</div>
-        </div>
-        <div class="dropzone" data-suspect="${s.id}">0</div>
-      `;
-      area.appendChild(d);
-    });
-    attachDropzones();
-    renderLinksSummary();
-    populateAccuseSelect();
-  }
-
-  // generated SVG for avatar — returns HTML string
-  function avatarSVG(name, color){
-    const initials = name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
-    const svg = `<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="${color}44"/><stop offset="1" stop-color="${color}22"/></linearGradient></defs><rect width="100%" height="100%" rx="8" fill="url(#g)"/><text x="50%" y="54%" font-family="Raleway" font-weight="700" font-size="18" text-anchor="middle" fill="#fff">${initials}</text></svg>`;
-    return svg;
-  }
-
-  // render clues grid — each clue has small generated thumbnail SVG
-  function renderClues(){
-    const grid = id('cluesGrid');
-    if(!grid) return;
-    grid.innerHTML = '';
-    clues.forEach(c => {
-      const card = document.createElement('div');
-      card.className = 'clue' + (c.locked ? ' locked' : '');
-      card.id = c.id;
-      card.draggable = true;
-      card.innerHTML = `<div class="thumb" aria-hidden="true">${thumbSVG(c.type)}</div>
-                        <div style="flex:1"><h4>${c.title}</h4><p>${c.locked ? 'Зашифрована / скрыта' : c.text}</p></div>`;
-      // events
-      card.addEventListener('click', ()=>onClueClick(c));
-      card.addEventListener('dragstart', (ev)=>{ ev.dataTransfer.setData('text/plain', c.id); });
-      // touch support for mobile: long press to start drag-mode (simulate)
-      addTouchDragSupport(card, c.id);
-      grid.appendChild(card);
-    });
-  }
-
-  // small thumbnail SVG generator based on type
-  function thumbSVG(type){
-    switch(type){
-      case 'foot': return svgIcon('M20 40c0 0 6-12 14-12 8 0 14 12 14 12s-6 4-14 4c-8 0-14-4-14-4z','foot');
-      case 'paper': return svgIcon('<rect x="6" y="6" width="44" height="44" rx="6" fill="#2b2119"/>','paper');
-      case 'symbol': return svgIcon('<circle cx="28" cy="28" r="16" fill="#3a2a22"/><path d="M28 18 L28 38 M18 28 L38 28" stroke="#b08a5c" stroke-width="2"/>','symbol');
-      case 'photo': return svgIcon('<rect x="6" y="10" width="44" height="32" rx="4" fill="#2b2119"/><circle cx="20" cy="24" r="4" fill="#b08a5c"/>','photo');
-      case 'vial': return svgIcon('<rect x="22" y="10" width="12" height="24" rx="4" fill="#2b2119"/><rect x="24" y="6" width="8" height="6" fill="#3a2a22"/>','vial');
-      case 'ink': return svgIcon('<path d="M18 44 L44 44 L36 34 L28 34 L18 44z" fill="#2b2119"/>','ink');
-      case 'seal': return svgIcon('<circle cx="28" cy="28" r="16" fill="#3a2a22"/><text x="28" y="33" font-size="12" text-anchor="middle" fill="#b08a5c">S</text>','seal');
-      case 'note': return svgIcon('<rect x="6" y="8" width="44" height="40" rx="4" fill="#2b2119"/><path d="M12 18 H44" stroke="#b08a5c" stroke-width="1"/><path d="M12 26 H36" stroke="#b08a5c" stroke-width="1"/>','note');
-      case 'ash': return svgIcon('<ellipse cx="28" cy="34" rx="16" ry="6" fill="#2b2119"/>','ash');
-      default: return svgIcon('<rect x="6" y="6" width="44" height="44" rx="6" fill="#2b2119"/>','def');
+  // Initialize a new game (populate clues with random extra)
+  function newGame(){
+    LOG('Starting new game');
+    // deep copy master clues
+    state.clues = JSON.parse(JSON.stringify(MASTER_CLUES));
+    // Randomly add a few "red herring" clues to increase variety
+    const extraCount = 3 + Math.floor(Math.random()*4);
+    for(let i=0;i<extraCount;i++){
+      const idx = Math.floor(Math.random()*MASTER_CLUES.length);
+      const c = MASTER_CLUES[idx];
+      // create a variation
+      state.clues.push(Object.assign({}, c, { id: c.id+'x'+i, title: c.title + ' (вспл.)', locked: Math.random()<0.4 }));
     }
-  }
-  function svgIcon(inner, cls){
-    if(inner.startsWith('<')) {
-      return `<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
-    } else {
-      return `<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" rx="8" fill="#221815"/></svg>`;
-    }
-  }
-
-  // clue click behavior
-  function onClueClick(c){
-    if(c.locked){
-      if(c.type === 'cipher'){ openCipherModal(); setCipherSource(c.text, c.id); }
-      else if(c.type === 'photo'){ openMatchModal(true); } // demo: open match to restore
-      else { toast('Эта улика требует инструментов. Откройте Инструменты.'); }
-      return;
-    }
-    // show details modal
-    showClueDetail(c);
+    // reset opened/links/timeline
+    state.opened = {};
+    state.links = {};
+    state.timeline = [];
+    state.ritualPerformed = false;
+    state.suspects = JSON.parse(JSON.stringify(DEFAULT_SUSPECTS));
+    state.suspects = randShuffle(state.suspects); // randomize suspects order
+    state.suspects.forEach(s => state.links[s.id] = []);
+    saveToLocal('autosave', state);
+    renderAll();
+    showToast('Новая игра начата. Следуйте подсказкам и будьте осторожны — решения имеют последствия.');
   }
 
-  function showClueDetail(c){
-    const modal = document.createElement('div');
-    modal.className = 'modal'; modal.style.display='flex';
-    modal.innerHTML = `<div class="card"><h3>${c.title}</h3><div style="color:var(--muted); margin-top:6px">Найдено в: ${c.room}</div><p style="margin-top:10px; color:var(--muted)">${c.text}</p><div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px"><button class="btn" id="closeClue">Закрыть</button></div></div>`;
-    document.body.appendChild(modal);
-    modal.querySelector('#closeClue').addEventListener('click', ()=> modal.remove());
-  }
-
-  // drag & drop support for PC, touch support for mobile
-  function attachDropzones(){
-    const zones = els('.dropzone');
-    zones.forEach(zone => {
-      zone.addEventListener('dragover', ev => { ev.preventDefault(); zone.style.outline='2px dashed rgba(176,138,92,0.6)'; });
-      zone.addEventListener('dragleave', ev => { zone.style.outline=''; });
-      zone.addEventListener('drop', ev => {
-        ev.preventDefault();
-        zone.style.outline='';
-        const clueId = ev.dataTransfer.getData('text/plain');
-        const suspectId = zone.dataset.suspect;
-        if(clueId && suspectId) linkEvidence(suspectId, clueId);
-      });
-    });
-  }
-
-  // touch drag simulation: long press to pick clue and tap suspect to drop
-  let touchDrag = null;
-  function addTouchDragSupport(card, clueId){
-    let timer = null;
-    card.addEventListener('touchstart', (ev)=>{
-      timer = setTimeout(()=>{
-        touchDrag = { clueId, card };
-        card.style.opacity = '0.6';
-        toast('Перетащите пальцем и коснитесь подозреваемого, чтобы привязать улику');
-      }, 350);
-    }, {passive:true});
-    card.addEventListener('touchend', ()=>{ clearTimeout(timer); });
-    card.addEventListener('touchmove', ()=>{ clearTimeout(timer); });
-  }
-  // tap on suspect when touchDrag active
-  document.addEventListener('touchend', (ev)=>{
-    if(!touchDrag) return;
-    const t = ev.changedTouches[0];
-    const elAt = document.elementFromPoint(t.clientX, t.clientY);
-    const zone = elAt && (elAt.closest && elAt.closest('.dropzone'));
-    if(zone){
-      const suspectId = zone.dataset.suspect;
-      if(suspectId) linkEvidence(suspectId, touchDrag.clueId);
-    }
-    // cleanup visuals
-    if(touchDrag && touchDrag.card) touchDrag.card.style.opacity = '';
-    touchDrag = null;
-  });
-
-  // link evidence
-  function linkEvidence(suspectId, clueId){
-    if(!state.links[suspectId]) state.links[suspectId] = [];
-    if(!state.links[suspectId].includes(clueId)){
-      state.links[suspectId].push(clueId);
-      toast('Улика привязана к ' + suspectId);
-      updateDropzoneCounts();
-      saveAuto();
-      updateProgress();
-    } else toast('Улика уже привязана к этому подозреваемому');
-  }
-
-  function updateDropzoneCounts(){
-    suspects.forEach(s => {
-      const zone = document.querySelector(`.dropzone[data-suspect="${s.id}"]`);
-      if(zone) zone.textContent = (state.links[s.id] || []).length || '0';
-    });
-    renderLinksSummary();
-  }
-
-  function renderLinksSummary(){
-    const parts = [];
-    suspects.forEach(s => {
-      const arr = state.links[s.id] || [];
-      if(arr.length) parts.push(`${s.name}: ${arr.join(', ')}`);
-    });
-    id('linksSummary').textContent = parts.length ? parts.join('; ') : 'нет';
-  }
-
-  // inspect room (hotspot)
-  function attachHotspots(){
-    els('.hotspot').forEach(h => h.addEventListener('click', ()=> inspectRoom(h.dataset.room)));
-  }
-  function inspectRoom(room){
-    // reveal clues present in room (but keep locked ones closed until tools solved)
-    const found = clues.filter(c => c.room === room);
-    if(found.length === 0){ toast('Ничего не обнаружено в этой области'); return; }
-    found.forEach(c => {
-      const card = id(c.id);
-      if(card){
-        if(!c.locked){
-          card.classList.remove('locked');
-          card.querySelector('p').textContent = c.text;
-          state.opened[c.id] = true;
-        } else {
-          card.querySelector('p').textContent = 'Найдена, но скрыта — требуется инструмент';
-        }
-      }
-    });
-    toast(`Осмотр ${room}: найдено ${found.length} улик`);
-    saveAuto();
+  // Render functions
+  function renderAll(){
+    renderSuspects();
+    renderClues();
+    renderTimeline();
+    renderStats();
+    populateAccuse();
+    updateHint();
     updateProgress();
   }
 
-  // simple toast
-  function toast(text){ const d=document.createElement('div'); d.textContent=text; d.style.position='fixed'; d.style.left='50%'; d.style.bottom='100px'; d.style.transform='translateX(-50%)'; d.style.background='rgba(0,0,0,0.8)'; d.style.color='#fff'; d.style.padding='8px 12px'; d.style.borderRadius='8px'; d.style.zIndex=99999; document.body.appendChild(d); setTimeout(()=>{ d.style.transition='opacity .5s'; d.style.opacity=0; setTimeout(()=>d.remove(),600); }, 1400); }
-
-  // cipher modal logic
-  let currentCipher = { text:'', id:null };
-  function openCipherModal(){
-    id('modalCipher').style.display = 'flex';
-    id('modalCipher').setAttribute('aria-hidden','false');
+  function renderSuspects(){
+    const area = byId('suspectsList');
+    area.innerHTML = '';
+    state.suspects.forEach(s=>{
+      const div = document.createElement('div');
+      div.className = 'suspect';
+      const imgSrc = findFemaleImageFor(s);
+      const imgHtml = imgSrc ? `<img class="avatar" src="${imgSrc}" alt="${escapeHtml(s.name)}">` : `<div class="avatar" style="display:grid; place-items:center; font-weight:700;">${escapeHtml(s.name.split(' ')[0].slice(0,1))}</div>`;
+      div.innerHTML = `${imgHtml}<div class="smeta"><div class="sname">${escapeHtml(s.name)}</div><div class="srole">${escapeHtml(s.role)}</div></div><div class="dropzone" data-suspect="${s.id}">${(state.links[s.id]||[]).length}</div>`;
+      area.appendChild(div);
+    });
+    attachDropzones();
   }
-  function closeCipherModal(){ id('modalCipher').style.display = 'none'; id('modalCipher').setAttribute('aria-hidden','true'); }
-  function setCipherSource(text, clueId){ currentCipher.text = text; currentCipher.id = clueId; id('cipherOutput').value=''; }
-  function tryCipher(){
-    const shift = Number(id('cipherShift').value) || 0;
-    const dec = caesarDecode(currentCipher.text, shift);
-    id('cipherOutput').value = dec;
-    debug('dec:', dec);
-    // simple trigger if found keywords
-    if(/он знает|в\./i.test(dec) || shift === 3){
-      revealClue(currentCipher.id, 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»');
-      toast('Записка расшифрована');
-      closeCipherModal();
+
+  // try to use user-provided images for female suspects (assets/female1.jpg..female3.jpg)
+  function findFemaleImageFor(s){
+    if(!s.male){
+      // map female1..3 in order
+      const femaleIndex = state.suspects.filter(x=>!x.male).map(x=>x.id).indexOf(s.id);
+      if(femaleIndex >= 0){
+        const src = `assets/female${Math.min(3, femaleIndex+1)}.jpg`;
+        // We won't verify existence here; browser will fallback
+        return src;
+      }
+    }
+    return null;
+  }
+
+  function renderClues(){
+    const grid = byId('cluesGrid');
+    grid.innerHTML = '';
+    state.clues.forEach(c=>{
+      const el = document.createElement('div');
+      el.className = 'clue' + (state.opened[c.id] ? ' opened' : (c.locked ? ' locked' : ''));
+      el.id = c.id;
+      el.dataset.clue = c.id;
+      el.innerHTML = `<div class="thumb">${getTypeIcon(c.type)}</div><div><h4>${escapeHtml(c.title)}</h4><p>${ state.opened[c.id] ? escapeHtml(c.text) : (c.locked ? 'Зашифрована / скрыта' : escapeHtml(c.text)) }</p></div>`;
+      // Click: if locked and requires mini-game -> open tool, else toggle details
+      el.addEventListener('click', ()=> handleClueClick(c));
+      // draggable for desktop
+      el.draggable = true;
+      el.addEventListener('dragstart', (ev)=> { ev.dataTransfer.setData('text/plain', c.id); });
+      grid.appendChild(el);
+    });
+    byId('totalClues').innerText = state.clues.length;
+  }
+
+  function renderTimeline(){
+    const el = byId('timelineList');
+    if(!el) return;
+    if(state.timeline.length === 0){ el.innerHTML = '<div class="small" style="color:var(--muted)">Пока пусто</div>'; return; }
+    el.innerHTML = state.timeline.slice().reverse().map(t => `<div style="margin-bottom:6px">${escapeHtml(t.text)} <span style="color:var(--muted); font-size:0.85rem">(${new Date(t.time).toLocaleTimeString()})</span></div>`).join('');
+  }
+
+  function renderStats(){
+    byId('openedCount').innerText = Object.keys(state.opened).length;
+    byId('linksCount').innerText = Object.values(state.links).flat().length;
+    updateProgress();
+  }
+
+  function populateAccuse(){
+    const sel = byId('accuseSelect');
+    sel.innerHTML = '<option value="">— Выберите подозреваемого —</option>';
+    state.suspects.forEach(s=> {
+      const opt = document.createElement('option'); opt.value = s.id; opt.textContent = s.name; sel.appendChild(opt);
+    });
+  }
+
+  function updateHint(){
+    const opened = Object.keys(state.opened).length;
+    const hintBox = byId('hintBox');
+    if(opened >= 6) hintBox.innerText = 'Подсказка: проверьте чернильные следы с маркировкой Wyn и сопоставьте с записями в блокноте.';
+    else if(opened >= 3) hintBox.innerText = 'Подсказка: попробуйте использовать шифр Цезаря на найденной записке и мини‑игру эмблем для символа на стене.';
+    else hintBox.innerText = 'Откройте минимум 3 улики, чтобы получить первую подсказку.';
+  }
+
+  function updateProgress(){
+    const total = state.clues.length + 2; // denom slightly larger to not reach 100 too early
+    const opened = Object.keys(state.opened).length + Object.values(state.links).flat().length;
+    const pct = Math.min(100, Math.round((opened/total)*100));
+    byId('progressPct').innerText = pct + '%';
+  }
+
+  // Click handling for clue
+  function handleClueClick(clue){
+    LOG('Clicked clue '+clue.id);
+    if(clue.locked && !state.opened[clue.id]){
+      // Decide appropriate tool by type
+      if(clue.type === 'cipher' || clue.type === 'cipher2'){ openCipherModal(clue); return; }
+      if(clue.type === 'puzzle'){ openPuzzleModal(); return; }
+      if(clue.type === 'symbol' || clue.type === 'seal'){ openMatchModal(clue); return; }
+      // other locked types: hint to use tools
+      showToast('Эта улика скрыта. Используйте инструменты, чтобы раскрыть её.');
+      return;
+    }
+    // toggle detail modal simple
+    const alreadyOpen = !!state.opened[clue.id];
+    if(!alreadyOpen){
+      state.opened[clue.id] = true;
+      // reveal text if had placeholder
+      LOG('Revealing ' + clue.id);
+      revealClueText(clue);
+      renderClues(); renderStats(); updateHint();
+    } else {
+      // show details modal
+      showClueDetail(clue);
     }
   }
+
+  function revealClueText(clue){
+    // If clue had locked text placeholders, adjust
+    if(clue.type === 'cipher' && clue.text === 'Vkr ghqv wrfkh'){
+      clue.text = 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»';
+    } else if(clue.type === 'puzzle' && clue.text.includes('Части карты')){
+      clue.text = 'Части карты собраны — есть отметка скрытого хода между библиотекой и подвалом.';
+    }
+    state.opened[clue.id] = true;
+  }
+
+  function showClueDetail(clue){
+    const modal = byId('endingRevealModal');
+    byId('endingTitle').innerText = clue.title;
+    byId('endingText').innerHTML = `<div style="color:var(--muted)">${escapeHtml(clue.text)}</div>`;
+    modal.style.display = 'flex';
+  }
+
+  // Mini-games
+  function openCipherModal(clue){
+    const modal = byId('cipherModal');
+    modal.style.display = 'flex';
+    modal.dataset.clue = clue ? clue.id : '';
+    byId('cipherOutput').value = '';
+    byId('cipherShift').value = 3;
+  }
+
+  function tryCipher(){
+    const shift = Number(byId('cipherShift').value) || 0;
+    const clueId = byId('cipherModal').dataset.clue;
+    const clue = state.clues.find(c=>c.id===clueId) || state.clues.find(c=>c.type==='cipher' || c.type==='cipher2');
+    if(!clue){ showToast('Нет доступной записки для расшифровки.'); return; }
+    const decoded = caesarDecode(clue.text, shift);
+    byId('cipherOutput').value = decoded;
+    LOG('Decoded: '+decoded);
+    // heuristic unlock: if decoded contains "он знает" or "v." or certain char
+    if(/он знает|he knows|в\./i.test(decoded) || shift===3){
+      showToast('Записка расшифрована!');
+      // Reveal the clue fully
+      clue.locked = false;
+      clue.text = 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»';
+      state.opened[clue.id] = true;
+      renderClues(); renderStats(); updateHint();
+      byId('cipherModal').style.display = 'none';
+    }
+  }
+
   function caesarDecode(s, shift){
     if(!s) return s;
     const a='abcdefghijklmnopqrstuvwxyz';
     const A=a.toUpperCase();
     return s.split('').map(ch=>{
-      if(a.includes(ch)) return a[(a.indexOf(ch)-shift+26)%26];
-      if(A.includes(ch)) return A[(A.indexOf(ch)-shift+26)%26];
+      if(a.indexOf(ch) !== -1) return a[(a.indexOf(ch)-shift+26)%26];
+      if(A.indexOf(ch) !== -1) return A[(A.indexOf(ch)-shift+26)%26];
       return ch;
     }).join('');
   }
 
-  // reveal clue programmatic
-  function revealClue(idc, text){
-    const c = clues.find(x=>x.id===idc);
-    if(!c) return;
-    c.locked = false;
-    c.text = text;
-    state.opened[idc] = true;
-    const card = id(idc);
-    if(card){
-      card.classList.remove('locked');
-      card.querySelector('p').textContent = c.text;
+  // Puzzle (3x3 shuffle)
+  let puzzleState = { solved:false };
+  function openPuzzleModal(){
+    const modal = byId('puzzleModal');
+    modal.style.display = 'flex';
+    initPuzzle();
+  }
+  function initPuzzle(){
+    const board = byId('puzzleBoard');
+    board.innerHTML = '';
+    // create 3x3 pieces numbered 1..9 then shuffle
+    const nums = [1,2,3,4,5,6,7,8,9];
+    const shuffled = randShuffle(nums);
+    shuffled.forEach(n=>{
+      const piece = document.createElement('div');
+      piece.style.background = '#201612';
+      piece.style.color = '#d9c8ae';
+      piece.style.display = 'grid';
+      piece.style.placeItems = 'center';
+      piece.style.height = '80px';
+      piece.style.borderRadius = '6px';
+      piece.style.cursor = 'pointer';
+      piece.textContent = n === 9 ? '' : n; // treat 9 as empty space for sliding puzzle
+      piece.dataset.num = n;
+      board.appendChild(piece);
+    });
+    // simple clickable swap to simulate solving (not true sliding) — for fun & easy
+    board.querySelectorAll('div').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        // if any neighbor empty -> swap
+        const empty = Array.from(board.children).find(x=>x.dataset.num == 9);
+        if(!empty) return;
+        const idx = Array.from(board.children).indexOf(el);
+        const eidx = Array.from(board.children).indexOf(empty);
+        const dist = Math.abs(idx - eidx);
+        // allow swap if neighboring cells (simple)
+        if(dist === 1 || dist === 3){
+          const tmp = el.dataset.num; el.dataset.num = empty.dataset.num; empty.dataset.num = tmp;
+          const ttext = el.textContent; el.textContent = empty.textContent; empty.textContent = ttext;
+        }
+        checkPuzzleSolved(board);
+      });
+    });
+  }
+  function checkPuzzleSolved(board){
+    const order = Array.from(board.children).map(c=>Number(c.dataset.num));
+    // solved if order is 1..9
+    let ok = true;
+    for(let i=0;i<9;i++) if(order[i] !== i+1) { ok=false; break; }
+    if(ok && !puzzleState.solved){
+      puzzleState.solved = true;
+      // reveal puzzle clue
+      const clue = state.clues.find(c=>c.type==='puzzle' || c.title.toLowerCase().includes('карта'));
+      if(clue){ clue.locked = false; clue.text = 'Карта восстановлена: найден скрытый проход к подвалу.'; state.opened[clue.id] = true; renderClues(); renderStats(); updateHint(); }
+      showToast('Пазл решён — карта восстановлена!');
+      byId('puzzleModal').style.display = 'none';
     }
-    updateProgress();
-    saveAuto();
   }
 
-  // match modal (emblems)
-  const emblems = [
-    { id:'e1', tag:'morden', svg: emblemSVG('#b08a5c') },
-    { id:'e2', tag:'rosewood', svg: emblemSVG('#9b6b49') },
-    { id:'e3', tag:'other', svg: emblemSVG('#6b7f49') }
-  ];
-  function emblemSVG(color){ return `<svg width="72" height="72" xmlns="http://www.w3.org/2000/svg"><circle cx="36" cy="36" r="32" fill="${color}22"/><path d="M36 20 L44 44 L28 44 Z" fill="${color}"/></svg>`; }
-  function openMatchModal(autoReveal=false){
-    const modal = id('modalMatch');
-    const area = id('matchArea');
-    area.innerHTML = '';
-    emblems.sort(()=>Math.random()-0.5).forEach(e=>{
-      const div = document.createElement('div');
-      div.style.cursor='pointer';
-      div.innerHTML = e.svg + `<div style="text-align:center; color:var(--muted); margin-top:6px;">${e.id}</div>`;
-      div.addEventListener('click', ()=> {
-        if(e.tag === 'rosewood'){
-          revealClue('cl4', 'Символ совпадает с эмблемой семьи Роузвуд.');
-          toast('Эмблема совпала — улика открыта');
-          closeMatchModal();
+  // Emblems match
+  function openMatchModal(clue){
+    const modal = byId('matchModal');
+    modal.style.display = 'flex';
+    const area = byId('matchArea'); area.innerHTML = '';
+    // generate options, one matches 'rosewood' tag
+    const options = [
+      { id:'e1', label:'Эмблема A', match:false },
+      { id:'e2', label:'Эмблема B', match:true },
+      { id:'e3', label:'Эмблема C', match:false }
+    ].sort(()=>Math.random()-0.5);
+    options.forEach(opt=>{
+      const btn = document.createElement('div');
+      btn.style.width='120px'; btn.style.height='120px'; btn.style.borderRadius='8px'; btn.style.background='#211815'; btn.style.display='grid'; btn.style.placeItems='center'; btn.style.cursor='pointer';
+      btn.innerHTML = `<div style="text-align:center">${opt.label}</div>`;
+      btn.addEventListener('click', ()=> {
+        if(opt.match){
+          showToast('Эмблема совпала — улика открыта.');
+          // reveal associated clue if provided
+          const clueToOpen = (clue && state.clues.find(c=>c.id===clue.id)) || state.clues.find(c=>c.type==='symbol');
+          if(clueToOpen){ clueToOpen.locked = false; clueToOpen.text = clueToOpen.text || 'Эмблема совпадает — улика раскрыта.'; state.opened[clueToOpen.id] = true; renderClues(); renderStats(); updateHint(); }
+          modal.style.display = 'none';
         } else {
-          toast('Не то. Попробуйте другую эмблему.');
+          showToast('Не то. Попробуйте другую.');
         }
       });
-      area.appendChild(div);
-    });
-    modal.style.display='flex';
-    modal.setAttribute('aria-hidden','false');
-    if(autoReveal) setTimeout(()=>{ revealClue('cl6','Фрагменты карты восстановлены: найден тайный проход'); closeMatchModal(); }, 900);
-  }
-  function closeMatchModal(){ id('modalMatch').style.display='none'; id('modalMatch').setAttribute('aria-hidden','true'); }
-
-  // notebook & timeline
-  function openNotebook(){ id('modalNotebook').style.display='flex'; id('modalNotebook').setAttribute('aria-hidden','false'); id('notebookText').value = localStorage.getItem('rosewood_notes') || ''; }
-  function closeNotebook(){ id('modalNotebook').style.display='none'; id('modalNotebook').setAttribute('aria-hidden','true'); }
-  function saveNotebook(){ localStorage.setItem('rosewood_notes', id('notebookText').value || ''); toast('Блокнот сохранён'); }
-
-  function addTimeline(text){
-    if(!text) return;
-    state.timeline.push({ time: new Date().toISOString(), text });
-    renderTimeline();
-    saveAuto();
-  }
-  function renderTimeline(){
-    const el = id('timelineList');
-    if(!el) return;
-    if(!state.timeline.length) el.textContent = 'Пока пусто';
-    else el.innerHTML = state.timeline.slice().reverse().map(t=>`<div style="margin-bottom:6px">${new Date(t.time).toLocaleString()}: <strong>${t.text}</strong></div>`).join('');
-  }
-
-  // accuse flow
-  function populateAccuseSelect(){
-    const sel = id('accuseSelect');
-    sel.innerHTML = '<option value="">— Выберите —</option>';
-    suspects.forEach(s => {
-      const o = document.createElement('option');
-      o.value = s.id; o.textContent = s.name;
-      sel.appendChild(o);
+      area.appendChild(btn);
     });
   }
-  function accuse(){
-    const sel = id('accuseSelect');
-    const out = id('accuseResult');
-    const idv = sel.value;
-    if(!idv){ out.textContent = 'Выберите подозреваемого'; out.style.color='#ffb3b3'; return; }
-    const linked = state.links[idv] || [];
-    if(linked.length >= 3 && state.timeline.length >= 2){
-      if(idv === 'adrian'){ out.textContent='Успех: обвинение обосновано — Эдриан виновен'; out.style.color='#b7f6b7'; } else { out.textContent='Обвинение не подтверждено'; out.style.color='#ffd1d1'; }
-    } else { out.textContent='Недостаточно доказательств — нужно ≥3 улики и ≥2 события'; out.style.color='#ffd1d1'; }
+
+  // Drag & drop linking evidence
+  function attachDropzones(){
+    document.querySelectorAll('.dropzone').forEach(zone=>{
+      zone.addEventListener('dragover', ev => { ev.preventDefault(); zone.style.outline = '2px dashed rgba(176,138,92,0.6)'; });
+      zone.addEventListener('dragleave', ev => { zone.style.outline = ''; });
+      zone.addEventListener('drop', ev => {
+        ev.preventDefault(); zone.style.outline = '';
+        const clueId = ev.dataTransfer.getData('text/plain'); const suspectId = zone.dataset.suspect;
+        if(clueId && suspectId) linkEvidence(suspectId, clueId);
+      });
+    });
+    // mobile tap linking: long press or manual prompt supported
   }
 
-  function review(){
-    const parts = suspects.map(s => `${s.name}: ${ (state.links[s.id] || []).length } улик`);
-    toast(parts.join(' | '));
-  }
-
-  // autoload / autosave
-  function saveAuto(){ try{ localStorage.setItem('rosewood_state', JSON.stringify(state)); debug('autosaved'); }catch(e){ debug('autosave err', e); } }
-  function loadAuto(){
-    try{
-      const raw = localStorage.getItem('rosewood_state');
-      if(!raw) return;
-      const loaded = JSON.parse(raw);
-      state = Object.assign(state, loaded);
-      // ensure links keys exist
-      suspects.forEach(s => state.links[s.id] = state.links[s.id] || []);
-    }catch(e){ debug('load err', e); }
-  }
-
-  // progress
-  function updateProgress(){
-    const openedCount = Object.keys(state.opened || {}).length + Object.values(state.links || {}).flat().length;
-    const pct = Math.min(100, Math.round((openedCount / (clues.length + 2)) * 100));
-    id('progressPct').textContent = pct + '%';
-    updateDropzoneCounts();
-  }
-
-  // small utilities
-  function toastOnceDemo(){
-    if(!localStorage.getItem('rosewood_demo')){ toast('Подсказка: долгий тап на улице запускает режим перетаскивания на мобильных'); localStorage.setItem('rosewood_demo', '1'); }
-  }
-
-  // initial UI wiring
-  function init(){
-    debug('init start');
-    loadAuto();
+  function linkEvidence(suspectId, clueId){
+    if(!state.links[suspectId]) state.links[suspectId] = [];
+    if(state.links[suspectId].includes(clueId)){ showToast('Улика уже привязана к этому подозреваемому'); return; }
+    state.links[suspectId].push(clueId);
+    showToast('Улика привязана: ' + clueId + ' → ' + suspectId);
+    // update UI
     renderSuspects();
-    renderClues();
-    attachHotspots();
-    attachDropzones();
-    populateAccuseSelect();
-    renderTimeline();
-    updateProgress();
-    // bind buttons
-    id('openCipher').addEventListener('click', ()=>{ openCipherModal(); setCipherSource(clues.find(c=>c.type==='cipher').text, clues.find(c=>c.type==='cipher').id); });
-    id('cipherClose').addEventListener('click', closeCipherModal);
-    id('cipherTry').addEventListener('click', tryCipher);
-    id('matchClose').addEventListener('click', closeMatchModal);
-    id('openNotebook').addEventListener('click', openNotebook);
-    id('nbClose').addEventListener('click', closeNotebook);
-    id('nbSave').addEventListener('click', saveNotebook);
-    id('openTimeline').addEventListener('click', ()=>{ const txt=prompt('Добавьте событие (например, 23:10 — шаги)'); if(txt) addTimeline(txt); });
-    id('addTimelineBtn') && id('addTimelineBtn').addEventListener('click', ()=>{ const val = id('timelineInput') && id('timelineInput').value; if(val) addTimeline(val); });
-    id('accuseBtn').addEventListener('click', accuse);
-    id('reviewBtn').addEventListener('click', review);
-    id('quickNotebook').addEventListener('click', openNotebook);
-    id('quickCipher').addEventListener('click', ()=>{ openCipherModal(); setCipherSource(clues.find(c=>c.type==='cipher').text, clues.find(c=>c.type==='cipher').id); });
-    id('quickMatch').addEventListener('click', ()=>openMatchModal(false));
-    id('quickTimeline').addEventListener('click', ()=>{ const txt = prompt('Добавьте событие'); if(txt) addTimeline(txt); });
-    id('matchClose') && id('matchClose').addEventListener('click', closeMatchModal);
-
-    // mobile demo hint
-    toastOnceDemo();
-    debug('init done');
+    renderStats();
+    saveToLocal('autosave', state);
   }
 
-  // expose some for debugging/testing
-  window.revealClue = revealClue;
-  window.openMatchModal = openMatchModal;
+  // accuse evaluation and many endings decision tree
+  function accuseSelected(){
+    const sel = byId('accuseSelect'); const id = sel.value;
+    const res = byId('accuseResult');
+    if(!id){ res.innerText = 'Выберите подозреваемого'; res.style.color = '#ffb3b3'; return; }
+    // Evaluate endings: check all possible endings for matched conditions — if multiple, prefer specific priority or show multiple
+    const matched = ENDINGS.filter(e => e.cond(state));
+    if(matched.length === 0){
+      // fallback logic: if charged suspect has >=3 clues -> true_crime for adrian else innocent
+      const links = state.links[id] || [];
+      if(links.length >= 3 && id === 'adrian'){ showEnding('end_true_crime'); return; }
+      if(links.length === 0){ showEnding('end_innocent'); return; }
+      // ambiguous
+      showEnding('end_open'); return;
+    }
+    // pick one matching ending at random if many
+    const chosen = matched[Math.floor(Math.random()*matched.length)];
+    showEnding(chosen.id);
+  }
+
+  function showEnding(endId){
+    const end = ENDINGS.find(e=>e.id===endId);
+    if(!end) return;
+    byId('endingTitle').innerText = end.title;
+    byId('endingText').innerText = end.desc;
+    byId('endingRevealModal').style.display = 'flex';
+    // Log and save ending history
+    const history = JSON.parse(localStorage.getItem('rose_endings')||'[]');
+    history.unshift({ id:end.id, title:end.title, time: new Date().toISOString() });
+    localStorage.setItem('rose_endings', JSON.stringify(history.slice(0,50)));
+    saveToLocal('autosave', state);
+  }
+
+  // show endings list
+  function showEndingsList(){
+    const list = byId('endingsList'); list.innerHTML = '';
+    ENDINGS.forEach(e=>{
+      const card = document.createElement('div'); card.className='ending-card';
+      const unlocked = e.cond(state);
+      card.innerHTML = `<div style="display:flex; justify-content:space-between;"><strong>${escapeHtml(e.title)}</strong><div style="color:${unlocked?'#9fff9f':'#cfcfcf'}">${unlocked? 'Доступна' : 'Недоступна'}</div></div><div style="color:var(--muted); margin-top:6px">${escapeHtml(e.desc.slice(0,140))}${e.desc.length>140?'...':''}</div>`;
+      card.addEventListener('click', ()=> {
+        // clicking a card shows full description and whether unlocked
+        if(unlocked) showEnding(e.id);
+        else showToast('Эта концовка ещё не доступна — совершите другие действия, чтобы открыть её.');
+      });
+      list.appendChild(card);
+    });
+    byId('endingsModal').style.display = 'flex';
+  }
+
+  // Helpers & UI wiring
+  function attachUI(){
+    // hotspots
+    document.querySelectorAll('.hotspot').forEach(h=>{
+      h.addEventListener('click', ()=> { inspectRoom(h.dataset.room); });
+    });
+    byId('cipherTryBtn').addEventListener('click', tryCipher);
+    byId('cipherCloseBtn').addEventListener('click', ()=> byId('cipherModal').style.display='none');
+    byId('puzzleClose').addEventListener('click', ()=> byId('puzzleModal').style.display='none');
+    byId('matchCloseBtn').addEventListener('click', ()=> byId('matchModal').style.display='none');
+    byId('closeProfiles').addEventListener('click', ()=> byId('profilesModal').style.display='none');
+    byId('newGame').addEventListener('click', ()=> { if(confirm('Начать новую игру? Текущий прогресс будет сброшен.')) newGame(); });
+    byId('viewProfiles').addEventListener('click', showProfiles);
+    byId('addTimeline').addEventListener('click', ()=> { const t = byId('timelineInput').value.trim(); if(t){ state.timeline.push({text:t, time:new Date().toISOString()}); byId('timelineInput').value=''; renderTimeline(); saveToLocal('autosave', state); } renderStats(); });
+    byId('saveNotes').addEventListener('click', ()=> { localStorage.setItem('rose_notes', byId('notebook').value || ''); showToast('Заметки сохранены'); });
+    byId('clearNotes').addEventListener('click', ()=> { if(confirm('Очистить заметки?')) { byId('notebook').value=''; localStorage.removeItem('rose_notes'); }});
+    byId('cipherBtn').addEventListener('click', ()=> openCipherModal(null));
+    byId('puzzleBtn').addEventListener('click', ()=> openPuzzleModal());
+    byId('matchBtn').addEventListener('click', ()=> openMatchModal(null));
+    byId('accuseBtn').addEventListener('click', accuseSelected);
+    byId('reviewBtn').addEventListener('click', ()=> { alert('Связи: '+ JSON.stringify(state.links)); });
+    byId('saveBtn').addEventListener('click', ()=> { saveToLocal('manual_save', state); showToast('Состояние сохранено'); byId('saveStatus').innerText = 'есть'; });
+    byId('endingsBtn').addEventListener('click', showEndingsList);
+    byId('revealSecret').addEventListener('click', performRitual);
+    byId('endingsClose').addEventListener('click', ()=> byId('endingsModal').style.display='none');
+    byId('endingClose').addEventListener('click', ()=> byId('endingRevealModal').style.display='none');
+    byId('audioToggle').addEventListener('click', toggleAudio);
+    byId('toggleFog').addEventListener('change', (e)=> { state.fog = e.target.checked; toggleFog(state.fog); });
+    byId('toggleVfx').addEventListener('change', (e)=> { state.vfx = e.target.checked; toggleVfx(state.vfx); });
+    // clue dragging & drop
+    attachDropzones();
+  }
+
+  function inspectRoom(room){
+    // find clues in room
+    const found = state.clues.filter(c => c.room === room);
+    if(found.length===0){ showToast('Ничего не найдено в этой зоне'); return; }
+    found.forEach(c=>{
+      const el = document.getElementById(c.id);
+      // reveal briefly; if locked show hint text
+      if(!c.locked){
+        state.opened[c.id] = true;
+      } else {
+        // show mini hint
+      }
+    });
+    renderClues(); renderStats(); updateHint();
+    showToast(`Осмотр: ${room} — найдено ${found.length} улик`);
+  }
+
+  // ritual & secret
+  function performRitual(){
+    if(state.ritualPerformed){ showToast('Ритуал уже был исполнен.'); return; }
+    if(!confirm('Вы действительно хотите исполнить странный ритуал? Последствия непредсказуемы.')) return;
+    state.ritualPerformed = true;
+    showToast('Вы почувствовали холодный ветер — что-то изменилось...');
+    // unlock a hidden supernatural clue
+    const superClue = { id:'cl_super', title:'Ритуальные отметки', room:'basement', type:'ritual', text:'Символы жертвоприношения — следы заклинания', locked:false };
+    state.clues.push(superClue);
+    state.opened[superClue.id] = true;
+    renderClues(); renderStats(); updateHint();
+  }
+
+  // small helper: show profiles modal with details and images if available
+  function showProfiles(){
+    const content = byId('profilesContent'); content.innerHTML = '';
+    state.suspects.forEach(s=>{
+      const div = document.createElement('div'); div.style.marginBottom='12px';
+      const linked = (state.links[s.id]||[]).length;
+      div.innerHTML = `<strong>${escapeHtml(s.name)}</strong> — <em>${escapeHtml(s.role)}</em><div class="small" style="color:var(--muted); margin-top:6px">Привязано улик: ${linked}</div>`;
+      content.appendChild(div);
+    });
+    byId('profilesModal').style.display = 'flex';
+  }
+
+  // Save/load helpers
+  function saveToLocal(key, data){
+    try{ localStorage.setItem('rose_'+key, JSON.stringify(data)); LOG('Saved '+key); } catch(e){ LOG('Save error: '+e); }
+  }
+  function loadFromLocal(key){
+    try{ const raw = localStorage.getItem('rose_'+key); if(!raw) return null; return JSON.parse(raw); } catch(e){ LOG('Load error: '+e); return null; }
+  }
+
+  // Misc helpers
+  function showToast(text){
+    const d = document.createElement('div');
+    d.textContent = text; d.style.position='fixed'; d.style.left='50%'; d.style.bottom='20px'; d.style.transform='translateX(-50%)';
+    d.style.background='rgba(0,0,0,0.8)'; d.style.color='#fff'; d.style.padding='10px 14px'; d.style.borderRadius='8px'; d.style.zIndex=999999;
+    document.body.appendChild(d); setTimeout(()=>{ d.style.transition='opacity .5s'; d.style.opacity=0; setTimeout(()=>d.remove(),600); }, 1800);
+  }
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]); }
+
+  function getTypeIcon(t){
+    switch(t){
+      case 'cipher': return '✉️';
+      case 'cipher2': return '🔐';
+      case 'puzzle': return '🧩';
+      case 'symbol': return '🔱';
+      case 'vial': return '🧪';
+      case 'ink': return '🖋️';
+      case 'foot': return '👣';
+      default: return '🔎';
+    }
+  }
+
+  // Fog & VFX (visual toggles)
+  function toggleFog(on){
+    if(on){
+      document.body.style.backgroundImage = 'radial-gradient(800px 400px at 8% 8%, rgba(176,138,92,0.02), transparent), linear-gradient(180deg,#060607, #0b0b0d)';
+    } else {
+      document.body.style.backgroundImage = 'linear-gradient(180deg,#070607 0%, #0e0e10 80%)';
+    }
+  }
+  function toggleVfx(on){
+    // small flicker effect on elements
+    document.querySelectorAll('.flicker').forEach(el=> el.style.opacity = on ? 1 : 0.6);
+  }
+
+  // load saved autosave if present
+  function tryLoadAutosave(){
+    const saved = loadFromLocal('autosave');
+    if(saved && confirm('Найден автосейв. Загрузить?')) {
+      state = Object.assign(state, saved);
+      renderAll();
+      showToast('Автосейв загружен');
+      return true;
+    }
+    return false;
+  }
+
+  // Initial wiring
+  function init(){
+    LOG('Initializing game');
+    // try to autoload notes & autosave
+    const notes = localStorage.getItem('rose_notes') || '';
+    byId('notebook').value = notes;
+    // if autosave exists, ask to load
+    const loaded = tryLoadAutosave();
+    if(!loaded) newGame();
+    attachUI();
+    renderAll();
+    // UI toggles initial
+    toggleVfx(true);
+    LOG('Ready');
+  }
+
+  // Small utility: escape HTML already defined
+
+  // Expose some functions for debugging/testing
+  window._rose = { state, newGame, revealClueText, saveToLocal, loadFromLocal, showEndingsList };
+
+  // Start
+  document.addEventListener('DOMContentLoaded', init);
 
 })();
 </script>
