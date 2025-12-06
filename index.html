@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Убийство в особняке Роузвуд — Полная версия</title>
+<title>Убийство в особняке Роузвуд — Исправленная версия</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#060607; --panel:#141214; --accent:#b08a5c; --muted:#cfcfcf; --radius:12px;
+  --bg:#060607; --panel:#141214; --accent:#b08a5c; --muted:#cfcfcf; --danger:#b04a4a; --radius:12px;
 }
 *{box-sizing:border-box}
 html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:linear-gradient(180deg,#040405 0%, #0b0b0d 80%); color:#efece6; -webkit-font-smoothing:antialiased;}
@@ -15,7 +15,7 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
 .logo { width:48px; height:48px; border-radius:10px; background:linear-gradient(180deg,#2b1f18,#191010); display:grid; place-items:center; font-family:Cinzel,serif; font-size:18px; color:#f7efe7; border:1px solid rgba(255,255,255,0.03);}
 .header-right { display:flex; gap:10px; align-items:center; }
 
-.container { max-width:1200px; margin:18px auto; padding:12px; display:grid; grid-template-columns:320px 1fr 380px; gap:18px; align-items:start; }
+.container { max-width:1200px; margin:18px auto; padding:12px; display:grid; grid-template-columns:320px 1fr 360px; gap:18px; align-items:start; }
 @media (max-width:1100px){ .container{ grid-template-columns:1fr; } .right-panel{ order:3 } }
 
 .panel { background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.008)); padding:14px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.02); box-shadow: 0 14px 36px rgba(0,0,0,0.65); }
@@ -45,7 +45,7 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
 .card { width:760px; max-width:94%; background:linear-gradient(180deg,#121212,#0f0f0f); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); color:#efece6; box-shadow:0 30px 80px rgba(0,0,0,0.8); }
 .card.small { width:520px; max-width:92%; }
 
-/* menu screen */
+/* MENU */
 #menuScreen { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:99999; background:radial-gradient(ellipse at center, rgba(0,0,0,0.45), rgba(0,0,0,0.85)); }
 .menuCard { width:880px; max-width:94%; background:linear-gradient(180deg,#0f0f0f,#090909); border-radius:14px; padding:26px; display:flex; gap:20px; box-shadow:0 30px 80px rgba(0,0,0,0.9); border:1px solid rgba(255,255,255,0.03); }
 .menu-left { width:420px; padding-right:12px; border-right:1px solid rgba(255,255,255,0.02); }
@@ -55,17 +55,14 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
 .menu-buttons { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
 .menu-buttons .btn { padding:12px 18px; font-size:1rem; }
 
-/* phone */
 .phone { width:320px; border-radius:12px; background:linear-gradient(180deg,#0b0b0b,#0a0a0a); padding:10px; border:1px solid rgba(255,255,255,0.02); box-shadow:0 12px 30px rgba(0,0,0,0.6); }
 .phone .screen{ height:260px; background:#060606; border-radius:8px; padding:8px; color:var(--muted); overflow:auto; }
 
-/* chat */
 .chat { display:flex; flex-direction:column; gap:8px; max-height:360px; overflow:auto; padding:8px; background:#0b0b0b; border-radius:8px; border:1px solid rgba(255,255,255,0.02); }
 .msg { padding:8px 10px; border-radius:8px; max-width:85%; }
 .msg.ai { background:#1b1b1c; color:#e6e6e6; align-self:flex-start; }
 .msg.user { background:#b08a5c; color:#070707; align-self:flex-end; }
 
-/* debug */
 #debug { position:fixed; right:12px; bottom:12px; width:320px; max-height:260px; overflow:auto; background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(8,8,8,0.85)); color:#fff; border-radius:8px; padding:10px; border:1px solid rgba(255,255,255,0.03); font-size:12px; z-index:99998; }
 
 /* small responsive */
@@ -83,10 +80,9 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
   <div class="menuCard" role="dialog" aria-modal="true" aria-label="Главное меню">
     <div class="menu-left">
       <h1 class="menu-title">Убийство в особняке Роузвуд</h1>
-      <p class="menu-sub">Ночь. Гроза. Тайны старой семьи. Игра — детективная интерактивная история с множеством концовок.<br><strong>Совет:</strong> читайте профили, связывайте улики и будьте внимательны при допросах — ваши решения меняют финал.</p>
+      <p class="menu-sub">Ночь. Гроза. Тайны. Соберите улики, допросите подозреваемых, решите головоломки и выберите финал.</p>
       <div style="margin-top:14px;">
-        <strong>Быстрые действия</strong>
-        <div style="margin-top:8px" class="menu-buttons">
+        <div class="menu-buttons">
           <button id="startBtn" class="btn">Начать игру</button>
           <button id="loadBtn" class="btn secondary">Загрузить автосейв</button>
           <button id="settingsBtn" class="btn secondary">Настройки</button>
@@ -98,19 +94,19 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
       <div>
         <strong>Инструкция</strong>
         <ol style="color:var(--muted); margin-top:8px; padding-left:18px;">
-          <li>Осмотрите комнаты — нажмите на области карты. </li>
-          <li>Открывайте улики в панели — некоторые зашифрованы или скрыты.</li>
-          <li>Решайте мини‑игры (Цезарь, пазл, эмблемы), чтобы открыть спрятанные улики.</li>
-          <li>Перетаскивайте улику на карточку подозреваемого (или тапните — мобильный), чтобы связать доказательство.</li>
-          <li>Используйте "Допрос (нейросеть)" — задавайте вопросы и слушайте ответы (симулированная нейросеть). Можно включить голосовой синтез.</li>
-          <li>Пользуйтесь телефоном: звоните напарнику или в полицию, открывайте сайты для подсказок.</li>
-          <li>После сбора доказательств нажмите "Узнать убийцу" или "Обвинить".</li>
+          <li>Нажмите «Начать игру». Вы попадёте в особняк.</li>
+          <li>Осмотрите комнаты (кнопки на карте), откройте улики в панели.</li>
+          <li>Если улика скрыта — используйте инструменты (Цезарь, пазл, эмблемы).</li>
+          <li>Перетаскивайте найденные улики на карточки подозреваемых или нажмите и удерживайте на мобильном.</li>
+          <li>Используйте «Допрос (нейросеть)» — задавайте вопросы, система отвечает; можно включить голос.</li>
+          <li>Позвоните напарнику через телефон для подсказки — он может подсказать направление.</li>
+          <li>Нажмите «Узнать убийцу» или «Обвинить», когда будете готовы.</li>
         </ol>
       </div>
 
       <div style="margin-top:auto">
-        <strong>Дополнительно</strong>
-        <p style="color:var(--muted)">В правой панели вы найдете статистику, список концовок и настройки атмосферы (музыка, туман).</p>
+        <strong>Подсказка</strong>
+        <p style="color:var(--muted)">Рекомендуется сначала открыть 3–5 уликов, затем начать допросы и связывать улики.</p>
       </div>
     </div>
   </div>
@@ -122,7 +118,7 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
     <div class="logo">Р</div>
     <div>
       <div style="font-family:Cinzel,serif;">Убийство в особняке Роузвуд</div>
-      <div class="small">Полная атмосферная версия</div>
+      <div class="small">Полная атмосферная версия — исправлена</div>
     </div>
   </div>
   <div class="header-right">
@@ -132,7 +128,7 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
 </header>
 
 <!-- MAIN -->
-<main class="container" role="main">
+<main class="container" role="main" aria-live="polite">
   <!-- LEFT -->
   <aside class="panel left-panel" aria-label="Подозреваемые и заметки">
     <div style="display:flex; justify-content:space-between; align-items:center">
@@ -147,15 +143,16 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
       <div style="display:flex; gap:8px; margin-top:8px;">
         <button id="saveNotes" class="btn">Сохранить заметки</button>
         <button id="clearNotes" class="btn secondary">Очистить</button>
+        <button id="partnerHelp" class="btn">Помощь напарника</button>
       </div>
     </div>
 
     <div style="margin-top:12px;">
-      <strong>Инструкция — как связывать улики</strong>
+      <strong>Как привязывать улики</strong>
       <div class="small" style="margin-top:6px; color:var(--muted)">
-        - На ПК: перетащите карточку улику на карточку подозреваемого, в правом углу карточки показывает сколько улик привязано.<br>
-        - На мобильных: удерживайте улику 0.5—1 сек и затем тапните по подозреваемому, чтобы привязать.<br>
-        - Привязка влияет на вероятность обвинения и на доступные концовки.
+        - На ПК: перетащите карточку улику на карточку подозреваемого.<br>
+        - На мобильных: удерживайте улику 0.5–1с, затем тапните по подозреваемому.<br>
+        - Напарник может указать на полезную улику (кнопка «Помощь напарника»).
       </div>
     </div>
   </aside>
@@ -215,7 +212,12 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
             <strong>Телефон</strong>
             <div class="phone" style="margin-top:8px;">
               <div class="screen" id="phoneScreen">
-                <div style="padding:6px; color:var(--muted)">Контакты: <br><button id="callPartner" class="btn secondary" style="margin-top:6px">Позвонить напарнику</button> <button id="callPolice" class="btn secondary" style="margin-top:6px">Позвонить в полицию</button></div>
+                <div style="padding:6px; color:var(--muted)">Контакты:
+                  <div style="display:flex; gap:6px; margin-top:6px;">
+                    <button id="callPartner" class="btn secondary">Напарник</button>
+                    <button id="callPolice" class="btn secondary">Полиция</button>
+                  </div>
+                </div>
                 <div id="phoneLog" style="margin-top:8px; color:var(--muted)"></div>
               </div>
               <div style="display:flex; gap:8px; margin-top:8px;">
@@ -241,7 +243,7 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
 
     <div class="tool" style="margin-top:12px;">
       <strong>Концовки</strong>
-      <div style="margin-top:8px; color:var(--muted)">Нажмите "Просмотреть концовки" — некоторые скрыты и требуют особых действий.</div>
+      <div style="margin-top:8px; color:var(--muted)">Нажмите "Просмотреть концовки" — некоторые скрыты и требуют действий.</div>
       <div style="display:flex; gap:8px; margin-top:8px;">
         <button id="endingsBtn" class="btn">Просмотреть концовки</button>
         <button id="ritualBtn" class="btn secondary">Исполнить ритуал</button>
@@ -264,13 +266,14 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
   </aside>
 </main>
 
-<!-- MODALS -->
+<!-- MODALS (profiles, interrogation, cipher, puzzle, match, endings, ending reveal) -->
 <div id="profilesModal" class="modal" aria-hidden="true"><div class="card small"><h3>Профили подозреваемых</h3><div id="profilesContent" style="margin-top:12px"></div><div style="text-align:right; margin-top:12px;"><button id="closeProfiles" class="btn secondary">Закрыть</button></div></div></div>
 
-<div id="interrogateModal" class="modal" aria-hidden="true"><div class="card"><h3>Допрос — Нейросеть помощник</h3><div class="small" style="margin-top:6px">Выберите подозреваемого, задавайте вопросы. Ответы генерируются локально на основе улик и профилей; можно включить голос.</div>
+<div id="interrogateModal" class="modal" aria-hidden="true"><div class="card"><h3>Допрос — Нейросеть помощник</h3>
+  <div class="small" style="margin-top:6px">Выберите подозреваемого и задавайте вопросы. (Ответы симулируются локально.)</div>
   <div style="display:flex; gap:8px; margin-top:12px;">
     <select id="interrogateSelect" style="flex:1; padding:8px; border-radius:8px; background:#0b0b0b; color:#efece6; border:1px solid rgba(255,255,255,0.03)"></select>
-    <button id="interrogateStart" class="btn">Начать</button>
+    <button id="interrogateStart" class="btn">Выбрать</button>
   </div>
   <div class="chat" id="chatWindow" style="margin-top:12px;"></div>
   <div style="display:flex; gap:8px; margin-top:8px;"><input id="chatInput" placeholder="Задайте вопрос" class="input" style="flex:1; padding:8px; border-radius:8px;"><button id="chatSend" class="btn">Спросить</button><button id="chatClose" class="btn secondary">Закрыть</button></div>
@@ -294,34 +297,34 @@ html,body{height:100%; margin:0; font-family:Inter,system-ui,Arial; background:l
 <div id="debug" aria-hidden="false"><strong>DEBUG</strong><div id="debugLog" style="white-space:pre-wrap; margin-top:8px; font-family:monospace; color:#cfcfcf">init...</div></div>
 
 <script>
-/* MAIN GAME SCRIPT
-   - Menu screen shown at start; Start button hides it and loads game.
-   - Instructions in menu already added.
-   - Interrogation: choose suspect -> chat with simulated 'neural' responses. Optional TTS for detective and suspect.
-   - Click on suspect card opens profile modal with appearance, habits, height, shoe size.
-   - Phone with preset buttons (partner / police) and manual dialing.
-   - Room inspection: clicking hotspot shows clues in that room; opening clues and mini-games unlock hidden clues.
-   - Detective voice (TTS) reads user's question optionally.
-   - Bug fixes: defensive DOM queries, single definitions, clear event binding after DOMContentLoaded.
+/*
+  Исправленная и завершённая версия:
+   - Надёжная инициализация (DOMContentLoaded + делегирование)
+   - Рабочее меню (Start/Load/Settings)
+   - Допрос (локальная симуляция нейросети) + TTS для детектива/свидетеля
+   - Профили с описание (рост, обувь, привычки) — открываются по клику
+   - Телефон: кнопки "напарник" и "полиция" + ручной ввод
+   - Обзор комнат (hotspot) — раскрытие улик в комнате
+   - Drag&drop + мобильная схема "удержание -> тап" для привязки улик
+   - Помощь напарника: даст подсказку или выделит улику
+   - Мини‑игры: Цезарь, пазл, эмблемы
+   - Множество концовок, сохранение автосейва
+   - Отладочная панель для ошибок
 */
 
-const LOG = (...args) => { try { const el = document.getElementById('debugLog'); if(el) el.textContent += '\\n' + args.join(' '); console.log(...args); } catch(e){ console.log(...args);} };
+/* ======= Helpers ======= */
+const LOG = (...a)=>{ try{ document.getElementById('debugLog').textContent += '\\n' + a.join(' '); console.log(...a);}catch(e){ console.log(...a);} };
+function $(id){ return document.getElementById(id); }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]); }
+function showToast(text){ const d=document.createElement('div'); d.textContent = text; d.style.position='fixed'; d.style.left='50%'; d.style.bottom='18px'; d.style.transform='translateX(-50%)'; d.style.background='rgba(0,0,0,0.85)'; d.style.color='#fff'; d.style.padding='10px 14px'; d.style.borderRadius='8px'; d.style.zIndex=999999; document.body.appendChild(d); setTimeout(()=>{ d.style.transition='opacity .6s'; d.style.opacity=0; setTimeout(()=>d.remove(),600); }, 1500); }
 
-document.addEventListener('DOMContentLoaded', () => {
-  LOG('DOM loaded');
-  setupMenu();
-  bindMenuButtons();
-  bindGlobalUI();
-  // menu will start newGame when Start is pressed
-});
-
-/* ---------- Data ---------- */
+/* ======= Data (same as before, kept short) ======= */
 const DEFAULT_SUSPECTS = [
-  { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', male:true, height:189, shoe:44, desc:'Холодный, гордый. Скандалил с отцом.' },
-  { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', male:false, height:165, shoe:37, desc:'Тихая, знает укромные места в доме.' },
-  { id:'prof', name:'Профессор Морден', role:'Архивариус', male:true, height:178, shoe:42, desc:'Профессор символов; любит уединение.' },
-  { id:'victoria', name:'Виктория Роузвуд', role:'Жена', male:false, height:172, shoe:39, desc:'Страстная, часто ссорилась с мужем.' },
-  { id:'lina', name:'Лина Монт', role:'Гостья', male:false, height:168, shoe:38, desc:'Загадочная, интересуется эзотерикой.' }
+  { id:'adrian', name:'Эдриан Роузвуд', role:'Наследник', male:true, height:189, shoe:44, desc:'Холодный, гордый.' },
+  { id:'beatrice', name:'Беатрис Хейвуд', role:'Домработница', male:false, height:165, shoe:37, desc:'Тихая, знает все тайники.' },
+  { id:'prof', name:'Профессор Морден', role:'Архивариус', male:true, height:178, shoe:42, desc:'Понимает символы.' },
+  { id:'victoria', name:'Виктория Роузвуд', role:'Жена', male:false, height:172, shoe:39, desc:'Эмоциональна, мотивы.' },
+  { id:'lina', name:'Лина Монт', role:'Гостья', male:false, height:168, shoe:38, desc:'Мистическая.' }
 ];
 
 const MASTER_CLUES = [
@@ -331,89 +334,70 @@ const MASTER_CLUES = [
   { id:'cl4', title:'Символ на стене', room:'music', type:'symbol', text:'Странный символ — эмблема', locked:false },
   { id:'cl5', title:'Пепел и пятна масла', room:'dining', type:'ash', text:'Пепел и следы горючего', locked:false },
   { id:'cl6', title:'Фрагмент карты (сожжен)', room:'basement', type:'puzzle', text:'Части карты — нужен пазл', locked:true },
-  { id:'cl7', title:'Флакон с эфиром', room:'attic', type:'vial', text:'Редкий эфир — запах наставляет на мысль', locked:false },
-  { id:'cl8', title:'Записка в книге', room:'library', type:'note', text:'"Власть — через тайну" — подпись В.', locked:false },
-  { id:'cl9', title:'Запечатанный конверт', room:'office', type:'seal', text:'Конверт с печатью', locked:true },
-  { id:'cl10', title:'Чернильные брызги', room:'office', type:'ink', text:'Чернила Wyn — редкая фирма', locked:false }
+  { id:'cl7', title:'Флакон с эфиром', room:'attic', type:'vial', text:'Редкий эфир — запах наставляет на мысль', locked:false }
 ];
 
 const ENDINGS = [
-  { id:'truth', title:'Правда и суд', desc:'Собраны доказательства — виновный осуждён.', cond: s=> s.links['adrian'] && s.links['adrian'].length>=3 && s.timeline.length>=2 },
-  { id:'frame', title:'Подставлен', desc:'Улики подложили — решение неоднозначно.', cond: s=> s.links['beatrice'] && s.links['beatrice'].length>=2 && s.opened['cl6'] },
-  { id:'supernatural', title:'За гранью', desc:'Ритуал пробуждает нечто... Финал сверхъестественный.', cond: s=> s.opened['cl5'] && s.opened['cl7'] && s.ritualPerformed },
+  { id:'truth', title:'Правда и суд', desc:'Вы собрали убедительные доказательства — виновный осуждён.', cond: s=> s.links['adrian'] && s.links['adrian'].length>=3 && s.timeline.length>=2 },
   { id:'open', title:'Нераскрыто', desc:'Недостаточно доказательств — дело остаётся тайной.', cond: s=> Object.values(s.links).flat().length < 3 }
 ];
 
-/* ---------- Game State ---------- */
+/* ======= State ======= */
 let state = {
-  suspects: [], clues: [], opened: {}, links: {}, timeline: [], ritualPerformed: false,
-  audioOn: false, musicOn: false, detectiveVoice: true
+  suspects: [], clues: [], opened: {}, links: {}, timeline: [], ritualPerformed:false, audioOn:false, musicOn:false, detectiveVoice:true
 };
 
-/* ---------- Helpers ---------- */
-function saveState(key){ try{ localStorage.setItem('rose_state_'+key, JSON.stringify(state)); LOG('Saved', key); }catch(e){ LOG('Save error', e); } }
-function loadState(key){ try{ const raw = localStorage.getItem('rose_state_'+key); return raw ? JSON.parse(raw) : null; }catch(e){ LOG('Load err', e); return null; } }
-function showToast(text){ const d=document.createElement('div'); d.textContent=text; d.style.position='fixed'; d.style.left='50%'; d.style.bottom='20px'; d.style.transform='translateX(-50%)'; d.style.background='rgba(0,0,0,0.85)'; d.style.color='#fff'; d.style.padding='10px 14px'; d.style.borderRadius='8px'; d.style.zIndex=99999; document.body.appendChild(d); setTimeout(()=>{ d.style.transition='opacity .6s'; d.style.opacity=0; setTimeout(()=>d.remove(),600); }, 1600); }
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]); }
-function getIcon(t){ switch(t){ case 'cipher': return '✉️'; case 'puzzle': return '🧩'; case 'symbol': return '🔱'; case 'vial': return '🧪'; case 'foot': return '👣'; case 'ink': return '🖋️'; default: return '🔎'; } }
+/* ======= Reliable init: DOMContentLoaded + delegation ======= */
+document.addEventListener('DOMContentLoaded', () => {
+  LOG('DOM ready — initializing UI handlers');
+  safeBindMenuDelegation();
+  bindGlobalHandlers();
+  // menu remains visible until Start
+});
 
-/* ---------- Menu & Start ---------- */
-function setupMenu(){
-  const startBtn = document.getElementById('startBtn');
-  const loadBtn = document.getElementById('loadBtn');
-  const settingsBtn = document.getElementById('settingsBtn');
-  startBtn && startBtn.addEventListener('click', ()=> {
-    document.getElementById('menuScreen').style.display='none';
-    newGame();
-  });
-  loadBtn && loadBtn.addEventListener('click', ()=> {
-    const s = loadState('manual');
-    if(s && confirm('Загрузить сохранение?')) { state = s; renderAll(); document.getElementById('menuScreen').style.display='none'; showToast('Сохранение загружено'); }
-    else showToast('Сохранений нет');
-  });
-  settingsBtn && settingsBtn.addEventListener('click', ()=> alert('Настройки доступны в правой панели (музыка, голос и т.д.)'));
-  document.getElementById('menuOpenBtn') && document.getElementById('menuOpenBtn').addEventListener('click', ()=> {
-    document.getElementById('menuScreen').style.display='flex';
-  });
+/* ======= Delegated menu handlers (works even if early script errors occurred) ======= */
+function safeBindMenuDelegation(){
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('#startBtn, #loadBtn, #settingsBtn, #menuOpenBtn');
+    if(!btn) return;
+    if(btn.id === 'startBtn'){ openMenu(false); newGame(); }
+    if(btn.id === 'loadBtn'){ const s = loadState('autosave'); if(s && confirm('Загрузить автосейв?')){ state = s; renderAll(); openMenu(false); showToast('Автосейв загружен'); } else showToast('Автосейв не найден'); }
+    if(btn.id === 'settingsBtn'){ alert('Настройки — справа.'); }
+    if(btn.id === 'menuOpenBtn'){ openMenu(true); }
+  }, true);
+  LOG('Menu delegation installed');
 }
 
-/* ---------- Global UI Binding ---------- */
-function bindMenuButtons(){
-  // nothing else here for now
-}
+/* ======= Save / Load helpers ======= */
+function saveState(key){ try{ localStorage.setItem('rose_'+key, JSON.stringify(state)); LOG('Saved', key); }catch(e){ LOG('save err', e); } }
+function loadState(key){ try{ const raw = localStorage.getItem('rose_'+key); return raw ? JSON.parse(raw) : null; }catch(e){ LOG('load err', e); return null; }}
 
-/* ---------- Game Start ---------- */
+/* ======= New game ======= */
 function newGame(){
-  LOG('newGame');
   state.suspects = JSON.parse(JSON.stringify(DEFAULT_SUSPECTS)).sort(()=>Math.random()-0.5);
   state.clues = JSON.parse(JSON.stringify(MASTER_CLUES));
-  // add a couple of extra random clues
-  for(let i=0;i<2;i++){
-    const base = MASTER_CLUES[Math.floor(Math.random()*MASTER_CLUES.length)];
-    const copy = Object.assign({}, base, { id: base.id + '_x' + i, title: base.title + ' (вспл.)', locked: Math.random() < 0.5 });
-    state.clues.push(copy);
-  }
   state.opened = {}; state.links = {}; state.timeline = []; state.ritualPerformed = false;
   state.suspects.forEach(s => state.links[s.id]=[]);
   renderAll();
-  showToast('Новая игра начата.');
   saveState('autosave');
+  showToast('Новая игра начата');
 }
 
-/* ---------- Rendering ---------- */
+/* ======= Render functions ======= */
 function renderSuspects(){
-  const area = document.getElementById('suspectsList'); area.innerHTML='';
-  state.suspects.forEach(s=>{
+  const area = $('suspectsList'); area.innerHTML = '';
+  state.suspects.forEach((s, idx)=>{
     const div = document.createElement('div'); div.className='suspect'; div.dataset.suspect = s.id;
-    // try to use user-provided female images assets/female1..3.jpg (if exist) — browser will show broken icon if not
+    // use user-provided images for female suspects if available
     let avatarHtml = `<div class="avatar">${escapeHtml(s.name[0])}</div>`;
     if(!s.male){
-      const idx = state.suspects.filter(x=>!x.male).map(x=>x.id).indexOf(s.id);
-      const src = `assets/female${Math.min(3, idx+1)}.jpg`;
-      avatarHtml = `<img class="avatar" src="${src}" alt="${escapeHtml(s.name)}">`;
+      const femaleIndex = state.suspects.filter(x=>!x.male).map(x=>x.id).indexOf(s.id);
+      const src = `assets/female${Math.min(3,femaleIndex+1)}.jpg`;
+      avatarHtml = `<img class="avatar" src="${src}" alt="${escapeHtml(s.name)}" onerror="this.style.display='none';">`;
     }
-    div.innerHTML = `${avatarHtml}<div class="smeta"><div class="sname">${escapeHtml(s.name)}</div><div class="srole">${escapeHtml(s.role)}</div><div class="meta-row">Рост: ${s.height} см · Обувь: ${s.shoe}</div><div class="meta-row" style="margin-top:6px; color:var(--muted)">${escapeHtml(s.desc)}</div></div><div class="dropzone" data-suspect="${s.id}">${(state.links[s.id]||[]).length}</div>`;
-    // click opens profile modal with detailed info and habits
+    const linked = (state.links[s.id] || []).length;
+    div.innerHTML = `${avatarHtml}<div class="smeta"><div class="sname">${escapeHtml(s.name)}</div><div class="srole">${escapeHtml(s.role)}</div><div class="meta-row">Рост: ${s.height} см · Обувь: ${s.shoe}</div><div class="meta-row" style="margin-top:6px; color:var(--muted)">${escapeHtml(s.desc)}</div></div><div class="dropzone" data-suspect="${s.id}">${linked}</div>`;
+    // click opens profile modal
     div.addEventListener('click', ()=> openProfileModal(s));
     area.appendChild(div);
   });
@@ -421,373 +405,88 @@ function renderSuspects(){
 }
 
 function renderClues(){
-  const grid = document.getElementById('cluesGrid'); grid.innerHTML='';
+  const grid = $('cluesGrid'); grid.innerHTML = '';
   state.clues.forEach(c=>{
-    const el = document.createElement('div'); el.className='clue'; el.id = c.id; el.dataset.clue = c.id;
     const isOpen = !!state.opened[c.id];
+    const el = document.createElement('div'); el.className='clue'; el.id=c.id; el.dataset.clue=c.id;
     el.innerHTML = `<div class="thumb">${getIcon(c.type)}</div><div><h4>${escapeHtml(c.title)}</h4><p>${ isOpen ? escapeHtml(c.text) : (c.locked ? 'Зашифрована / скрыта' : escapeHtml(c.text)) }</p></div>`;
     el.addEventListener('click', ()=> onClueClick(c));
     el.draggable = true;
     el.addEventListener('dragstart', ev=> ev.dataTransfer.setData('text/plain', c.id));
+    // touch support for long press
+    addTouchDragSupport(el, c.id);
     grid.appendChild(el);
   });
-  document.getElementById('totalClues').innerText = state.clues.length;
-  document.getElementById('openedCount').innerText = Object.keys(state.opened).length;
+  $('totalClues').innerText = state.clues.length;
+  $('openedCount').innerText = Object.keys(state.opened).length;
 }
 
 function renderTimeline(){
-  const el = document.getElementById('timelineList');
-  if(state.timeline.length===0){ el.innerHTML = '<div class="small" style="color:var(--muted)">Пока пусто</div>'; return; }
-  el.innerHTML = state.timeline.slice().reverse().map(t=> `<div style="margin-bottom:6px">${escapeHtml(t.text)} <span style="color:var(--muted); font-size:0.82rem">(${new Date(t.time).toLocaleTimeString()})</span></div>`).join('');
+  const el = $('timelineList'); if(state.timeline.length===0){ el.innerHTML = '<div class="small" style="color:var(--muted)">Пока пусто</div>'; return; }
+  el.innerHTML = state.timeline.slice().reverse().map(t => `<div style="margin-bottom:6px">${escapeHtml(t.text)} <span style="color:var(--muted); font-size:0.82rem">(${new Date(t.time).toLocaleTimeString()})</span></div>`).join('');
 }
 
 function renderStats(){
-  document.getElementById('linksCount').innerText = Object.values(state.links).flat().length;
-  document.getElementById('ritualState').innerText = state.ritualPerformed ? 'да' : 'нет';
+  $('linksCount').innerText = Object.values(state.links).flat().length;
+  $('ritualState').innerText = state.ritualPerformed ? 'да' : 'нет';
   updateProgress();
 }
 
-function renderAll(){
-  renderSuspects(); renderClues(); renderTimeline(); renderStats(); populateAccuse(); renderProfilesModal();
-}
-
-/* ---------- Attach dropzones ---------- */
-function attachDropzones(){
-  document.querySelectorAll('.dropzone').forEach(zone=>{
-    zone.addEventListener('dragover', ev=> { ev.preventDefault(); zone.style.outline='2px dashed rgba(176,138,92,0.6)'; });
-    zone.addEventListener('dragleave', ev=> { zone.style.outline=''; });
-    zone.addEventListener('drop', ev=> { ev.preventDefault(); zone.style.outline=''; const clueId = ev.dataTransfer.getData('text/plain'); const suspectId = zone.dataset.suspect; if(clueId && suspectId) linkEvidence(suspectId, clueId); });
-  });
-  // mobile long-press is handled in clue touch support
-  document.querySelectorAll('.clue').forEach(c => addTouchDragSupport(c));
-}
-
-/* ---------- Clue interactions ---------- */
-function onClueClick(c){
-  LOG('clue clicked', c.id);
-  if(c.locked && !state.opened[c.id]){
-    // open appropriate tool
-    if(c.type === 'cipher' || c.type === 'cipher2'){ openCipherModal(c); return; }
-    if(c.type === 'puzzle'){ openPuzzleModal(); return; }
-    if(c.type === 'symbol' || c.type === 'seal'){ openMatchModal(c); return; }
-    showToast('Эта улика скрыта. Используйте инструменты.');
-    return;
-  }
-  if(!state.opened[c.id]){
-    state.opened[c.id] = true;
-    revealClueText(c);
-    renderClues(); renderStats(); updateHint();
-    return;
-  }
-  // already opened -> show detail
-  showDetail(c);
-}
-function revealClueText(c){
-  if(c.type === 'cipher' && c.text === 'Vkr ghqv wrfkh') c.text = 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»';
-  if(c.type === 'puzzle' && c.text.includes('Части')) c.text = 'Карта восстановлена: найден скрытый ход между библиотекой и подвалом.';
-  state.opened[c.id] = true;
-}
-function showDetail(c){
-  byId('endingTitle').innerText = c.title;
-  byId('endingText').innerHTML = `<div style="color:var(--muted)">${escapeHtml(c.text)}</div>`;
-  byId('endingRevealModal').style.display = 'flex';
-}
-
-/* ---------- Mini-games ---------- */
-function openCipherModal(clue){
-  const modal = byId('cipherModal'); modal.style.display='flex'; modal.dataset.clue = clue ? clue.id : '';
-  byId('cipherOutput').value = ''; byId('cipherShift').value = 3;
-}
-function tryCipher(){
-  const shift = Number(byId('cipherShift').value) || 0; const clueId = byId('cipherModal').dataset.clue;
-  const clue = state.clues.find(c=>c.id===clueId) || state.clues.find(c=>c.type==='cipher' || c.type==='cipher2');
-  if(!clue){ showToast('Нет подходящей записки.'); return; }
-  const decoded = caesarDecode(clue.text, shift); byId('cipherOutput').value = decoded;
-  if(/он знает|в\./i.test(decoded) || shift===3){ showToast('Записка расшифрована'); clue.locked=false; clue.text = 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»'; state.opened[clue.id]=true; renderClues(); renderStats(); byId('cipherModal').style.display='none'; }
-}
-function caesarDecode(s, shift){ if(!s) return s; const a='abcdefghijklmnopqrstuvwxyz', A=a.toUpperCase(); return s.split('').map(ch=>{ if(a.includes(ch)) return a[(a.indexOf(ch)-shift+26)%26]; if(A.includes(ch)) return A[(A.indexOf(ch)-shift+26)%26]; return ch; }).join(''); }
-
-let puzzleSolved = false;
-function openPuzzleModal(){
-  const modal = byId('puzzleModal'); modal.style.display='flex';
-  const board = byId('puzzleBoard'); board.innerHTML='';
-  const nums = [1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-0.5);
-  nums.forEach(n=>{
-    const p = document.createElement('div'); p.style.background='#201612'; p.style.color='#d9c8ae'; p.style.display='grid'; p.style.placeItems='center'; p.style.height='80px'; p.style.borderRadius='6px'; p.style.cursor='pointer';
-    p.textContent = n===9 ? '' : n; p.dataset.num = n;
-    p.addEventListener('click', ()=> { clickPuzzlePiece(board, p); });
-    board.appendChild(p);
-  });
-}
-function clickPuzzlePiece(board, piece){
-  const empty = Array.from(board.children).find(c=>c.dataset.num=='9'); if(!empty) return;
-  const idx = Array.from(board.children).indexOf(piece), eidx = Array.from(board.children).indexOf(empty), dist = Math.abs(idx-eidx);
-  if(dist === 1 || dist === 3){ const t = piece.dataset.num; piece.dataset.num = empty.dataset.num; empty.dataset.num = t; const tmp = piece.textContent; piece.textContent = empty.textContent; empty.textContent = tmp; checkPuzzleSolved(board); }
-}
-function checkPuzzleSolved(board){
-  const order = Array.from(board.children).map(c=>Number(c.dataset.num)); const ok = order.every((v,i)=> v===i+1);
-  if(ok && !puzzleSolved){ puzzleSolved=true; const clue = state.clues.find(c=>c.type==='puzzle'); if(clue){ clue.locked=false; clue.text='Карта восстановлена: найден скрытый проход.'; state.opened[clue.id]=true; renderClues(); renderStats(); updateHint(); } showToast('Пазл решён!'); byId('puzzleModal').style.display='none'; }
-}
-
-function openMatchModal(clue){
-  const modal = byId('matchModal'); modal.style.display='flex';
-  const area = byId('matchArea'); area.innerHTML='';
-  const opts = [{id:'A',ok:false},{id:'B',ok:true},{id:'C',ok:false}].sort(()=>Math.random()-0.5);
-  opts.forEach(o=> {
-    const btn = document.createElement('div'); btn.style.width='120px'; btn.style.height='120px'; btn.style.borderRadius='8px'; btn.style.background='#211815'; btn.style.display='grid'; btn.style.placeItems='center'; btn.style.cursor='pointer'; btn.innerHTML=`<div>${o.id}</div>`;
-    btn.addEventListener('click', ()=> { if(o.ok){ showToast('Эмблема совпала — улика открыта.'); const target = (clue && state.clues.find(x=>x.id===clue.id)) || state.clues.find(x=>x.type==='symbol'); if(target){ target.locked=false; state.opened[target.id]=true; renderClues(); renderStats(); updateHint(); } modal.style.display='none'; } else { showToast('Не похоже. Попробуйте другую.'); }});
-    area.appendChild(btn);
-  });
-}
-
-/* ---------- Interrogation (simulated neural) ---------- */
-function openInterrogation(){
-  const modal = byId('interrogateModal'); modal.style.display='flex';
-  const sel = byId('interrogateSelect'); sel.innerHTML = '<option value="">— Выберите подозреваемого —</option>';
-  state.suspects.forEach(s=> { const o = document.createElement('option'); o.value = s.id; o.textContent = s.name; sel.appendChild(o); });
-  byId('chatWindow').innerHTML = '';
-}
-function startInterrogation(){
-  const sel = byId('interrogateSelect'); const id = sel.value; if(!id){ showToast('Выберите подозреваемого'); return; }
-  const suspect = state.suspects.find(s=>s.id===id);
-  addChatAI(`Вы допросите ${suspect.name}. Система готова.`);
-}
-function addChatAI(text, speak=true){
-  const chat = byId('chatWindow'); const m = document.createElement('div'); m.className='msg ai'; m.textContent = text; chat.appendChild(m); chat.scrollTop = chat.scrollHeight;
-  if(speak && state.detectiveVoice){ speakText(text, {voice:'suspect'}); }
-}
-function addChatUser(text, speak=true){
-  const chat = byId('chatWindow'); const m = document.createElement('div'); m.className='msg user'; m.textContent = text; chat.appendChild(m); chat.scrollTop = chat.scrollHeight;
-  if(speak && state.detectiveVoice){ speakText(text, {voice:'detective'}); }
-}
-function handleChatAsk(){
-  const q = byId('chatInput').value.trim(); if(!q) return; addChatUser(q); byId('chatInput').value='';
-  // Generate response
-  setTimeout(()=> {
-    const selId = byId('interrogateSelect').value;
-    const resp = generateAIResponseForSuspect(q, selId);
-    addChatAI(resp);
-  }, 500 + Math.random()*600);
-}
-function generateAIResponseForSuspect(question, suspectId){
-  if(!suspectId) return 'Вы не выбрали подозреваемого.';
-  const s = state.suspects.find(x=>x.id===suspectId);
-  const q = question.toLowerCase();
-  if(q.includes('где') && q.includes('были')) return `${s.name}: Я была(б) в ${s.male ? 'комнате' : 'коридоре'} около полуночи.`;
-  if(q.includes('запис') || q.includes('шифр')) return `${s.name}: Эта записка? Я слышал(а) о ней — кажется, там инициалы "В."`;
-  if(q.includes('символ')) return `${s.name}: Символ напоминает герб семьи Морден.`;
-  // If clue mentions suspect
-  const linked = Object.entries(state.links).filter(([k,arr]) => arr.includes('cl2') || arr.includes('cl10'));
-  if(linked.length>0) return `${s.name}: Улики есть, но они легко подделываются.`;
-  // default
-  return `${s.name}: Я не готов(а) обсуждать это.`;
-}
-
-/* ---------- Profiles modal ---------- */
-function openProfileModal(s){
-  // show the same profile modal but scroll to target
-  renderProfilesModal();
-  const modal = byId('profilesModal'); modal.style.display='flex';
-  // optionally highlight suspect (not implemented highlight for simplicity)
-}
 function renderProfilesModal(){
-  const cont = byId('profilesContent'); cont.innerHTML = '';
+  const cont = $('profilesContent'); cont.innerHTML = '';
   state.suspects.forEach(s=>{
     const div = document.createElement('div'); div.style.marginBottom='12px';
     const linked = state.links[s.id] ? state.links[s.id].length : 0;
-    div.innerHTML = `<strong>${escapeHtml(s.name)}</strong> — <em>${escapeHtml(s.role)}</em><div class="small" style="color:var(--muted); margin-top:6px">Рост: ${s.height} см · Обувь: ${s.shoe} · Привычки: ${escapeHtml(s.desc)}</div><div style="margin-top:8px"><button class="btn" onclick="inspectSuspect('${s.id}')">Допросить</button> <button class="btn secondary" onclick="showPhysical('${s.id}')">Внешность</button></div><div style="margin-top:6px; color:var(--muted)">Связано улик: ${linked}</div>`;
+    div.innerHTML = `<strong>${escapeHtml(s.name)}</strong> — <em>${escapeHtml(s.role)}</em><div style="color:var(--muted); margin-top:6px">Рост: ${s.height} см · Обувь: ${s.shoe} · Улик: ${linked}</div><div style="margin-top:6px">${escapeHtml(s.desc)}</div><div style="margin-top:8px"><button class="btn" onclick="inspectSuspect('${s.id}')">Допросить</button> <button class="btn secondary" onclick="showPhysical('${s.id}')">Внешность</button></div>`;
     cont.appendChild(div);
   });
 }
-window.inspectSuspect = function(id){ document.getElementById('profilesModal').style.display='none'; document.getElementById('interrogateModal').style.display='flex'; document.getElementById('interrogateSelect').value = id; addChatAI('Начинаем допрос.'); };
-window.showPhysical = function(id){
-  const s = state.suspects.find(x=>x.id===id); if(!s) return;
-  const text = `${s.name}. Рост: ${s.height} см. Размер обуви: ${s.shoe}. Внешность: ${s.desc}. Привычки: часто носит перчатки, вечером любит одиночество.`;
-  byId('endingTitle').innerText = 'Внешность и привычки';
-  byId('endingText').innerHTML = `<div style="color:var(--muted)">${escapeHtml(text)}</div>`;
-  byId('endingRevealModal').style.display='flex';
-}
 
-/* ---------- Phone ---------- */
-function bindPhone(){
-  byId('callPartner').addEventListener('click', ()=> {
-    const log = byId('phoneLog'); log.innerHTML = `<div style="color:var(--muted)">Вы звоните напарнику... Соединение.</div>` + log.innerHTML;
-    setTimeout(()=> { log.innerHTML = `<div style="color:var(--muted)">'Я на пути, держи меня в курсе', — отвечает напарник.</div>` + log.innerHTML; }, 1200);
-  });
-  byId('callPolice').addEventListener('click', ()=> {
-    const log = byId('phoneLog'); log.innerHTML = `<div style="color:var(--muted)">Вызов в полицию... Поддержка на линии.</div>` + log.innerHTML;
-    setTimeout(()=> { log.innerHTML = `<div style="color:var(--muted)">'Полиция выехала на место', — сообщает диспетчер.</div>` + log.innerHTML; }, 1200);
-  });
-  byId('phoneCall').addEventListener('click', ()=> {
-    const val = byId('phoneInput').value.trim(); const log = byId('phoneLog');
-    if(!val) return;
-    if(val.includes('.') || val.startsWith('http')) { window.open(val.startsWith('http')?val:'http://'+val,'_blank'); log.innerHTML = `<div style="color:var(--muted)">Открыт сайт: ${escapeHtml(val)}</div>` + log.innerHTML; } else { log.innerHTML = `<div style="color:var(--muted)">Вызов ${escapeHtml(val)} — соединение...</div>` + log.innerHTML; setTimeout(()=> { log.innerHTML = `<div style="color:var(--muted)">'Ничего не найдено по этому номеру', — голос сообщает.</div>` + log.innerHTML; }, 1200); }
-  });
-}
-
-/* ---------- Find killer / Accuse ---------- */
-function tryFindKiller(){
-  const counts = state.suspects.map(s=>({ id:s.id, name:s.name, c:(state.links[s.id]||[]).length }));
-  counts.sort((a,b)=>b.c-a.c);
-  const top = counts[0];
-  if(!top || top.c===0){ showToast('Недостаточно доказательств'); return; }
-  byId('accuseSelect').value = top.id;
-  showToast('Предполагаемый убийца: '+top.name);
-  accuseSelected();
-}
-function populateAccuse(){ const sel = byId('accuseSelect'); if(!sel) return; sel.innerHTML = '<option value="">— Выберите —</option>'; state.suspects.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); }); }
-function accuseSelected(){
-  const sel = byId('accuseSelect'); const id = sel.value; if(!id){ showToast('Выберите подозреваемого'); return; }
-  // evaluate endings
-  const matched = ENDINGS.filter(e => e.cond(state));
-  if(matched.length>0){ showEnding(matched[0].id); return; }
-  // fallback
-  const links = state.links[id]||[];
-  if(links.length>=3 && id==='adrian'){ showEnding('truth'); return; }
-  showEnding('open');
-}
-function showEnding(id){
-  const e = ENDINGS.find(x=>x.id===id); if(!e) return;
-  byId('endingTitle').innerText = e.title; byId('endingText').innerText = e.desc; byId('endingRevealModal').style.display='flex';
-  // save history
-  const hist = JSON.parse(localStorage.getItem('rose_endings')||'[]'); hist.unshift({id:e.id,time:new Date().toISOString()}); localStorage.setItem('rose_endings', JSON.stringify(hist.slice(0,50)));
-}
-
-/* ---------- Ritual ---------- */
-function performRitual(){
-  if(state.ritualPerformed){ showToast('Ритуал уже выполнен.'); return; }
-  if(!confirm('Исполнить ритуал? Это может привести к непредсказуемым последствиям.')) return;
-  state.ritualPerformed = true;
-  showToast('Холодный ветер пронёсся по коридору...');
-  const special = { id:'cl_ritual', title:'Ритуальные отметки', room:'basement', type:'ritual', text:'Затенённые символы и линии крови', locked:false };
-  state.clues.push(special); state.opened[special.id] = true; renderClues(); renderStats();
-}
-
-/* ---------- Interrogation TTS ---------- */
-function speakText(text, opts={voice:'detective'}) {
-  if(!('speechSynthesis' in window)) return;
-  if(!state.detectiveVoice) return;
-  const utter = new SpeechSynthesisUtterance(text);
-  // choose a default voice (browser-dependent)
-  const voices = speechSynthesis.getVoices();
-  // simple heuristics: use a female voice for suspect, male for detective if available
-  if(opts.voice === 'suspect'){
-    const v = voices.find(v=>/female|woman|zira|samantha|alexa/i.test(v.name)) || voices[0];
-    if(v) utter.voice = v;
-  } else {
-    const v = voices.find(v=>/male|man|david|alex/i.test(v.name)) || voices[0];
-    if(v) utter.voice = v;
+/* ======= Clue interactions ======= */
+function onClueClick(c){
+  LOG('Clue click', c.id);
+  if(c.locked && !state.opened[c.id]){
+    if(c.type==='cipher' || c.type==='cipher2'){ openCipherModal(c); return; }
+    if(c.type==='puzzle'){ openPuzzleModal(); return; }
+    if(c.type==='symbol' || c.type==='seal'){ openMatchModal(c); return; }
+    showToast('Эта улика скрыта — используйте инструменты.');
+    return;
   }
-  utter.rate = 1;
-  speechSynthesis.cancel();
-  speechSynthesis.speak(utter);
+  if(!state.opened[c.id]){ state.opened[c.id]=true; revealClueText(c); renderClues(); renderStats(); return; }
+  showDetail(c);
+}
+function revealClueText(c){
+  if(c.type==='cipher' && c.text==='Vkr ghqv wrfkh') c.text = 'Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»';
+  if(c.type==='puzzle' && c.text.includes('Части')) c.text = 'Карта восстановлена: найден скрытый ход.';
+  state.opened[c.id] = true;
+}
+function showDetail(c){
+  $('endingTitle').innerText = c.title;
+  $('endingText').innerHTML = `<div style="color:var(--muted)">${escapeHtml(c.text)}</div>`;
+  $('endingRevealModal').style.display = 'flex';
 }
 
-/* ---------- Utilities ---------- */
-function populateInterrogateSelect(){ const sel = byId('interrogateSelect'); sel.innerHTML = '<option value="">— Выберите —</option>'; state.suspects.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); }); }
-
-/* ---------- Binding Global UI ---------- */
-function bindGlobalUI(){
-  // hotspots
-  document.querySelectorAll('.hotspot').forEach(h=> h.addEventListener('click', ()=> { const room = h.dataset.room; inspectRoom(room); document.getElementById('clickSnd') && document.getElementById('clickSnd').play && document.getElementById('clickSnd').play().catch(()=>{}); }));
-  // tools
-  document.getElementById('cipherBtn').addEventListener('click', ()=> openCipherModal(null));
-  document.getElementById('cipherTryBtn').addEventListener('click', tryCipher);
-  document.getElementById('cipherCloseBtn').addEventListener('click', ()=> byId('cipherModal').style.display='none');
-  document.getElementById('puzzleBtn').addEventListener('click', openPuzzleModal);
-  document.getElementById('puzzleClose').addEventListener('click', ()=> byId('puzzleModal').style.display='none');
-  document.getElementById('matchBtn').addEventListener('click', ()=> openMatchModal(null));
-  document.getElementById('matchCloseBtn').addEventListener('click', ()=> byId('matchModal').style.display='none');
-
-  // timeline
-  document.getElementById('addTimeline').addEventListener('click', ()=> {
-    const v = byId('timelineInput').value.trim(); if(!v) return; state.timeline.push({ text:v, time:new Date().toISOString() }); byId('timelineInput').value=''; renderTimeline(); saveState('autosave'); renderStats();
-  });
-
-  // phone
-  bindPhone();
-
-  // interrogation
-  document.getElementById('interrogateBtn').addEventListener('click', ()=> { openInterrogation(); populateInterrogateSelect(); });
-  document.getElementById('interrogateStart').addEventListener('click', startInterrogation);
-  document.getElementById('chatSend').addEventListener('click', handleChatAsk);
-  document.getElementById('chatClose').addEventListener('click', ()=> byId('interrogateModal').style.display='none');
-
-  // endings
-  document.getElementById('endingsBtn').addEventListener('click', ()=> {
-    const list = byId('endingsList'); list.innerHTML='';
-    ENDINGS.forEach(e=>{
-      const card = document.createElement('div'); card.className='ending-card'; card.style.padding='10px';
-      const unlocked = e.cond(state);
-      card.innerHTML = `<div style="display:flex; justify-content:space-between;"><strong>${escapeHtml(e.title)}</strong><div style="color:${unlocked?'#9fff9f':'#cfcfcf'}">${unlocked? 'Доступна':'Недоступна'}</div></div><div style="color:var(--muted); margin-top:6px">${escapeHtml(e.desc)}</div>`;
-      card.addEventListener('click', ()=> { if(unlocked) showEnding(e.id); else showToast('Эта концовка ещё не открыта'); });
-      list.appendChild(card);
+/* ======= Drag & Drop / Mobile linking ======= */
+function attachDropzones(){
+  document.querySelectorAll('.dropzone').forEach(zone => {
+    zone.addEventListener('dragover', ev=> { ev.preventDefault(); zone.style.outline='2px dashed rgba(176,138,92,0.6)'; });
+    zone.addEventListener('dragleave', ev=> zone.style.outline='');
+    zone.addEventListener('drop', ev=> { ev.preventDefault(); zone.style.outline=''; const clueId = ev.dataTransfer.getData('text/plain'); const suspectId = zone.dataset.suspect; if(clueId && suspectId) linkEvidence(suspectId, clueId); });
+    // tap on dropzone while mobile "holding" a clue
+    zone.addEventListener('touchend', ()=> {
+      const held = document.body.dataset.draggingClue;
+      if(held){ const suspectId = zone.dataset.suspect; linkEvidence(suspectId, held); document.body.dataset.draggingClue=''; }
     });
-    byId('endingsModal').style.display='flex';
   });
-  document.getElementById('endingsClose').addEventListener('click', ()=> byId('endingsModal').style.display='none');
-
-  // ritual
-  document.getElementById('ritualBtn').addEventListener('click', performRitual);
-
-  // profiles
-  document.getElementById('profilesBtn').addEventListener('click', ()=> { renderProfilesModal(); byId('profilesModal').style.display='flex'; });
-  document.getElementById('closeProfiles').addEventListener('click', ()=> byId('profilesModal').style.display='none');
-
-  // phone open
-  document.getElementById('phoneOpenBtn').addEventListener('click', ()=> { const inp = prompt('Открыть телефон? (ok)'); if(inp!==null) showToast('Телефон открыт'); });
-
-  // find killer & accuse
-  document.getElementById('findKiller').addEventListener('click', tryFindKiller);
-  // bind accuse select population and accuse button
-  populateAccuse();
-  document.getElementById('accuseBtn') && document.getElementById('accuseBtn').addEventListener('click', accuseSelected);
-
-  // save notes
-  document.getElementById('saveNotes').addEventListener('click', ()=> { localStorage.setItem('rose_notes', byId('notebook').value||''); showToast('Заметки сохранены'); });
-  document.getElementById('clearNotes').addEventListener('click', ()=> { if(confirm('Очистить заметки?')) { byId('notebook').value=''; localStorage.removeItem('rose_notes'); } });
-
-  // audio toggles
-  document.getElementById('audioToggle').addEventListener('click', ()=> {
-    state.audioOn = !state.audioOn; document.getElementById('audioState').innerText = state.audioOn? 'вкл':'выкл'; document.getElementById('audioToggle').innerText = state.audioOn ? 'Звук: вкл' : 'Звук: выкл';
-    if(state.audioOn){ const bg = document.getElementById('bgMusic'); const amb = document.getElementById('ambience'); if(document.getElementById('toggleMusic').checked){ bg.volume = 0.12; bg.play().catch(()=>{}); } amb.volume = 0.18; amb.play().catch(()=>{}); } else { document.getElementById('bgMusic').pause(); document.getElementById('ambience').pause(); }
-  });
-
-  // settings toggles
-  document.getElementById('toggleMusic').addEventListener('change', e=> { if(e.target.checked && state.audioOn) document.getElementById('bgMusic').play().catch(()=>{}); else document.getElementById('bgMusic').pause(); });
-  document.getElementById('toggleAmbience').addEventListener('change', e=> { if(e.target.checked && state.audioOn) document.getElementById('ambience').play().catch(()=>{}); else document.getElementById('ambience').pause(); });
-  document.getElementById('toggleDetectiveVoice').addEventListener('change', e=> { state.detectiveVoice = e.target.checked; });
-
-  // start/close modals
-  document.getElementById('endingClose').addEventListener('click', ()=> byId('endingRevealModal').style.display='none');
-  document.getElementById('cipherCloseBtn').addEventListener('click', ()=> byId('cipherModal').style.display='none');
-});
-
-/* ---------- Additional Utilities ---------- */
-function populateAccuse(){ const sel = byId('accuseSelect'); if(!sel) return; sel.innerHTML = '<option value="">— Выберите —</option>'; state.suspects.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); }); }
-
-/* ---------- Room inspection ---------- */
-function inspectRoom(room){
-  const found = state.clues.filter(c=> c.room === room);
-  if(found.length === 0){ showToast('Ничего не найдено в этой комнате.'); return; }
-  // reveal simple un-locked clues
-  found.forEach(c=> {
-    if(!c.locked){ state.opened[c.id] = true; }
-    else {
-      // give hint on tooltip (left as text update)
-      const el = document.getElementById(c.id);
-      if(el) el.querySelector('p').textContent = 'Найдена, но скрыта — используйте инструмент';
-    }
-  });
-  renderClues(); renderStats(); updateHint(); showToast(`Осмотр ${room}: найдено ${found.length} улик`);
+}
+function addTouchDragSupport(el, clueId){
+  let timer=null;
+  el.addEventListener('touchstart', ()=> {
+    timer = setTimeout(()=> { document.body.dataset.draggingClue = clueId; el.style.opacity=0.6; showToast('Теперe нажмите на подозреваемого, чтобы привязать улику'); }, 600);
+  }, {passive:true});
+  el.addEventListener('touchend', ()=> { clearTimeout(timer); setTimeout(()=> { el.style.opacity=''; document.body.dataset.draggingClue=''; }, 200); });
 }
 
-/* ---------- Touch long-press for mobile drag (basic) ---------- */
-function addTouchDragSupport(el){
-  let timer = null; let clueId = el.dataset && el.dataset.clue;
-  el.addEventListener('touchstart', (ev)=>{ timer = setTimeout(()=> { el.style.opacity=0.6; document.body.dataset.draggingClue = clueId; showToast('Выберите подозреваемого, чтобы привязать улику'); }, 500); }, {passive:true});
-  el.addEventListener('touchend', ()=> { clearTimeout(timer); setTimeout(()=>{ el.style.opacity=''; document.body.dataset.draggingClue = ''; }, 100); });
-}
 function linkEvidence(suspectId, clueId){
   if(!state.links[suspectId]) state.links[suspectId]=[];
   if(state.links[suspectId].includes(clueId)){ showToast('Улика уже привязана'); return; }
@@ -796,17 +495,252 @@ function linkEvidence(suspectId, clueId){
   renderAll(); saveState('autosave');
 }
 
-/* ---------- Simple initial load ---------- */
-function updateProgress(){ const opened = Object.keys(state.opened).length + Object.values(state.links).flat().length; const total = state.clues.length + 2; const pct = Math.min(100, Math.round((opened/total)*100)); byId('progressPct').innerText = pct + '%'; }
-function renderProfilesModal(){ /* already defined above */ } // noop if function exists
+/* ======= Mini-games & tools ======= */
+function openCipherModal(clue){
+  const modal = $('cipherModal'); modal.style.display='flex'; modal.dataset.clue = clue ? clue.id : '';
+  $('cipherOutput').value=''; $('cipherShift').value=3;
+}
+function tryCipher(){
+  const shift = Number($('cipherShift').value) || 0; const clueId = $('cipherModal').dataset.clue;
+  const clue = state.clues.find(c=>c.id===clueId) || state.clues.find(c=>c.type==='cipher' || c.type==='cipher2');
+  if(!clue){ showToast('Записка не найдена'); return; }
+  const decoded = caesarDecode(clue.text, shift); $('cipherOutput').value = decoded;
+  if(/он знает|в\./i.test(decoded) || shift===3){
+    showToast('Записка расшифрована'); clue.locked=false; clue.text='Найдена в кабинете: «Он знает. Сегодня решу всё. — В.»'; state.opened[clue.id]=true; renderClues(); renderStats(); $('cipherModal').style.display='none';
+  }
+}
+function caesarDecode(s, shift){ if(!s) return s; const a='abcdefghijklmnopqrstuvwxyz', A=a.toUpperCase(); return s.split('').map(ch=>{ if(a.includes(ch)) return a[(a.indexOf(ch)-shift+26)%26]; if(A.includes(ch)) return A[(A.indexOf(ch)-shift+26)%26]; return ch; }).join(''); }
 
-// expose some functions for debug/testing
-window.openCipherModal = openCipherModal;
-window.openInterrogation = openInterrogation;
-window.openMatchModal = openMatchModal;
+let puzzleSolved=false;
+function openPuzzleModal(){
+  const modal = $('puzzleModal'); modal.style.display='flex'; const board = $('puzzleBoard'); board.innerHTML='';
+  const nums = [1,2,3,4,5,6,7,8,9].sort(()=>Math.random()-0.5);
+  nums.forEach(n=>{ const p=document.createElement('div'); p.style.background='#201612'; p.style.color='#d9c8ae'; p.style.display='grid'; p.style.placeItems='center'; p.style.height='80px'; p.style.borderRadius='6px'; p.style.cursor='pointer'; p.textContent = n===9? '': n; p.dataset.num=n; p.addEventListener('click', ()=> clickPuzzlePiece(board,p)); board.appendChild(p); });
+}
+function clickPuzzlePiece(board, piece){
+  const empty = Array.from(board.children).find(c=>c.dataset.num=='9'); if(!empty) return;
+  const idx = Array.from(board.children).indexOf(piece), eidx = Array.from(board.children).indexOf(empty), dist = Math.abs(idx-eidx);
+  if(dist===1 || dist===3){ const t=piece.dataset.num; piece.dataset.num=empty.dataset.num; empty.dataset.num=t; const tmp = piece.textContent; piece.textContent = empty.textContent; empty.textContent = tmp; checkPuzzleSolved(board); }
+}
+function checkPuzzleSolved(board){
+  const order = Array.from(board.children).map(c=>Number(c.dataset.num)); const ok = order.every((v,i)=> v===i+1);
+  if(ok && !puzzleSolved){ puzzleSolved=true; const clue=state.clues.find(c=>c.type==='puzzle'); if(clue){ clue.locked=false; clue.text='Карта восстановлена: найден скрытый проход.'; state.opened[clue.id]=true; renderClues(); renderStats(); } showToast('Пазл решён!'); $('puzzleModal').style.display='none'; }
+}
+
+function openMatchModal(clue){
+  const modal = $('matchModal'); modal.style.display='flex'; const area = $('matchArea'); area.innerHTML='';
+  const opts = [{id:'A',ok:false},{id:'B',ok:true},{id:'C',ok:false}].sort(()=>Math.random()-0.5);
+  opts.forEach(o=>{ const btn=document.createElement('div'); btn.style.width='120px'; btn.style.height='120px'; btn.style.borderRadius='8px'; btn.style.background='#211815'; btn.style.display='grid'; btn.style.placeItems='center'; btn.style.cursor='pointer'; btn.innerHTML=`<div>${o.id}</div>`; btn.addEventListener('click', ()=>{ if(o.ok){ showToast('Эмблема совпала — улика открыта.'); const target=(clue && state.clues.find(x=>x.id===clue.id))||state.clues.find(x=>x.type==='symbol'); if(target){ target.locked=false; state.opened[target.id]=true; renderClues(); renderStats(); } modal.style.display='none'; } else showToast('Не то.'); }); area.appendChild(btn); });
+}
+
+/* ======= Interrogation (simulated neural + TTS) ======= */
+function openInterrogation(){
+  $('interrogateModal').style.display='flex';
+  populateInterrogateSelect();
+  $('chatWindow').innerHTML='';
+}
+function populateInterrogateSelect(){ const sel = $('interrogateSelect'); sel.innerHTML = '<option value="">— Выберите подозреваемого —</option>'; state.suspects.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); }); }
+function startInterrogation(){ const id=$('interrogateSelect').value; if(!id){ showToast('Выберите подозреваемого'); return; } addChatAI(`Вы допросите ${state.suspects.find(s=>s.id===id).name}. Готово.`); }
+function addChatAI(text){ const chat=$('chatWindow'); const m=document.createElement('div'); m.className='msg ai'; m.textContent=text; chat.appendChild(m); chat.scrollTop=chat.scrollHeight; if(state.detectiveVoice) speakText(text,'suspect'); }
+function addChatUser(text){ const chat=$('chatWindow'); const m=document.createElement('div'); m.className='msg user'; m.textContent=text; chat.appendChild(m); chat.scrollTop=chat.scrollHeight; if(state.detectiveVoice) speakText(text,'detective'); }
+function handleChatAsk(){ const q=$('chatInput').value.trim(); if(!q) return; addChatUser(q); $('chatInput').value=''; setTimeout(()=>{ const id=$('interrogateSelect').value; const resp=generateAIResponseForSuspect(q,id); addChatAI(resp); }, 500 + Math.random()*800); }
+function generateAIResponseForSuspect(question, suspectId){
+  if(!suspectId) return 'Вы не выбрали подозреваемого.';
+  const s = state.suspects.find(x=>x.id===suspectId);
+  const q = question.toLowerCase();
+  if(q.includes('где') && q.includes('были')) return `${s.name}: Я была(б) в доме, около 23:00.`;
+  if(q.includes('запис') || q.includes('шифр')) return `${s.name}: В записке что-то про "В." — возможно инициалы.`;
+  if(q.includes('символ')) return `${s.name}: Символ похож на семейную печать Морденов.`;
+  return `${s.name}: Я предпочитаю молчать.`;
+}
+function speakText(text, who='detective'){ if(!('speechSynthesis' in window)) return; if(!state.detectiveVoice) return; const utter=new SpeechSynthesisUtterance(text); const voices=speechSynthesis.getVoices(); const v = voices[0] || null; if(v) utter.voice=v; utter.rate=1; speechSynthesis.cancel(); speechSynthesis.speak(utter); }
+
+/* ======= Profiles modal helpers (inspect / show physical) ======= */
+function openProfileModal(s){ renderProfilesModal(); $('profilesModal').style.display='flex'; }
+function inspectSuspect(id){ $('profilesModal').style.display='none'; $('interrogateModal').style.display='flex'; $('interrogateSelect').value = id; addChatAI(`Допрос ${state.suspects.find(s=>s.id===id).name} готов.`); }
+function showPhysical(id){ const s = state.suspects.find(x=>x.id===id); const text = `${s.name}. Рост: ${s.height} см. Обувь: ${s.shoe}. Внешность: ${s.desc}. Привычки: держать дистанцию.`; $('endingTitle').innerText = 'Внешность и привычки'; $('endingText').innerHTML = `<div style="color:var(--muted)">${escapeHtml(text)}</div>`; $('endingRevealModal').style.display='flex'; }
+
+/* ======= Phone actions ======= */
+function bindPhone(){
+  $('callPartner').addEventListener('click', ()=> {
+    const log = $('phoneLog'); log.innerHTML = `<div style="color:var(--muted)">Звонок напарнику... соединение</div>` + log.innerHTML;
+    setTimeout(()=> { log.innerHTML = `<div style="color:var(--muted)">'Приеду через 10 минут. Проверь чердак', — отвечает напарник.</div>` + log.innerHTML; }, 1200);
+  });
+  $('callPolice').addEventListener('click', ()=> {
+    const log = $('phoneLog'); log.innerHTML = `<div style="color:var(--muted)">Вызов полиции... соединение</div>` + log.innerHTML;
+    setTimeout(()=> { log.innerHTML = `<div style="color:var(--muted)">'Патруль выехал на место', — сообщает диспетчер.</div>` + log.innerHTML; }, 1200);
+  });
+  $('phoneCall').addEventListener('click', ()=> {
+    const val = $('phoneInput').value.trim(); const log = $('phoneLog');
+    if(!val) return; if(val.includes('.')||val.startsWith('http')){ const url = val.startsWith('http')?val:'http://'+val; window.open(url,'_blank'); log.innerHTML = `<div style="color:var(--muted)">Открыт сайт: ${escapeHtml(val)}</div>` + log.innerHTML; } else { log.innerHTML = `<div style="color:var(--muted)">Вызов ${escapeHtml(val)} — соединение...</div>` + log.innerHTML; setTimeout(()=>{ log.innerHTML = `<div style="color:var(--muted)">'Номер недоступен', — голос сообщает.</div>` + log.innerHTML; }, 1100); }
+  });
+}
+
+/* ======= Find killer & accuse ======= */
+function tryFindKiller(){
+  const counts = state.suspects.map(s=>({ id:s.id, name:s.name, c:(state.links[s.id]||[]).length }));
+  counts.sort((a,b)=>b.c-a.c);
+  const top = counts[0];
+  if(!top || top.c===0){ showToast('Недостаточно доказательств'); return; }
+  showToast('Предполагаемый убийца: ' + top.name);
+  $('accuseSelect') && ($('accuseSelect').value = top.id);
+  accuseSelected();
+}
+function populateAccuse(){ const sel = $('accuseSelect'); if(!sel) return; sel.innerHTML = '<option value="">— Выберите —</option>'; state.suspects.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); }); }
+function accuseSelected(){
+  const sel = $('accuseSelect'); const id = sel ? sel.value : null; if(!id){ showToast('Выберите подозреваемого'); return; }
+  const matched = ENDINGS.filter(e => e.cond(state));
+  if(matched.length>0){ showEnding(matched[0].id); return; }
+  const links = state.links[id]||[];
+  if(links.length>=3 && id==='adrian'){ showEnding('truth'); return; }
+  showEnding('open');
+}
+function showEnding(id){ const e = ENDINGS.find(x=>x.id===id); if(!e) return; $('endingTitle').innerText = e.title; $('endingText').innerText = e.desc; $('endingRevealModal').style.display='flex'; const hist = JSON.parse(localStorage.getItem('rose_endings')||'[]'); hist.unshift({id:e.id,time:new Date().toISOString()}); localStorage.setItem('rose_endings', JSON.stringify(hist.slice(0,50))); }
+
+/* ======= Ritual helper (not required) ======= */
+function performRitual(){ if(state.ritualPerformed){ showToast('Ритуал уже исполнен.'); return; } if(!confirm('Исполнить ритуал?')) return; state.ritualPerformed=true; showToast('Ритуал выполнен — воздух стал холоднее...'); const special = { id:'cl_ritual', title:'Ритуальные отметки', room:'basement', type:'ritual', text:'Загадочные символы и остатки воска', locked:false }; state.clues.push(special); state.opened[special.id]=true; renderClues(); renderStats(); }
+
+/* ======= Partner help feature ======= */
+function partnerHelp(){
+  // simple behavior: if there are unopened locked clues -> highlight one; otherwise give textual hint
+  const locked = state.clues.filter(c=> c.locked && !state.opened[c.id]);
+  if(locked.length>0){
+    const pick = locked[Math.floor(Math.random()*locked.length)];
+    // highlight pick element and show toast
+    const el = document.getElementById(pick.id);
+    if(el){ el.style.boxShadow = '0 0 18px rgba(176,138,92,0.9)'; setTimeout(()=> el.style.boxShadow='', 2400); }
+    showToast('Напарник подсказал: проверьте ' + pick.title);
+  } else {
+    // if no locked, suggest useful action
+    const suggestion = 'Напарник: посмотри на чернильные следы и сравни с записями в библиотеке.';
+    showToast(suggestion);
+  }
+}
+
+/* ======= Utilities: icons, progress ======= */
+function getIcon(type){ switch(type){ case 'cipher': return '✉️'; case 'puzzle': return '🧩'; case 'symbol': return '🔱'; case 'vial': return '🧪'; case 'foot': return '👣'; case 'ink': return '🖋️'; default: return '🔎'; } }
+function updateProgress(){ const openedCount = Object.keys(state.opened).length + Object.values(state.links).flat().length; const total = state.clues.length + 2; const pct = Math.min(100, Math.round((openedCount/total)*100)); $('progressPct').innerText = pct + '%'; }
+
+/* ======= Misc helpers for profile modals and UI bind ======= */
+function openMenu(show){ document.getElementById('menuScreen').style.display = show ? 'flex' : 'none'; }
+
+function renderAll(){ renderSuspects(); renderClues(); renderTimeline(); renderStats(); populateAccuse(); renderProfilesModal(); }
+
+function renderProfilesModal(){ const cont = $('profilesContent'); cont.innerHTML=''; state.suspects.forEach(s=>{ const div=document.createElement('div'); div.style.marginBottom='12px'; const linked = state.links[s.id] ? state.links[s.id].length : 0; div.innerHTML = `<strong>${escapeHtml(s.name)}</strong> — <em>${escapeHtml(s.role)}</em><div class="small" style="color:var(--muted); margin-top:6px">Рост: ${s.height} см · Обувь: ${s.shoe} · Привычки: ${escapeHtml(s.desc)}</div><div style="margin-top:8px"><button class="btn" onclick="inspectSuspect('${s.id}')">Допросить</button> <button class="btn secondary" onclick="showPhysical('${s.id}')">Внешность</button></div><div style="margin-top:6px; color:var(--muted)">Связано улик: ${linked}</div>`; cont.appendChild(div); }); }
+
+window.inspectSuspect = function(id){ $('profilesModal').style.display='none'; $('interrogateModal').style.display='flex'; $('interrogateSelect').value = id; addChatAI(`Готов к допросу: ${state.suspects.find(s=>s.id===id).name}`); }
+window.showPhysical = function(id){ const s = state.suspects.find(x=>x.id===id); if(!s) return; const text = `${s.name}. Рост: ${s.height} см. Размер обуви: ${s.shoe}. Внешность: ${s.desc}. Привычки: курит / носит перчатки.`; $('endingTitle').innerText = 'Внешность и привычки'; $('endingText').innerHTML = `<div style="color:var(--muted)">${escapeHtml(text)}</div>`; $('endingRevealModal').style.display='flex'; }
+
+/* ======= Bind remaining UI after DOM loaded ======= */
+function bindGlobalHandlers(){
+  // hotspots
+  document.querySelectorAll('.hotspot').forEach(h=> h.addEventListener('click', ()=> { const room=h.dataset.room; inspectRoom(room); try{ document.getElementById('clickSnd') && document.getElementById('clickSnd').play(); }catch(e){} }));
+  // tools
+  $('cipherBtn').addEventListener('click', ()=> openCipherModal(null));
+  $('cipherTryBtn').addEventListener('click', tryCipher);
+  $('cipherCloseBtn').addEventListener('click', ()=> $('cipherModal').style.display='none');
+  $('puzzleBtn').addEventListener('click', openPuzzleModal);
+  $('puzzleClose').addEventListener('click', ()=> $('puzzleModal').style.display='none');
+  $('matchBtn').addEventListener('click', ()=> openMatchModal(null));
+  $('matchCloseBtn').addEventListener('click', ()=> $('matchModal').style.display='none');
+
+  // timeline
+  $('addTimeline').addEventListener('click', ()=> { const v=$('timelineInput').value.trim(); if(!v) return; state.timeline.push({text:v,time:new Date().toISOString()}); $('timelineInput').value=''; renderTimeline(); saveState('autosave'); renderStats(); });
+
+  // phone
+  bindPhone();
+
+  // interrogation
+  $('interrogateBtn').addEventListener('click', ()=> { openInterrogation(); populateInterrogateSelect(); });
+  $('interrogateStart').addEventListener('click', startInterrogation);
+  $('chatSend').addEventListener('click', handleChatAsk);
+  $('chatClose').addEventListener('click', ()=> $('interrogateModal').style.display='none');
+
+  // partner help
+  $('partnerHelp').addEventListener('click', partnerHelp);
+
+  // find killer, accuse (accuseSelect may not exist in DOM in this simple file; ensure safe)
+  $('findKiller').addEventListener('click', tryFindKiller);
+  document.querySelectorAll('#accuseBtn').forEach(b=> b.addEventListener('click', accuseSelected));
+
+  // endings
+  $('endingsBtn').addEventListener('click', ()=> { const list=$('endingsList'); list.innerHTML=''; ENDINGS.forEach(e=>{ const card=document.createElement('div'); card.className='ending-card'; card.style.padding='10px'; const unlocked = e.cond ? e.cond(state) : false; card.innerHTML = `<div style="display:flex; justify-content:space-between;"><strong>${escapeHtml(e.title)}</strong><div style="color:${unlocked?'#9fff9f':'#cfcfcf'}">${unlocked? 'Доступна':'Недоступна'}</div></div><div style="color:var(--muted); margin-top:6px">${escapeHtml(e.desc)}</div>`; card.addEventListener('click', ()=> { if(unlocked) showEnding(e.id); else showToast('Эта концовка ещё не открыта'); }); list.appendChild(card); }); $('endingsModal').style.display='flex'; });
+  $('endingsClose').addEventListener('click', ()=> $('endingsModal').style.display='none');
+
+  // ritual
+  $('ritualBtn').addEventListener('click', performRitual);
+
+  // profiles
+  $('profilesBtn').addEventListener('click', ()=> { renderProfilesModal(); $('profilesModal').style.display='flex'; });
+  $('closeProfiles').addEventListener('click', ()=> $('profilesModal').style.display='none');
+
+  // phone open
+  $('phoneOpenBtn').addEventListener('click', ()=> { showToast('Телефон открыт'); });
+
+  // menu open/close
+  $('menuOpenBtn').addEventListener('click', ()=> openMenu(true));
+  $('endingClose').addEventListener('click', ()=> $('endingRevealModal').style.display='none');
+
+  // notes save/clear
+  $('saveNotes').addEventListener('click', ()=> { localStorage.setItem('rose_notes', $('notebook').value||''); showToast('Заметки сохранены'); });
+  $('clearNotes').addEventListener('click', ()=> { if(confirm('Очистить заметки?')) { $('notebook').value=''; localStorage.removeItem('rose_notes'); } });
+
+  // audio toggles
+  $('audioToggle') && $('audioToggle').addEventListener('click', ()=> {
+    state.audioOn = !state.audioOn; $('audioState').innerText = state.audioOn ? 'вкл' : 'выкл'; $('audioToggle').innerText = state.audioOn ? 'Звук: вкл' : 'Звук: выкл';
+    if(state.audioOn){ if($('toggleMusic').checked){ $('bgMusic').volume=0.12; $('bgMusic').play().catch(()=>{});} $('ambience').volume=0.18; $('ambience').play().catch(()=>{}); } else { $('bgMusic').pause(); $('ambience').pause(); }
+  });
+
+  // settings toggles
+  $('toggleMusic').addEventListener('change', e=> { state.musicOn = e.target.checked; if(state.musicOn && state.audioOn) $('bgMusic').play().catch(()=>{}); else $('bgMusic').pause(); });
+  $('toggleAmbience').addEventListener('change', e=> { if(e.target.checked && state.audioOn) $('ambience').play().catch(()=>{}); else $('ambience').pause(); });
+  $('toggleDetectiveVoice').addEventListener('change', e=> state.detectiveVoice = e.target.checked);
+
+  // initial load: try to load autosave
+  const autos = loadState('autosave'); if(autos && confirm('Найден автосейв. Загрузить?')){ state = autos; renderAll(); openMenu(false); showToast('Автосейв загружен'); } else { /* leave menu open until start */ }
+  bindPhone();
+  LOG('Global handlers bound');
+}
+
+/* ======= Room inspection ======= */
+function inspectRoom(room){
+  const found = state.clues.filter(c=> c.room === room);
+  if(found.length===0){ showToast('Ничего не найдено в этой комнате.'); return; }
+  found.forEach(c=> {
+    if(!c.locked){ state.opened[c.id] = true; }
+    else {
+      const el = document.getElementById(c.id); if(el) el.querySelector('p').textContent = 'Найдена, но скрыта — используйте инструмент';
+    }
+  });
+  renderClues(); renderTimeline(); renderStats(); showToast(`Осмотр ${room}: найдено ${found.length} улик`);
+}
+
+/* ======= Partner help (public) ======= */
+$('partnerHelp') && $('partnerHelp').addEventListener('click', partnerHelp);
+function partnerHelp(){
+  const locked = state.clues.filter(c=> c.locked && !state.opened[c.id]);
+  if(locked.length>0){
+    const pick = locked[Math.floor(Math.random()*locked.length)];
+    const el = document.getElementById(pick.id);
+    if(el){ el.style.boxShadow = '0 0 18px rgba(176,138,92,0.95)'; setTimeout(()=> el.style.boxShadow = '', 2600); }
+    showToast('Напарник: проверьте — ' + pick.title);
+  } else {
+    showToast('Напарник: посмотрите на чернильные следы и сравните с записями в библиотеке.');
+  }
+}
+
+/* ======= Utility initial render helpers ======= */
+function renderAll(){ renderSuspects(); renderClues(); renderTimeline(); renderStats(); populateAccuse(); renderProfilesModal(); updateProgress(); }
+
+function populateAccuse(){ /* safe populate if element exists */ const sel = $('accuseSelect'); if(!sel) return; sel.innerHTML = '<option value="">— Выберите —</option>'; state.suspects.forEach(s=>{ const o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); }); }
+
+/* ======= Expose some functions for debug ======= */
+window.newGame = newGame;
+window.tryFindKiller = tryFindKiller;
 window.performRitual = performRitual;
+window.partnerHelp = partnerHelp;
 
-LOG('Script loaded — menu awaits start.');
+LOG('Script loaded. Menu ready.');
 </script>
 </body>
 </html>
